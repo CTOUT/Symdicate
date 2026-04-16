@@ -15,15 +15,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Four transformation modes (A — Surface Graft, B — Voice Graft, C — Cognitive Graft, D — Full Symbiote Graft)
 - Structured and natural language input formats with sensible defaults
 - Agent profile caching — SHA-256 content-hash-based cache at `.github/agents/.cache/<agentName>.profile.json`; cache schema defined in `profile.schema.json`; reference example in `profile.example.json`
-- Graft summary block on every response (mode, persona, target agent, agent profile, cache status, persona source)
+- Graft summary block on every response (mode, persona, target agent, agent profile, cache status, session status, persona source)
+- Greeting — when invoked with no parameters, NeuroGraft responds with a quick-start guide linking to the agent catalogue and persona library
+
+#### Agent resolution
+- Four-step fallback chain: workspace → `github/awesome-copilot` → ask user to paste → infer from name (explicit consent only)
+- Any agent in the [awesome-copilot collection](https://github.com/github/awesome-copilot/tree/main/agents) resolves automatically without file copying
+- Agent profile source noted in graft summary block (`workspace`, `github/awesome-copilot`, `pasted by user`, or `inferred`)
 
 #### Personality system
 - Personality taxonomy split into archetypes (`personalities/archetypes/`) and special guests (`personalities/guests/`)
 - Archetype template (`_TEMPLATE.archetype.md`) and guest template (`_TEMPLATE.guest.md`)
 - Six seed archetypes: `child`, `detective`, `philosopher`, `pirate`, `poet`, `robot`
 - Two seed special guests: `glados` (Portal), `jack-sparrow` (Pirates of the Caribbean)
-- File-based persona resolution — NeuroGraft checks persona files before inferring from label
-- Persona discovery — NeuroGraft lists available personas grouped by category on request
+- File-based persona resolution — workspace search then infer from label
+- Persona discovery — NeuroGraft lists available personas grouped by category on request, with scope note
 - Real-person safeguard — `contentNote` field on guest files is an absolute constraint overriding user instruction
 
 #### Session persistence
@@ -31,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Silent session inheritance — follow-up prompts with no Mode/Persona/Agent reuse the active session
 - Session commands: `end session`, `current graft?`, `resume: <token>`
 - Cross-session file persistence at `.github/agents/.cache/neurograft-session.json`
+- Stale session detection — if the target agent file changes between sessions, cognitive identity is re-extracted automatically
 - Resume token appended to every response for portable cross-session restart
 - `Session` line in graft summary block
 
@@ -44,6 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TODO.md` tracking all expansion items
 - `LICENSE` (MIT)
 - `.gitignore` and `.gitattributes`
+
+### Fixed
+
+- Agent and persona search used hardcoded `.github/agents/` paths — replaced with workspace-wide `**/*` glob patterns so both repo-level and any workspace-visible files are found
+- Discovery response said "none detected" when user-level installs exist but aren't workspace-visible — now correctly explains the workspace scope and directs users to name agents directly
+- Step 0 / Step 1 merge artifact in Agent Reading Protocol — cache hit/miss bullets were incorrectly placed inside Step 0; moved to Step 1 where they belong
 
 ---
 

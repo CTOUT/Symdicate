@@ -30,11 +30,14 @@ Question: <the user's question>
 | C — Cognitive Graft     | Persona voice and reasoning style layered onto the target |
 | D — Full Symbiote Graft | Complete cognitive and behavioural transformation         |
 
-**Persona resolution** — when a short label is given, NeuroGraft searches in order:
+**Agent resolution** — when a target agent is named, NeuroGraft searches in order:
 
-1. `personalities/archetypes/` — generalised, interpretive personas
-2. `personalities/guests/` — specific fictional characters with higher fidelity requirements
-3. Falls back to inference if no file is found
+1. Current workspace (`codebase` tool)
+2. [`github/awesome-copilot`](https://github.com/github/awesome-copilot/tree/main/agents) — the community agent catalogue
+3. Asks you to paste the agent file (for private/unpublished agents)
+4. Infers from name — only on explicit user consent
+
+This means any agent in the [awesome-copilot collection](https://github.com/github/awesome-copilot/tree/main/agents) works out of the box — no file copying required.
 
 **Agent profile caching** — on first use, NeuroGraft extracts a target agent's cognitive identity and writes it to `.github/agents/.cache/<agentName>.profile.json`. On subsequent uses, it hashes the source file and loads from cache on a match — skipping re-extraction entirely.
 
@@ -305,6 +308,8 @@ See [TODO.md](TODO.md) for the full tracked list. Completed items:
 - ✅ **Personality Subfolder** — standalone `.persona.md` / `.guest.md` files with file-based resolution and persona discovery
 - ✅ **Personality Taxonomy** — archetypes and special guests split into separate subfolders with distinct templates and fidelity standards
 - ✅ **Installers** — `install.ps1` (PowerShell, all platforms) and `install.sh` (bash, macOS/Linux) with user-level and repo-level install targets, dry-run, and uninstall support
+- ✅ **Session Persistence** — active graft persists across conversation turns; cross-session file; resume token on every response
+- ✅ **Agent Discovery** — workspace search + `github/awesome-copilot` fallback + ask-user fallback; greeting with links to agent catalogue and persona library
 
 In progress / planned:
 
