@@ -293,6 +293,8 @@ To add a new persona, copy the relevant template:
     release.yml             # GitHub Actions — builds agent bundle zip on tag push
 install.ps1                 # Installer — PowerShell (Windows / macOS / Linux)
 install.sh                  # Installer — Bash (macOS / Linux)
+CONTRIBUTING.md             # Pre-commit checklist and contribution guide
+SECURITY.md                 # Vulnerability reporting and disclosure policy
 Symdicate.code-workspace
 TODO.md                     # Tracked expansion roadmap
 README.md

@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Discovery response said "none detected" when user-level installs exist but aren't workspace-visible — now correctly explains the workspace scope and directs users to name agents directly
 - Step 0 / Step 1 merge artifact in Agent Reading Protocol — cache hit/miss bullets were incorrectly placed inside Step 0; moved to Step 1 where they belong
 - `create_file` and `replace_string_in_file` tools added to NeuroGraft frontmatter — cache and session files can now actually be written (previously only declared, never possible)
+- NeuroGraft tool list trimmed: removed `vscode/memory`, `vscode/resolveMemoryFileUri` (wrong persistence scope — would bleed sessions across workspaces), and `agent` (would enable actual sub-agent invocation, conflicting with the simulate-from-instructions design); updated to non-legacy tool name format
 - `install.ps1` `Invoke-RestMethod` call had no timeout — added `-TimeoutSec 30`
 - `install.sh` used `diff -q` for change detection instead of SHA-256 — aligned with `install.ps1` behaviour; `sha256sum`/`shasum -a 256` used with cross-platform fallback
 - `install.sh` `|| true` on arithmetic counter increments now includes explanatory comment clarifying this suppresses the expected exit code 1 from `((n++))` when `n` is 0, not genuine errors
