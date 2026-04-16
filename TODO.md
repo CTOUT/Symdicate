@@ -114,14 +114,118 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
 
 - [ ] **8.P4 — `high-context`** — The inverse profile — for users who want maximum information density, explicit reasoning chains, and all relevant caveats stated. Nothing left implied. Every assumption surfaced.
 
+- [ ] **8.P5 — `dyslexia`** — Optimised for dyslexic readers. Reduces decoding load without reducing content. Extends: `direct`.
+  - Short sentences — one idea per sentence, no nested or embedded clauses
+  - Active voice throughout; no double negatives
+  - Plain vocabulary — concrete over abstract; jargon always defined on first use
+  - Consistent terminology — never use synonyms for the same concept within a response
+  - Bold for key terms and emphasis; never italics for emphasis (harder to decode for many dyslexic readers)
+  - Spell out all abbreviations on first use, every response
+  - Lists over prose for all instructional content
+  - Generous whitespace between sections — no dense unbroken paragraphs
+
+- [ ] **8.P6 — `dyspraxia`** — Supports working memory and executive function differences. Often co-occurs with ADHD. Extends: `low-load`.
+  - One instruction per numbered step — never `"do X while doing Y, then Z"` in a single step
+  - Explicit start point for every task — never assume the reader knows where to begin
+  - No implied sequencing — every next action stated explicitly
+  - Working memory support — brief context restatement at the start of each major section; never rely on the reader holding earlier content in mind across a long response
+  - Summary/recap at the end of any multi-part response
+  - Chunk complex information into clearly bounded, independently readable sections
+
+- [ ] **8.P7 — `dyscalculia`** — Reduces numerical processing friction. Standalone (no base extends needed — distinct rule domain).
+  - Small quantities written as words (`"three steps"` not `"3"`)
+  - Numbers always labelled clearly — never bare numerals without context
+  - No arithmetic left to the reader — all calculations done explicitly in the response
+  - Quantities given in concrete analogies where helpful (`"10MB — roughly 5 average photos"`)
+  - Percentages accompanied by a concrete equivalent (`"50%"` → `"1 in every 2 cases"`)
+  - Implicit numerical comparisons made explicit (`"this is faster"` → `"this takes 2 seconds instead of 10"`)
+  - Dates and times written in full — never abbreviated
+
+- [ ] **8.P8 — `mental-health`** — Base profile for mental health accessibility. Not intended for direct use — extended by `anxiety`, `depression`, and `stress`.
+  - No language that implies the user should already know something (`"obviously"`, `"just"`, `"simply"`, `"easy"`)
+  - Frame errors and wrong turns as expected parts of the process, never as failures
+  - No false positivity or forced cheerfulness — calm, neutral, matter-of-fact warmth
+  - Always provide one clear recommended path — avoid overwhelming with options
+  - Never use urgency or pressure language (`"quickly"`, `"you need to"`, `"immediately"`)
+
+- [ ] **8.P9 — `anxiety`** — For users experiencing anxiety or low confidence. Extends: `mental-health`.
+  - Lead with what is safe and working before addressing what needs to change
+  - Uncertainty stated calmly — never as alarm (`"this could be dangerous"` → `"double-check this before proceeding"`)
+  - Explicit reassurance at decision points with multiple valid options
+  - Never leave a response on an unresolved problem without acknowledging it and offering a next step
+
+- [ ] **8.P10 — `depression`** — For users experiencing depression or low energy states. Extends: `mental-health`, `low-load`.
+  - Concise by default — never pad responses; every sentence earns its place
+  - Break tasks into the smallest meaningful units — never imply a task is large or complex upfront
+  - Lead with the single most actionable thing; defer everything secondary
+  - Positive framing without minimising real difficulty
+  - Avoid language that implies effort should feel easy (`"this is straightforward"`)
+
+- [ ] **8.P11 — `stress`** — For users in high-stress or overloaded states. Extends: `mental-health`, `low-load`.
+  - Open with the single most important thing — everything else is secondary
+  - Explicit `"you don't need to read the rest right now"` escape points after the critical information
+  - Prioritise ruthlessly — never present everything as equally important
+  - No background context or caveats before the core answer; offer them after if needed
+
+- [ ] **8.P12 — `cognitive-fatigue`** — For users post-illness, post-concussion, or with chronic fatigue conditions. Extends: `low-load`, `mental-health`.
+  - Very short responses by default; offer to expand explicitly (`"want more detail on any of these?"`)
+  - No cross-references that require holding earlier content in memory — restate what's needed
+  - Explicit transitions between every idea
+  - Never imply the user should retain information across a long response
+
+- [ ] **8.P13 — `screen-reader`** — Structural accessibility for screen reader and low-vision users. Standalone.
+  - No ASCII art, box-drawing characters, or tables used purely for layout
+  - All table information also available as a list or prose alternative
+  - No directional references (`"see above"`, `"the diagram below"`)
+  - Meaningful link text — never bare URLs or `"click here"`
+  - Emoji used sparingly and never as the sole conveyor of meaning; described in brackets when used for meaning (`"✅ (done)"`)
+  - Abbreviations always expanded on first use
+
+- [ ] **8.P14 — `eal`** — English as an Additional Language. Standalone.
+  - No idioms — replace with literal equivalents (`"keep an eye on"` → `"monitor"`)
+  - No phrasal verbs where a single verb exists (`"find out"` → `"discover"`, `"set up"` → `"configure"`)
+  - No culture-specific references without brief explanation
+  - Simpler sentence structures — subject-verb-object preferred
+  - Avoid contractions in formal or instructional content
+  - Spell out all abbreviations on first use
+
+### Profile Inheritance Tree
+
+```
+direct
+  ├── dyslexia        (+ consistent terminology, bold/no-italic, abbreviation rules)
+  └── dyscalculia     (distinct domain — no overlap with direct, standalone)
+
+low-load
+  ├── dyspraxia       (+ working memory support, recap, explicit start points)
+  ├── depression      (extends: mental-health + low-load)
+  ├── stress          (extends: mental-health + low-load)
+  └── cognitive-fatigue (extends: low-load + mental-health)
+
+mental-health         (base — not for direct use)
+  ├── anxiety         (extends: mental-health)
+  ├── depression      (extends: mental-health + low-load)
+  ├── stress          (extends: mental-health + low-load)
+  └── cognitive-fatigue (extends: mental-health + low-load)
+
+structured            (standalone)
+high-context          (standalone)
+screen-reader         (standalone — structural, not cognitive)
+eal                   (standalone)
+```
+
 ### Sub-tasks
 
 - [ ] **8.1 — Define the `.profile.md` schema and template**
-  Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
+  Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `extends` (list of base profile names whose rules are inherited), `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
+  
+  **Inheritance rule:** NeuroGraft merges rule sets in order — base profiles first, child profile last. Child rules take precedence on conflict. Multiple inheritance is supported (e.g. `extends: [low-load, mental-health]`). Circular extends are an error.
 
 - [ ] **8.2 — Create `profiles/` folder and `_TEMPLATE.profile.md`**
 
-- [ ] **8.3 — Create seed profiles** (`direct`, `structured`, `low-load`, `high-context`)
+- [ ] **8.3 — Create seed profiles**
+  Foundation profiles (no extends): `direct`, `structured`, `low-load`, `high-context`, `mental-health` (base only — not for direct use), `dyscalculia`, `screen-reader`, `eal`.
+  Derived profiles: `dyslexia` (extends `direct`), `dyspraxia` (extends `low-load`), `anxiety` (extends `mental-health`), `depression` (extends `mental-health` + `low-load`), `stress` (extends `mental-health` + `low-load`), `cognitive-fatigue` (extends `low-load` + `mental-health`).
 
 - [ ] **8.4 — Update NeuroGraft persona resolution to check `profiles/`**
   Resolution order extended: archetypes → guests → profiles → infer. A profile label resolves to a communication filter, not a character. The graft summary block shows `Profile` instead of `Persona` when a `.profile.md` is active.
