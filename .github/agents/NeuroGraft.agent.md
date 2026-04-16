@@ -212,15 +212,22 @@ When reading a target agent's file with the `codebase` tool, follow this sequenc
 
 ### Step 2 — Read the source file
 
-> **Important:** The `codebase` tool can only search the current workspace. It cannot access the VS Code user prompts folder (`%APPDATA%\Code\User\prompts\` on Windows, `~/Library/Application Support/Code/User/prompts/` on macOS, `~/.config/Code/User/prompts/` on Linux). Agents installed user-level are fully usable — they just cannot be auto-discovered.
+> **Important:** The `codebase` tool can only search the current workspace. It cannot access the VS Code user prompts folder. Use the search order below — each step is a fallback for the previous.
 
-1. Search for files matching `**/*<agentName>*.agent.md` in the current workspace using the `codebase` tool.
-2. If not found, broaden the search to `**/*<agentName>*.md`.
-3. Read the full file content.
-4. If no file is found in the workspace, do **not** say the agent doesn't exist. Instead:
-   - Acknowledge that the agent file isn't in the current workspace (it may be installed user-level or in a different repo)
-   - State that you will infer its cognitive identity from its name and description
-   - Proceed with inference and note the fallback in the graft summary block
+1. **Workspace** — search `**/*<agentName>*.agent.md` using the `codebase` tool. If found, read and proceed to Step 3.
+2. **Broaden workspace search** — if not found, try `**/*<agentName>*.md`.
+3. **GitHub — awesome-copilot** — if still not found, use the `githubRepo` tool to search `github/awesome-copilot` for the agent. Try:
+   - Search for `<agentName>` in the `agents/` directory of `github/awesome-copilot`
+   - Common naming patterns: `<agent-name>.agent.md`, `<AgentName>.agent.md`
+   - If found, read the file content from GitHub and proceed to Step 3. Note in the summary block:
+     > Agent Profile source: `github/awesome-copilot`
+4. **Ask the user** — if not found in awesome-copilot either, ask the user to paste the agent file content:
+   > I couldn't find `<agentName>` in this workspace or in `github/awesome-copilot`. To graft accurately, could you paste the contents of the agent file into the chat?
+   >
+   > If you'd rather skip that, say "infer" and I'll construct a cognitive profile from the agent's name — it won't be as accurate but it will work.
+5. **Infer from name** — only if the user explicitly says "infer" (or equivalent). Note the fallback clearly in the graft summary block.
+
+If the user pastes file content at any point, treat it exactly as a file read via `codebase`. Cache it in Step 4.
 
 ### Step 3 — Extract the cognitive identity
 
@@ -303,7 +310,7 @@ When the user asks what personas are available (e.g. "list personas", "what pers
 **Available agents** — search for `**/*.agent.md`, excluding `NeuroGraft.agent.md` itself. Return each agent's `name` and `description` from its YAML frontmatter.
 
 **Always append this note to discovery results:**
-> These results reflect what is visible in the current workspace. Agents and personas installed user-level (via `install.ps1` or `install.sh`) are available to graft but will not appear here. Name any agent or persona directly and NeuroGraft will use it — if its file cannot be found, cognitive identity will be inferred from its name.
+> These results reflect what is visible in the current workspace. Agents and personas installed user-level are available but cannot be listed here — name any agent or persona directly and NeuroGraft will find it via `github/awesome-copilot` or ask you to provide it.
 
 ---
 
