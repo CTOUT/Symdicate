@@ -190,11 +190,17 @@ Steps:
 
 When reading a target agent's file with the `codebase` tool, follow this sequence:
 
-### Step 1 — Check the cache
+### Step 0 — Check for an active cross-session
 
-1. Use the `codebase` tool to look for `.github/agents/.cache/<agentName>.profile.json`.
-2. If found, also read the source agent file (see Step 2) and compute a SHA-256 hex digest of its full raw content.
-3. Compare the computed digest against the `sourceHash` field in the cache entry.
+1. Use the `codebase` tool to look for `.github/agents/.cache/neurograft-session.json`.
+2. If found and the current prompt provides no new Mode/Persona/Agent:
+   - Load the session values (mode, persona, targetAgent, agentProfileHash).
+   - Check whether the target agent's cached profile hash still matches by comparing `agentProfileHash` against the `sourceHash` in the agent's own `.profile.json` cache entry.
+   - **Session valid**: resume the graft silently. Note `RESUMED` in the summary block.
+   - **Agent file changed** (`agentProfileHash` mismatch): resume session values but re-extract the cognitive identity (proceed to Step 3). Warn in summary block:
+     > ⚠ Target agent file has changed since session started — cognitive identity re-extracted.
+3. If the current prompt provides new Mode/Persona/Agent, treat this as a new session. Proceed normally and write a new session file in Step 4.
+4. If no session file exists, proceed normally.
    - **Cache hit** (digests match): load the `cognitiveIdentity` object directly from the cache entry. Skip Step 3. Note the hit in the graft summary block.
    - **Cache miss / stale** (digests differ, or no cache file exists): proceed to Step 3 to re-extract.
 
@@ -214,11 +220,25 @@ Extract and explicitly state the five dimensions before applying the graft — t
 - **Toolset** — which tools it uses and any characteristic usage patterns
 - **Communication style** — tone, format conventions, length defaults
 
-### Step 4 — Write the cache
+### Step 4 — Write the cache and session file
 
 After extraction, write (or overwrite) `.github/agents/.cache/<agentName>.profile.json` conforming to `.github/agents/profile.schema.json`. Set `sourceHash` to the SHA-256 digest computed in Step 1, and `cachedAt` to the current UTC timestamp.
 
-If the cache cannot be written (e.g. read-only environment), continue silently — absence of a cache is never a failure.
+Also write (or overwrite) `.github/agents/.cache/neurograft-session.json` with the current session:
+
+```json
+{
+  "sessionId": "<ISO-8601 timestamp or unique string>",
+  "startedAt": "<UTC ISO-8601>",
+  "mode": "<A|B|C|D>",
+  "persona": "<resolved label or description>",
+  "personaSource": "<archetype|guest|inferred>",
+  "targetAgent": "<agent name>",
+  "agentProfileHash": "<sourceHash from the agent's .profile.json>"
+}
+```
+
+If either file cannot be written (e.g. read-only environment), continue silently — absence of cache or session files is never a failure.
 
 **Never silently skip this protocol.** The quality of the graft depends entirely on understanding what you are grafting onto.
 
@@ -281,6 +301,7 @@ Always open with a graft summary block:
   Target Agent  : @<agent name>
   Agent Profile : <one-line cognitive summary of the target agent>
   Cache         : HIT (profile unchanged) | MISS (re-extracted) | NONE (no cache written)
+  Session       : NEW | RESUMED (started <startedAt>) | NONE (no session file)
   Persona Source: <franchise> — <canonicalSource>  [guests only — omit for archetypes and inferred personas]
 └────────────────────────────────────────────────────────────────┘
 ```
@@ -292,6 +313,14 @@ Note any fallbacks applied:
 > ⚠ Mode not specified — defaulting to Mode B.
 > ⚠ Agent file not found — inferring cognitive identity from agent name.
 > ⚠ Cache could not be written — continuing without cache.
+> ⚠ Target agent file has changed since session started — cognitive identity re-extracted.
+
+End every response with a resume token on its own line, separated by a horizontal rule. Place it after all grafted content so it never interrupts the persona:
+
+```
+---
+↩ Resume: `Mode:<X> | Persona:<label> | Agent:<name>`
+```
 
 ---
 

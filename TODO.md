@@ -93,7 +93,7 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 ---
 
-## [ ] 6. Session Persistence — Stay in Character Across Conversations
+## [x] 6. Session Persistence — Stay in Character Across Conversations
 
 **Goal:** NeuroGraft currently relies on conversation history to hold the active graft (Mode, Persona, target Agent). When a new chat session starts, that context is gone and the graft must be re-stated. This item implements session persistence so NeuroGraft can resume a graft automatically in a new conversation.
 
@@ -108,59 +108,20 @@ Both must be addressed.
 - [x] **6.1 — Fix within-session drift (instruction hardening)**
   `Session State` section added to `NeuroGraft.agent.md` defining: active session tracking within a conversation, silent inheritance of Mode/Persona/Agent on follow-up prompts, new-session override behaviour, session commands (`end session`, `current graft?`, `resume: <token>`), and the character-persistence rule. Two new never-do rules added: never drop the graft between turns, never ask the user to re-state values the active session already holds.
 
-- [ ] **6.2 — Define session file schema**
-  Create `.github/agents/.cache/neurograft-session.json` as the cross-session persistence mechanism. Schema:
-  - `sessionId` — UUID or timestamp string uniquely identifying this session
-  - `startedAt` — ISO-8601 UTC timestamp
-  - `mode` — active mode label (`A` / `B` / `C` / `D`)
-  - `persona` — resolved persona label or short description
-  - `personaSource` — `archetype` / `guest` / `inferred`
-  - `targetAgent` — name of the target agent
-  - `agentProfileHash` — `sourceHash` of the cached agent profile at session start (used to detect stale sessions if the agent file changes)
+- [x] **6.2 — Define session file schema**
+  Session file schema defined inline in Agent Reading Protocol Step 4. Fields: `sessionId`, `startedAt`, `mode`, `persona`, `personaSource`, `targetAgent`, `agentProfileHash`. Written to `.github/agents/.cache/neurograft-session.json`.
 
-- [ ] **6.3 — Update Agent Reading Protocol: session check**
-  Add a Step 0 to the Agent Reading Protocol:
-  1. Before anything else, check for `.github/agents/.cache/neurograft-session.json`.
-  2. If found and no new Mode/Persona/Agent are provided in the current prompt, load the session and resume the active graft silently. Note the resume in the summary block:
-     ```
-     Session : RESUMED (started <cachedAt>)
-     ```
-  3. If a new Mode/Persona/Agent are provided, start a fresh session (overwrite the session file) and note it:
-     ```
-     Session : NEW
-     ```
-  4. If the session file's `agentProfileHash` no longer matches the current agent file hash, treat the session as stale, re-extract the cognitive identity, and warn:
-     ```
-     ⚠ Target agent file has changed since session started — cognitive identity re-extracted.
-     ```
+- [x] **6.3 — Update Agent Reading Protocol: session check**
+  Step 0 added to Agent Reading Protocol. Checks for `neurograft-session.json` before anything else; resumes silently if no new parameters provided; detects agent file changes via `agentProfileHash` comparison and re-extracts if stale.
 
-- [ ] **6.4 — Add resume token to every response (Option B fallback)**
-  Append a compact resume token at the bottom of every NeuroGraft response — after the grafted content, in a visually distinct block:
-  ```
-  ---
-  ↩ Resume: `Mode:D | Persona:glados | Agent:gem-debugger`
-  ```
-  This gives users a portable, pasteable token that works even when the session file is unavailable (e.g. different machine, read-only environment, fresh clone). The token should be the last thing in the response — never let it interrupt the persona.
+- [x] **6.4 — Add resume token to every response (Option B fallback)**
+  Resume token appended after all grafted content, separated by `---`. Format: `↩ Resume: \`Mode:X | Persona:Y | Agent:Z\``. Works cross-machine, cross-session, in read-only environments.
 
-- [ ] **6.5 — Add session commands**
-  NeuroGraft should recognise natural language session control phrases:
-  - `"end session"` / `"clear session"` / `"reset"` — delete the session file and confirm
-  - `"what session is active?"` / `"current graft?"` — display the active session without producing a grafted response
-  - `"resume: <token>"` — parse a resume token and activate the described session
+- [x] **6.5 — Add session commands**
+  Session commands defined in `Session State` section (6.1) and Step 0 handles session file writes. Commands: `end session` / `clear session` / `reset`, `current graft?`, `resume: <token>`.
 
-- [ ] **6.6 — Surface session status in the output header**
-  Add a `Session` line to the graft summary block:
-  ```
-  ┌─ NeuroGraft: Transformation Active ────────────────────────────┐
-    Mode          : D
-    Persona       : glados
-    Target Agent  : @gem-debugger
-    Agent Profile : ...
-    Cache         : HIT (profile unchanged)
-    Session       : NEW | RESUMED (started 2026-04-16T21:00:00Z) | NONE (no session file)
-    Persona Source: Portal — Portal (2007) and Portal 2 (2011)
-  └────────────────────────────────────────────────────────────────┘
-  ```
+- [x] **6.6 — Surface session status in the output header**
+  `Session` line added to graft summary block with three states: `NEW`, `RESUMED (started <startedAt>)`, `NONE (no session file)`.
 
 ---
 
