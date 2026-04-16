@@ -62,6 +62,34 @@ Tracked expansion items for the NeuroGraft persona transformer.
 - **Persona blending** — allow two persona labels to be combined (e.g. `pirate + philosopher`) producing a merged cognitive profile.
 - **Per-agent default persona** — allow an `agent.md` file to declare a preferred default persona for when NeuroGraft targets it.
 - **Cache TTL option** — optional `maxAge` field in the cache entry to force re-extraction after a set period even if the file hash is unchanged.
+- **awesome-copilot submission** — submit NeuroGraft as a plugin to [github/awesome-copilot](https://github.com/github/awesome-copilot) for wider distribution once the agent is stable.
+
+---
+
+## [x] 5. Distribution — Installers and Releases
+
+**Goal:** Allow users to install Symdicate agents without cloning the entire repo. Provide platform-appropriate one-liners for Windows, macOS, and Linux, plus a downloadable zip artifact for manual installs.
+
+### Sub-tasks
+
+- [x] **5.1 — Create `install.ps1` (PowerShell — Windows / macOS / Linux)**
+  Cross-platform installer supporting:
+  - `-Target user` (default) — installs to VS Code user prompts folder (per-platform path detection including Insiders)
+  - `-Target repo` — installs to `.github/agents/` in the specified or current repo
+  - `-IncludePersonalities` — also installs archetype and guest persona files
+  - `-Ref` — pin to a specific branch, tag, or commit
+  - `-DryRun` — preview without writing files
+  - `-Uninstall` — remove installed files
+  Fetches files directly from GitHub raw URLs; hash-compares before overwriting.
+
+- [x] **5.2 — Create `install.sh` (Bash — macOS / Linux)**
+  Equivalent bash installer with the same options (`--target`, `--ref`, `--include-personalities`, `--dry-run`, `--uninstall`). Detects VS Code, VS Code Insiders, and Cursor prompts paths. Falls back to a hardcoded persona file list if `jq` is not available.
+
+- [x] **5.3 — Create GitHub Actions release workflow**
+  `.github/workflows/release.yml` — triggers on `v*.*.*` tag push. Builds `symdicate-agents.zip` (agents folder, excluding `.cache/`) and attaches it to a GitHub release. Release body auto-includes install one-liners pinned to the release tag.
+
+- [x] **5.4 — Update README with installation section**
+  Full installation section added covering: user-level vs repo-level, PowerShell one-liner, bash one-liner, optional personality install, all flags table, and manual zip install paths for all platforms.
 
 ---
 
@@ -120,25 +148,25 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 **Goal:** Split the flat `personalities/` folder into two subfolders with distinct authoring standards, fidelity expectations, and resolution behaviour.
 
-- `personalities/archetypes/` — generalised, interpretive personas (pirate, robot, detective). No single canonical source. NeuroGraft constructs a composite from the dimensions in the file. "Correct" means internally consistent and recognisable as the *type*.
-- `personalities/guests/` — specific fictional or public characters (Jack Sparrow, GLaDOS, Sherlock Holmes). Canonical source material exists. NeuroGraft must match the *character*, not just the archetype. Fidelity bar is higher.
+- `personalities/archetypes/` — generalised, interpretive personas (pirate, robot, detective). No single canonical source. NeuroGraft constructs a composite from the dimensions in the file. "Correct" means internally consistent and recognisable as the _type_.
+- `personalities/guests/` — specific fictional or public characters (Jack Sparrow, GLaDOS, Sherlock Holmes). Canonical source material exists. NeuroGraft must match the _character_, not just the archetype. Fidelity bar is higher.
 
 ### Sub-tasks
 
 - [x] **4.1 — Move existing persona files into `archetypes/`**
-  All six seed files moved to `personalities/archetypes/`. `_TEMPLATE.persona.md` renamed to `_TEMPLATE.archetype.md`.
+      All six seed files moved to `personalities/archetypes/`. `_TEMPLATE.persona.md` renamed to `_TEMPLATE.archetype.md`.
 
 - [x] **4.2 — Create `guests/` folder and guest template**
-  `personalities/guests/_TEMPLATE.guest.md` created with YAML frontmatter fields: `franchise`, `universe`, `canonicalSource`, `contentNote`, plus a Notable Quotes section.
+      `personalities/guests/_TEMPLATE.guest.md` created with YAML frontmatter fields: `franchise`, `universe`, `canonicalSource`, `contentNote`, plus a Notable Quotes section.
 
 - [x] **4.3 — Create seed guest personas**
-  `jack-sparrow.guest.md` (Pirates of the Caribbean) and `glados.guest.md` (Portal) created and fully specified.
+      `jack-sparrow.guest.md` (Pirates of the Caribbean) and `glados.guest.md` (Portal) created and fully specified.
 
 - [x] **4.4 — Update NeuroGraft persona resolution**
-  Resolution now checks `archetypes/<label>.persona.md` then `guests/<label>.guest.md` before falling back to inference. Guest personas surface `Persona Source` line in the graft summary block.
+      Resolution now checks `archetypes/<label>.persona.md` then `guests/<label>.guest.md` before falling back to inference. Guest personas surface `Persona Source` line in the graft summary block.
 
 - [x] **4.5 — Update persona discovery**
-  Discovery response now groups results as Archetypes (`.persona.md`) and Special Guests (`.guest.md`), with `franchise` included for guests.
+      Discovery response now groups results as Archetypes (`.persona.md`) and Special Guests (`.guest.md`), with `franchise` included for guests.
 
 - [x] **4.6 — Add real-person safeguard to NeuroGraft**
-  Rule added to *What You Must Never Do*: fabricating opinions, statements, or private facts about real individuals is prohibited even in-character. `contentNote` field on guest files is an absolute constraint that overrides user instruction.
+      Rule added to _What You Must Never Do_: fabricating opinions, statements, or private facts about real individuals is prohibited even in-character. `contentNote` field on guest files is an absolute constraint that overrides user instruction.

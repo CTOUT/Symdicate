@@ -40,6 +40,72 @@ Question: <the user's question>
 
 ---
 
+## Installation
+
+Install Symdicate agents into VS Code in one command. Choose **user-level** (available in every repo, nothing to commit) or **repo-level** (scoped to one project, lives in `.github/agents/`).
+
+### User-level install — recommended for personal use
+
+Agents are placed in your VS Code user prompts folder and work in every workspace immediately.
+
+**PowerShell** (Windows, or macOS/Linux with [pwsh](https://github.com/PowerShell/PowerShell#get-powershell)):
+```powershell
+irm https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.ps1 | iex
+```
+
+**Bash** (macOS / Linux):
+```bash
+curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.sh | bash
+```
+
+### Repo-level install — for sharing with a team
+
+Agents are placed in `.github/agents/` and committed with the project.
+
+```powershell
+# PowerShell
+.\install.ps1 -Target repo
+```
+```bash
+# Bash
+bash install.sh --target repo
+```
+
+### Optional: include persona files
+
+By default only the agent files are installed. Add `--include-personalities` / `-IncludePersonalities` to also install the archetype and guest persona files:
+
+```powershell
+.\install.ps1 -IncludePersonalities
+```
+```bash
+bash install.sh --include-personalities
+```
+
+### Other options
+
+| Option | PowerShell | Bash | Description |
+|--------|-----------|------|-------------|
+| Dry run | `-DryRun` | `--dry-run` | Show what would change without writing files |
+| Uninstall | `-Uninstall` | `--uninstall` | Remove installed Symdicate files |
+| Pin to release | `-Ref v1.0.0` | `--ref v1.0.0` | Install a specific tagged version |
+
+### Manual install
+
+Download `symdicate-agents.zip` from the [latest release](https://github.com/CTOUT/Symdicate/releases/latest) and extract it into:
+
+| Platform | User-level path |
+|----------|-----------------|
+| Windows | `%APPDATA%\Code\User\prompts\` |
+| macOS | `~/Library/Application Support/Code/User/prompts/` |
+| Linux | `~/.config/Code/User/prompts/` |
+
+Or drop the extracted `agents/` folder into your repo's `.github/` directory for repo-level install.
+
+After installing, **restart VS Code** (or run `Developer: Reload Window`) for the agent to appear in the Copilot agent picker.
+
+---
+
 ## Using NeuroGraft
 
 ### Setup
@@ -55,6 +121,7 @@ NeuroGraft is a GitHub Copilot agent. To use it:
 Invoke NeuroGraft with a mode, persona, target agent, and question. All fields except `Question` have defaults and can be omitted.
 
 **Structured format:**
+
 ```
 Mode: B
 Persona: pirate
@@ -63,6 +130,7 @@ Question: Why is my API returning 500 errors intermittently?
 ```
 
 **Natural language:**
+
 ```
 Make @gem-debugger answer as a pirate: why is my API returning 500 errors intermittently?
 ```
@@ -73,16 +141,17 @@ Graft a detective persona onto @gem-reviewer using mode C and ask: is this authe
 
 ### Choosing a mode
 
-| Mode | Use when... |
-|------|-------------|
-| **A — Surface Graft** | You want the persona's flavour on the *question* but the agent's own voice in the answer. Lightest touch. |
-| **B — Voice Graft** | You want the full response delivered in the persona's voice. The agent still *thinks* normally. Good default. |
+| Mode                    | Use when...                                                                                                             |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **A — Surface Graft**   | You want the persona's flavour on the _question_ but the agent's own voice in the answer. Lightest touch.               |
+| **B — Voice Graft**     | You want the full response delivered in the persona's voice. The agent still _thinks_ normally. Good default.           |
 | **C — Cognitive Graft** | You want the persona's reasoning style too — how ideas are sequenced, how conclusions are built. Deeper transformation. |
-| **D — Full Symbiote** | You want complete immersion — voice, reasoning, format, tool narration, rituals. Maximum transformation. |
+| **D — Full Symbiote**   | You want complete immersion — voice, reasoning, format, tool narration, rituals. Maximum transformation.                |
 
 ### Choosing a persona
 
 **Use a built-in archetype** — just name it:
+
 ```
 Persona: detective
 Persona: philosopher
@@ -90,12 +159,14 @@ Persona: robot
 ```
 
 **Use a special guest** — just name them:
+
 ```
 Persona: glados
 Persona: jack-sparrow
 ```
 
 **Use a rich description** — NeuroGraft will construct the full profile from it:
+
 ```
 Persona: a exhausted senior developer who has seen everything go wrong before and is mildly surprised this hasn't broken yet
 ```
@@ -105,6 +176,7 @@ Persona: a exhausted senior developer who has seen everything go wrong before an
 ### Examples
 
 **Debug session with GLaDOS (Mode D):**
+
 ```
 Mode: D
 Persona: glados
@@ -113,6 +185,7 @@ Question: My tests were passing yesterday and now they all fail. What happened?
 ```
 
 **Code review as a Victorian philosopher (Mode C):**
+
 ```
 Mode: C
 Persona: a Victorian-era natural philosopher who finds software architecture morally instructive
@@ -121,6 +194,7 @@ Question: Review this authentication module for security issues.
 ```
 
 **Planning with a pirate (Mode B):**
+
 ```
 Mode: B
 Persona: pirate
@@ -129,6 +203,7 @@ Question: How do we migrate this monolith to microservices?
 ```
 
 **Quick — omit mode and let it default to B:**
+
 ```
 @NeuroGraft Make @gem-documentation-writer explain this API as a poet.
 ```
@@ -211,6 +286,10 @@ To add a new persona, copy the relevant template:
     NeuroGraft.agent.md     # NeuroGraft agent definition
     profile.schema.json     # JSON Schema for cached cognitive profiles
     profile.example.json    # Reference example of a populated cache entry
+  workflows/
+    release.yml             # GitHub Actions — builds agent bundle zip on tag push
+install.ps1                 # Installer — PowerShell (Windows / macOS / Linux)
+install.sh                  # Installer — Bash (macOS / Linux)
 Symdicate.code-workspace
 TODO.md                     # Tracked expansion roadmap
 README.md
@@ -225,6 +304,7 @@ See [TODO.md](TODO.md) for the full tracked list. Completed items:
 - ✅ **Agent Interpretation Cache** — SHA-256 hash-based caching of cognitive profiles; cache hit/miss surfaced in the graft summary block
 - ✅ **Personality Subfolder** — standalone `.persona.md` / `.guest.md` files with file-based resolution and persona discovery
 - ✅ **Personality Taxonomy** — archetypes and special guests split into separate subfolders with distinct templates and fidelity standards
+- ✅ **Installers** — `install.ps1` (PowerShell, all platforms) and `install.sh` (bash, macOS/Linux) with user-level and repo-level install targets, dry-run, and uninstall support
 
 In progress / planned:
 
