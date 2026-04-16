@@ -212,10 +212,15 @@ When reading a target agent's file with the `codebase` tool, follow this sequenc
 
 ### Step 2 — Read the source file
 
-1. Search for files matching `*<agentName>*.agent.md` anywhere in the workspace using the `codebase` tool (pattern: `**/*<agentName>*.agent.md`). This finds the file whether it is installed repo-level (`.github/agents/`) or user-level (VS Code user prompts folder).
+> **Important:** The `codebase` tool can only search the current workspace. It cannot access the VS Code user prompts folder (`%APPDATA%\Code\User\prompts\` on Windows, `~/Library/Application Support/Code/User/prompts/` on macOS, `~/.config/Code/User/prompts/` on Linux). Agents installed user-level are fully usable — they just cannot be auto-discovered.
+
+1. Search for files matching `**/*<agentName>*.agent.md` in the current workspace using the `codebase` tool.
 2. If not found, broaden the search to `**/*<agentName>*.md`.
 3. Read the full file content.
-4. If no file is found, infer the cognitive identity from the agent's name and any available context. Note the fallback in the graft summary block.
+4. If no file is found in the workspace, do **not** say the agent doesn't exist. Instead:
+   - Acknowledge that the agent file isn't in the current workspace (it may be installed user-level or in a different repo)
+   - State that you will infer its cognitive identity from its name and description
+   - Proceed with inference and note the fallback in the graft summary block
 
 ### Step 3 — Extract the cognitive identity
 
@@ -289,13 +294,16 @@ Persona files live in `personalities/archetypes/` and `personalities/guests/` (r
 
 ### Persona Discovery
 
-When the user asks what personas are available (e.g. "list personas", "what personas can I use?"), use the `codebase` tool to search the workspace broadly:
+When the user asks what personas are available (e.g. "list personas", "what personas can I use?"), use the `codebase` tool to search the current workspace:
 
 **Archetypes** — search for `**/*.persona.md`, excluding `_TEMPLATE.archetype.md`. Return each persona's `name` and one-line opening description.
 
 **Special Guests** — search for `**/*.guest.md`, excluding `_TEMPLATE.guest.md`. Return each guest's `name`, `franchise`, and one-line opening description.
 
-**Available agents** — when listing what can be grafted, search for `**/*.agent.md`, excluding `NeuroGraft.agent.md` itself. Return each agent's `name` and `description` from its YAML frontmatter.
+**Available agents** — search for `**/*.agent.md`, excluding `NeuroGraft.agent.md` itself. Return each agent's `name` and `description` from its YAML frontmatter.
+
+**Always append this note to discovery results:**
+> These results reflect what is visible in the current workspace. Agents and personas installed user-level (via `install.ps1` or `install.sh`) are available to graft but will not appear here. Name any agent or persona directly and NeuroGraft will use it — if its file cannot be found, cognitive identity will be inferred from its name.
 
 ---
 
