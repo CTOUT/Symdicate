@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [v1.0.0] — 2026-04-16
+
 ### Added
 
 #### NeuroGraft — Persona Transformer agent
@@ -71,3 +75,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 [Unreleased]: https://github.com/CTOUT/Symdicate/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/CTOUT/Symdicate/releases/tag/v1.0.0
