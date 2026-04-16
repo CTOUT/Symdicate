@@ -217,7 +217,7 @@ $allFiles = $agentFiles + $personalityFiles
 
 #region Install / Uninstall
 
-$counts = @{ added = 0; updated = 0; unchanged = 0; removed = 0; skipped = 0 }
+$counts = @{ added = 0; updated = 0; unchanged = 0; removed = 0; skipped = 0; 'not-found' = 0; 'would-remove' = 0 }
 
 foreach ($file in $allFiles) {
     $fileName = Split-Path $file -Leaf

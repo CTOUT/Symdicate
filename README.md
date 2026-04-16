@@ -61,6 +61,12 @@ irm https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.ps1 | iex
 curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.sh | bash
 ```
 
+> **Security note:** The one-liners above run directly from `main`. For production use, pin to a release tag and verify the SHA-256 checksum published on the [releases page](https://github.com/CTOUT/Symdicate/releases/latest):
+> ```powershell
+> .\install.ps1 -Ref v1.0.0
+> ```
+> See [SECURITY.md](SECURITY.md) for full verification guidance.
+
 ### Repo-level install — for sharing with a team
 
 Agents are placed in `.github/agents/` and committed with the project.

@@ -62,6 +62,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `install.ps1` `Invoke-RestMethod` call had no timeout — added `-TimeoutSec 30`
 - `install.sh` used `diff -q` for change detection instead of SHA-256 — aligned with `install.ps1` behaviour; `sha256sum`/`shasum -a 256` used with cross-platform fallback
 - `install.sh` `|| true` on arithmetic counter increments now includes explanatory comment clarifying this suppresses the expected exit code 1 from `((n++))` when `n` is 0, not genuine errors
+- **HIGH** — Script injection in `release.yml`: `${{ github.ref_name }}` was interpolated directly into a `run:` shell command; moved to `env:` block so it is passed as an environment variable and never raw-interpolated
+- **HIGH** — Mutable action version pins in `release.yml`: `actions/checkout@v4` and `softprops/action-gh-release@v2` pinned to immutable commit SHAs
+- **MEDIUM** — `SECURITY.md` documented SHA-256 checksum verification but release workflow published no checksum file; `checksums.sha256` is now generated and attached to every release
+- **LOW** — `install.ps1` uninitialised counter keys: `not-found` and `would-remove` added to `$counts` initialisation
+- **LOW** — README one-liner install commands had no proximate security note; callout added directing users to pin to a release tag and verify checksums
 
 ---
 
