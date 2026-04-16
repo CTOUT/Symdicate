@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://symdicate/agents/profile.schema.json",
+  "title": "AgentCognitiveProfile",
+  "description": "Cached cognitive identity extracted from an agent's .agent.md file. The cache key is the SHA-256 hash of the raw file content stored in sourceHash. If sourceHash does not match a freshly computed hash of the source file, the entry is considered stale and must be regenerated.",
+  "type": "object",
+  "required": ["sourceHash", "cachedAt", "agentName", "cognitiveIdentity"],
+  "additionalProperties": false,
+  "properties": {
+    "agentName": {
+      "type": "string",
+      "description": "The canonical name of the agent this profile was extracted from."
+    },
+    "sourceHash": {
+      "type": "string",
+      "description": "SHA-256 hex digest of the full raw content of the source .agent.md file at extraction time. Used as the cache key — a mismatch means the file has changed and this entry is stale.",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "cachedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of when this profile was extracted and cached."
+    },
+    "cognitiveIdentity": {
+      "type": "object",
+      "description": "The five dimensions of the agent's cognitive identity, as extracted from its instruction file.",
+      "required": [
+        "corePurpose",
+        "cognitivePatterns",
+        "behaviouralRules",
+        "toolset",
+        "communicationStyle"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "corePurpose": {
+          "type": "string",
+          "description": "What the agent does — its primary function and the problem it is designed to solve."
+        },
+        "cognitivePatterns": {
+          "type": "string",
+          "description": "How the agent thinks — the way it sequences work, structures reasoning, and reaches conclusions."
+        },
+        "behaviouralRules": {
+          "type": "string",
+          "description": "What the agent must and must not do — its hard constraints and guardrails."
+        },
+        "toolset": {
+          "type": "array",
+          "description": "The tools the agent is permitted to use, and any notable patterns in how it uses them.",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Tool name as declared in the agent file."
+              },
+              "usageNotes": {
+                "type": "string",
+                "description": "Optional notes on how this agent characteristically uses the tool."
+              }
+            }
+          }
+        },
+        "communicationStyle": {
+          "type": "string",
+          "description": "The agent's default tone, format conventions, response length, and any characteristic phrasing."
+        }
+      }
+    }
+  }
+}

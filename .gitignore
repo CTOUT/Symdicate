@@ -1,0 +1,18 @@
+# Agent profile cache (generated at runtime, never commit)
+.github/agents/.cache/
+
+# VS Code local settings
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/*.log
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temp / scratch files
+*.tmp
+*.bak
+*.swp
