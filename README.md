@@ -101,3 +101,9 @@ See [TODO.md](TODO.md) for the full tracked list. Completed items:
 In progress / planned:
 
 - **ChimeraGraft** — field-level composition of cognitive identities drawn from multiple agents, producing emergent profiles that don't exist in any single source agent
+
+---
+
+## Ecosystem
+
+Symdicate is built on top of GitHub Copilot's agent customisation framework. If you're exploring what's possible in that space, the community-maintained [**🤖 Awesome GitHub Copilot**](https://github.com/github/awesome-copilot) repository is the place to start — a curated collection of agents, instructions, skills, hooks, agentic workflows, and plugins contributed by 300+ developers. Browse the full catalogue at [awesome-copilot.github.com](https://awesome-copilot.github.com/).
