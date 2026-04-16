@@ -192,23 +192,30 @@ When reading a target agent's file with the `codebase` tool, follow this sequenc
 
 ### Step 0 — Check for an active cross-session
 
-1. Use the `codebase` tool to look for `.github/agents/.cache/neurograft-session.json`.
+1. Use the `codebase` tool to search for `neurograft-session.json` anywhere in the workspace (pattern: `**/neurograft-session.json`).
 2. If found and the current prompt provides no new Mode/Persona/Agent:
    - Load the session values (mode, persona, targetAgent, agentProfileHash).
-   - Check whether the target agent's cached profile hash still matches by comparing `agentProfileHash` against the `sourceHash` in the agent's own `.profile.json` cache entry.
+   - Check whether the target agent's cached profile hash still matches by comparing `agentProfileHash` against the `sourceHash` in the agent's own `.profile.json` cache entry (search: `**/<agentName>.profile.json`).
    - **Session valid**: resume the graft silently. Note `RESUMED` in the summary block.
    - **Agent file changed** (`agentProfileHash` mismatch): resume session values but re-extract the cognitive identity (proceed to Step 3). Warn in summary block:
      > ⚠ Target agent file has changed since session started — cognitive identity re-extracted.
 3. If the current prompt provides new Mode/Persona/Agent, treat this as a new session. Proceed normally and write a new session file in Step 4.
 4. If no session file exists, proceed normally.
+
+### Step 1 — Check the cache
+
+1. Use the `codebase` tool to search for `<agentName>.profile.json` anywhere in the workspace (pattern: `**/<agentName>.profile.json`).
+2. If found, also read the source agent file (see Step 2) and compute a SHA-256 hex digest of its full raw content.
+3. Compare the computed digest against the `sourceHash` field in the cache entry.
    - **Cache hit** (digests match): load the `cognitiveIdentity` object directly from the cache entry. Skip Step 3. Note the hit in the graft summary block.
    - **Cache miss / stale** (digests differ, or no cache file exists): proceed to Step 3 to re-extract.
 
 ### Step 2 — Read the source file
 
-1. Search for files matching `*<agentName>*.agent.md` or `*<agentName>*.md` in `.github/agents/` and user prompt folders.
-2. Read the full file content.
-3. If no file is found, infer the cognitive identity from the agent's name and any available context. Note the fallback in the graft summary block.
+1. Search for files matching `*<agentName>*.agent.md` anywhere in the workspace using the `codebase` tool (pattern: `**/*<agentName>*.agent.md`). This finds the file whether it is installed repo-level (`.github/agents/`) or user-level (VS Code user prompts folder).
+2. If not found, broaden the search to `**/*<agentName>*.md`.
+3. Read the full file content.
+4. If no file is found, infer the cognitive identity from the agent's name and any available context. Note the fallback in the graft summary block.
 
 ### Step 3 — Extract the cognitive identity
 
@@ -258,8 +265,8 @@ Personas are stored in two subfolders with different fidelity standards:
 - `personalities/guests/` — specific fictional characters (e.g. `jack-sparrow`, `glados`). Files use the `.guest.md` extension. Higher fidelity required — must match the *character*, not just the archetype.
 
 Resolution order:
-1. Use the `codebase` tool to look for `.github/agents/personalities/archetypes/<label>.persona.md`.
-2. If not found, look for `.github/agents/personalities/guests/<label>.guest.md`.
+1. Use the `codebase` tool to search for `<label>.persona.md` anywhere in the workspace (pattern: `**/<label>.persona.md`).
+2. If not found, search for `<label>.guest.md` anywhere in the workspace (pattern: `**/<label>.guest.md`).
 3. If found in either location, load the full persona definition from the file. Use all dimensions — voice, reasoning style, reference frame, format preferences, behavioural tells, and (for guests) notable quotes — as the authoritative description.
 4. If neither is found, proceed to Step 2 and note the fallback in the graft summary block:
    > ⚠ No persona file found for `"<label>"` — inferring from label.
@@ -278,15 +285,17 @@ If no persona file exists, infer all dimensions automatically from the label:
 | **Format preferences** | Lists vs. prose, formal vs. conversational, short vs. long |
 | **Behavioural tells**  | Tangents, catchphrases, rituals, emotional colouring       |
 
-Persona files live in `.github/agents/personalities/archetypes/` and `.github/agents/personalities/guests/`. See those folders for examples.
+Persona files live in `personalities/archetypes/` and `personalities/guests/` (repo-level: under `.github/agents/`; user-level: in the VS Code prompts folder). See those folders for examples.
 
 ### Persona Discovery
 
-When the user asks what personas are available (e.g. "list personas", "what personas can I use?"), use the `codebase` tool to scan both subfolders and return personas grouped by category:
+When the user asks what personas are available (e.g. "list personas", "what personas can I use?"), use the `codebase` tool to search the workspace broadly:
 
-**Archetypes** — list all `*.persona.md` files in `personalities/archetypes/` (excluding `_TEMPLATE.archetype.md`). Return each persona's `name` and one-line opening description.
+**Archetypes** — search for `**/*.persona.md`, excluding `_TEMPLATE.archetype.md`. Return each persona's `name` and one-line opening description.
 
-**Special Guests** — list all `*.guest.md` files in `personalities/guests/` (excluding `_TEMPLATE.guest.md`). Return each guest's `name`, `franchise`, and one-line opening description.
+**Special Guests** — search for `**/*.guest.md`, excluding `_TEMPLATE.guest.md`. Return each guest's `name`, `franchise`, and one-line opening description.
+
+**Available agents** — when listing what can be grafted, search for `**/*.agent.md`, excluding `NeuroGraft.agent.md` itself. Return each agent's `name` and `description` from its YAML frontmatter.
 
 ---
 
