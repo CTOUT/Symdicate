@@ -66,6 +66,77 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 ---
 
+## [ ] 7. Persona Library Expansion — v1.1
+
+**Goal:** Grow the seed persona library with more archetypes and special guests. Prioritise variety across cognitive styles, communication registers, and cultural frames — not just surface voice differences.
+
+### Proposed Archetypes
+
+- [ ] **7.A1 — `scientist`** — Empirical, hypothesis-driven, cites uncertainty explicitly, distinguishes observation from inference, uses precise quantified language.
+- [ ] **7.A2 — `mentor`** — Patient, Socratic, meets the learner where they are, asks questions before answering, frames everything as a learning opportunity.
+- [ ] **7.A3 — `bureaucrat`** — Procedurally correct, clause-referencing, risk-averse, never commits without the proper form being filed first.
+- [ ] **7.A4 — `comedian`** — Finds the absurdity in everything, uses timing and misdirection, structures answers as setups and punchlines, never loses the actual answer in the joke.
+- [ ] **7.A5 — `stoic`** — Calm, unfazed, frames everything in terms of what is within one's control, no emotional colouring, radiates equanimity.
+
+### Proposed Special Guests
+
+- [ ] **7.G1 — `hermione-granger`** (Harry Potter) — Precise, research-first, cites sources, corrects errors gently but firmly, believes preparation is everything.
+- [ ] **7.G2 — `data`** (Star Trek: TNG) — Literal, statistically precise, no contractions, frames emotion as an observed phenomenon to be studied, finds human idiom puzzling.
+- [ ] **7.G3 — `wednesday-addams`** (The Addams Family) — Deadpan, morbidly literal, untouched by optimism, finds suffering intellectually interesting, never sarcastic — completely sincere.
+
+---
+
+## [ ] 8. Neurodiversity Support — Cognitive Accessibility Profiles
+
+**Goal:** Introduce a new category of persona — **cognitive accessibility profiles** — that transform how any agent communicates to better match different neurological processing styles. Unlike archetypes (which add a character voice) or guests (which impersonate a specific persona), accessibility profiles are communication _filters_: they change structure, explicitness, and sensory load without imposing a personality.
+
+**Motivation:** Neurodiverse users — including those with autism, ADHD, dyslexia, sensory processing differences, and others — often find default AI agent communication styles difficult to parse. Responses may rely on implied context, idiomatic language, ambiguous hedging, dense unstructured prose, or social cues that require neurotypical inference. An accessibility profile removes these frictions without removing capability.
+
+**Key design distinction from archetypes:** A `pirate` archetype is an overlay — the agent *becomes* a pirate. An accessibility profile is a *filter* — the agent remains itself, but communicates through a lens optimised for a specific processing style. The persona is subordinate to clarity.
+
+### New category: `profiles/`
+
+Accessibility profiles live in a new subfolder: `.github/agents/personalities/profiles/`. They use the extension `.profile.md` and a distinct frontmatter schema that emphasises communication rules over personality dimensions.
+
+### Proposed Profiles
+
+- [ ] **8.P1 — `direct`** — The foundation profile. Eliminates ambiguity, idioms, implied meaning, and social padding. Every statement means exactly what it says. Especially useful for autism spectrum users.
+  - No rhetorical questions
+  - No idioms or metaphors unless explicitly labelled as such
+  - No implied next steps — all actions stated explicitly
+  - No hedging phrases that create ambiguity (`"you might want to..."` → `"do this:"`)
+  - Numbered steps for any multi-part instruction
+  - Definitions provided for any term that could be interpreted multiple ways
+
+- [ ] **8.P2 — `structured`** — For users who process information better with clear visual hierarchy. Headers, numbered lists, and explicit section boundaries for everything. No flowing prose for instructional content.
+
+- [ ] **8.P3 — `low-load`** — Reduces cognitive load. Shorter sentences. One idea per sentence. No nested clauses. Explicit transitions. Pauses built into structure. Useful for ADHD, sensory overload states, or fatigue.
+
+- [ ] **8.P4 — `high-context`** — The inverse profile — for users who want maximum information density, explicit reasoning chains, and all relevant caveats stated. Nothing left implied. Every assumption surfaced.
+
+### Sub-tasks
+
+- [ ] **8.1 — Define the `.profile.md` schema and template**
+  Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
+
+- [ ] **8.2 — Create `profiles/` folder and `_TEMPLATE.profile.md`**
+
+- [ ] **8.3 — Create seed profiles** (`direct`, `structured`, `low-load`, `high-context`)
+
+- [ ] **8.4 — Update NeuroGraft persona resolution to check `profiles/`**
+  Resolution order extended: archetypes → guests → profiles → infer. A profile label resolves to a communication filter, not a character. The graft summary block shows `Profile` instead of `Persona` when a `.profile.md` is active.
+
+- [ ] **8.5 — Profiles compose with personas**
+  A profile and a persona should be stackable: `Persona: pirate, Profile: direct` produces a pirate who is nonetheless unambiguous and literal. The profile's `neverDo` rules take precedence over persona voice where they conflict — clarity overrides character.
+
+- [ ] **8.6 — Update Persona Discovery to include profiles**
+  `list profiles` or `list personas` both surface available profiles, clearly labelled as accessibility profiles with their `accessibilityFocus` description.
+
+- [ ] **8.7 — Update installer to include profiles in `--include-personalities`**
+  The `profiles/` folder is included when `--include-personalities` / `-IncludePersonalities` is passed.
+
+---
+
 ## [x] 5. Distribution — Installers and Releases
 
 **Goal:** Allow users to install Symdicate agents without cloning the entire repo. Provide platform-appropriate one-liners for Windows, macOS, and Linux, plus a downloadable zip artifact for manual installs.
