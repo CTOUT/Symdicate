@@ -119,7 +119,7 @@ function Get-UserPromptsDir {
 
 function Get-RemoteFileList {
     param([string]$ApiUrl)
-    $response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'Symdicate-Installer' }
+    $response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'Symdicate-Installer' } -TimeoutSec 30
     return $response
 }
 

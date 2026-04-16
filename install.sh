@@ -198,32 +198,35 @@ install_file() {
         local tmp_file
         tmp_file="$(mktemp)"
         if curl -fsSL -H "User-Agent: Symdicate-Installer" -o "$tmp_file" "$raw_url" 2>/dev/null; then
-            if diff -q "$tmp_file" "$dest_path" &>/dev/null; then
+            local src_hash dst_hash
+            src_hash="$(sha256sum "$tmp_file" 2>/dev/null || shasum -a 256 "$tmp_file" 2>/dev/null | awk '{print $1}')"
+            dst_hash="$(sha256sum "$dest_path" 2>/dev/null || shasum -a 256 "$dest_path" 2>/dev/null | awk '{print $1}')"
+            if [[ "$src_hash" == "$dst_hash" ]]; then
                 rm -f "$tmp_file"
                 log "  [=] $dest_path  (unchanged)"
-                ((unchanged++)) || true
+                ((unchanged++)) || true  # arithmetic '0' exit code is not an error
             else
                 if [[ $DRY_RUN -eq 0 ]]; then mv "$tmp_file" "$dest_path"; else rm -f "$tmp_file"; fi
                 log "  [~] $dest_path  (updated)"
-                ((updated++)) || true
+                ((updated++)) || true  # arithmetic '0' exit code is not an error
             fi
         else
             rm -f "$tmp_file"
             err "  FAILED  $raw_url"
-            ((failed++)) || true
+            ((failed++)) || true  # arithmetic '0' exit code is not an error
         fi
     else
         if [[ $DRY_RUN -eq 0 ]]; then
             if curl -fsSL -H "User-Agent: Symdicate-Installer" -o "$dest_path" "$raw_url" 2>/dev/null; then
                 log "  [+] $dest_path  (added)"
-                ((added++)) || true
+                ((added++)) || true  # arithmetic '0' exit code is not an error
             else
                 err "  FAILED  $raw_url"
-                ((failed++)) || true
+                ((failed++)) || true  # arithmetic '0' exit code is not an error
             fi
         else
             log "  [+] $dest_path  (would add)"
-            ((added++)) || true
+            ((added++)) || true  # arithmetic '0' exit code is not an error
         fi
     fi
 }
