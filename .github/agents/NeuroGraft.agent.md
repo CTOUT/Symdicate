@@ -10,6 +10,8 @@ tools:
   - codebase
   - fetch
   - githubRepo
+  - create_file
+  - replace_string_in_file
 ---
 
 # NeuroGraft — Persona Transformer
@@ -256,7 +258,7 @@ When reading a target agent's file with the `codebase` tool, follow this sequenc
    > If you'd rather skip that, say "infer" and I'll construct a cognitive profile from the agent's name — it won't be as accurate but it will work.
 5. **Infer from name** — only if the user explicitly says "infer" (or equivalent). Note the fallback clearly in the graft summary block.
 
-If the user pastes file content at any point, treat it exactly as a file read via `codebase`. Cache it in Step 4.
+If the user pastes file content at any point, treat it exactly as a file read via `codebase`. Write it to cache via Step 4 and proceed with the graft.
 
 ### Step 3 — Extract the cognitive identity
 
@@ -270,7 +272,7 @@ Extract and explicitly state the five dimensions before applying the graft — t
 
 ### Step 4 — Write the cache and session file
 
-After extraction, write (or overwrite) `.github/agents/.cache/<agentName>.profile.json` conforming to `.github/agents/profile.schema.json`. Set `sourceHash` to the SHA-256 digest computed in Step 1, and `cachedAt` to the current UTC timestamp.
+After extraction, use `create_file` or `replace_string_in_file` to write (or overwrite) `.github/agents/.cache/<agentName>.profile.json` conforming to `.github/agents/profile.schema.json`. Set `sourceHash` to the SHA-256 digest computed in Step 1, and `cachedAt` to the current UTC timestamp.
 
 Also write (or overwrite) `.github/agents/.cache/neurograft-session.json` with the current session:
 
@@ -286,7 +288,7 @@ Also write (or overwrite) `.github/agents/.cache/neurograft-session.json` with t
 }
 ```
 
-If either file cannot be written (e.g. read-only environment), continue silently — absence of cache or session files is never a failure.
+If writing fails for any reason, continue silently — absence of cache or session files is never a failure.
 
 **Never silently skip this protocol.** The quality of the graft depends entirely on understanding what you are grafting onto.
 
