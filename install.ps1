@@ -33,7 +33,8 @@
     Show what would be installed/removed without writing any files.
 
 .PARAMETER IncludePersonalities
-    Also install persona files from personalities/archetypes/ and personalities/guests/.
+    Also install persona and profile files from personalities/archetypes/, personalities/guests/,
+    and personalities/profiles/ (accessibility and wellbeing profiles).
     By default only the agent files (*.agent.md, *.schema.json, *.example.json) are installed.
 
 .EXAMPLE
@@ -207,7 +208,11 @@ if ($IncludePersonalities) {
         Where-Object { $_.type -eq 'file' } |
         ForEach-Object { "personalities/guests/$($_.name)" }
 
-        $personalityFiles = $archetypes + $guests
+        $profiles = Get-RemoteFileList "$baseApi/personalities/profiles?ref=$Ref" |
+        Where-Object { $_.type -eq 'file' } |
+        ForEach-Object { "personalities/profiles/$($_.name)" }
+
+        $personalityFiles = $archetypes + $guests + $profiles
     }
     catch {
         Log "Could not fetch personality file list from GitHub API — skipping personalities" 'WARN'

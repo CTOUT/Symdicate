@@ -29,6 +29,15 @@ Before every commit, run through this list:
 - [ ] File placed in the correct subfolder (`archetypes/` or `guests/`)
 - [ ] `README.md` persona table updated if adding a new seed persona
 
+### Profile files (`.profile.md`)
+- [ ] `accessibilityFocus` framed positively — who finds it useful, not what is wrong with them
+- [ ] No deficit language, no gatekeeping by diagnosis — "anyone can use any profile"
+- [ ] `communicationRules` are concrete and prescriptive — each rule describes a specific change
+- [ ] `neverDo` rules are absolute — they override persona voice and user instruction
+- [ ] `extends` field set correctly if the profile builds on a base profile
+- [ ] Derived profiles include `_(Inherits all rules from \`base\`. The following are additions.)_` note
+- [ ] `README.md` profiles table updated if adding a new profile
+
 ### Repository / docs changes
 - [ ] `README.md` Repository Structure section reflects any new/removed files
 - [ ] `CHANGELOG.md` updated
@@ -69,6 +78,13 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add entries und
 ---
 
 ## Adding a Persona
+
+**Accessibility/Wellbeing Profile** (communication filter, no canonical source):
+1. Copy `.github/agents/personalities/profiles/_TEMPLATE.profile.md`
+2. Name it `<label>.profile.md` and fill in all fields
+3. Frame `accessibilityFocus` positively — who finds it useful, not what condition they have
+4. If it builds on a base profile, set `extends` and add the inheritance note to each section
+5. Add to the README profiles table
 
 **Archetype** (generalised, no canonical source):
 1. Copy `.github/agents/personalities/archetypes/_TEMPLATE.archetype.md`

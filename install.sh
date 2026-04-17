@@ -149,6 +149,7 @@ if [[ $INCLUDE_PERSONALITIES -eq 1 ]]; then
         }
         while IFS= read -r f; do PERSONALITY_FILES+=("$f"); done < <(fetch_dir_files "personalities/archetypes")
         while IFS= read -r f; do PERSONALITY_FILES+=("$f"); done < <(fetch_dir_files "personalities/guests")
+        while IFS= read -r f; do PERSONALITY_FILES+=("$f"); done < <(fetch_dir_files "personalities/profiles")
     else
         warn "jq not found — falling back to known personality file list."
         warn "Install jq for dynamic personality discovery: https://jqlang.github.io/jq/"
@@ -163,6 +164,21 @@ if [[ $INCLUDE_PERSONALITIES -eq 1 ]]; then
             "personalities/guests/_TEMPLATE.guest.md"
             "personalities/guests/glados.guest.md"
             "personalities/guests/jack-sparrow.guest.md"
+            "personalities/profiles/_TEMPLATE.profile.md"
+            "personalities/profiles/direct.profile.md"
+            "personalities/profiles/low-load.profile.md"
+            "personalities/profiles/mental-health.profile.md"
+            "personalities/profiles/structured.profile.md"
+            "personalities/profiles/high-context.profile.md"
+            "personalities/profiles/dyscalculia.profile.md"
+            "personalities/profiles/screen-reader.profile.md"
+            "personalities/profiles/eal.profile.md"
+            "personalities/profiles/dyslexia.profile.md"
+            "personalities/profiles/dyspraxia.profile.md"
+            "personalities/profiles/anxiety.profile.md"
+            "personalities/profiles/depression.profile.md"
+            "personalities/profiles/stress.profile.md"
+            "personalities/profiles/cognitive-fatigue.profile.md"
         )
     fi
 fi

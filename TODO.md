@@ -216,27 +216,27 @@ eal                   (standalone)
 
 ### Sub-tasks
 
-- [ ] **8.1 — Define the `.profile.md` schema and template**
+- [x] **8.1 — Define the `.profile.md` schema and template**
       Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `extends` (list of base profile names whose rules are inherited), `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
 
   **Inheritance rule:** NeuroGraft merges rule sets in order — base profiles first, child profile last. Child rules take precedence on conflict. Multiple inheritance is supported (e.g. `extends: [low-load, mental-health]`). Circular extends are an error.
 
-- [ ] **8.2 — Create `profiles/` folder and `_TEMPLATE.profile.md`**
+- [x] **8.2 — Create `profiles/` folder and `_TEMPLATE.profile.md`**
 
-- [ ] **8.3 — Create seed profiles**
+- [x] **8.3 — Create seed profiles**
       Foundation profiles (no extends): `direct`, `structured`, `low-load`, `high-context`, `mental-health` (base only — not for direct use), `dyscalculia`, `screen-reader`, `eal`.
       Derived profiles: `dyslexia` (extends `direct`), `dyspraxia` (extends `low-load`), `anxiety` (extends `mental-health`), `depression` (extends `mental-health` + `low-load`), `stress` (extends `mental-health` + `low-load`), `cognitive-fatigue` (extends `low-load` + `mental-health`).
 
-- [ ] **8.4 — Update NeuroGraft persona resolution to check `profiles/`**
+- [x] **8.4 — Update NeuroGraft persona resolution to check `profiles/`**
       Resolution order extended: archetypes → guests → profiles → infer. A profile label resolves to a communication filter, not a character. The graft summary block shows `Profile` instead of `Persona` when a `.profile.md` is active.
 
-- [ ] **8.5 — Profiles compose with personas**
+- [x] **8.5 — Profiles compose with personas**
       A profile and a persona should be stackable: `Persona: pirate, Profile: direct` produces a pirate who is nonetheless unambiguous and literal. The profile's `neverDo` rules take precedence over persona voice where they conflict — clarity overrides character.
 
-- [ ] **8.6 — Update Persona Discovery to include profiles**
+- [x] **8.6 — Update Persona Discovery to include profiles**
       `list profiles` or `list personas` both surface available profiles, clearly labelled as accessibility profiles with their `accessibilityFocus` description.
 
-- [ ] **8.7 — Update installer to include profiles in `--include-personalities`**
+- [x] **8.7 — Update installer to include profiles in `--include-personalities`**
       The `profiles/` folder is included when `--include-personalities` / `-IncludePersonalities` is passed.
 
 ---

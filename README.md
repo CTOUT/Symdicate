@@ -287,6 +287,30 @@ To add a new persona, copy the relevant template:
 - Archetypes: [`.github/agents/personalities/archetypes/_TEMPLATE.archetype.md`](.github/agents/personalities/archetypes/_TEMPLATE.archetype.md)
 - Guests: [`.github/agents/personalities/guests/_TEMPLATE.guest.md`](.github/agents/personalities/guests/_TEMPLATE.guest.md)
 
+### Accessibility and Wellbeing Profiles
+
+Profiles are communication filters — they change how any agent communicates, not who it is. They are tools to help, not labels. Anyone can use any profile.
+
+| Profile | Who often finds it useful |
+| ------- | ------------------------- |
+| `direct` | Anyone who prefers explicit, unambiguous communication with no subtext or idioms |
+| `structured` | Anyone who navigates by scanning rather than reading linearly |
+| `low-load` | Anyone who finds information easier in smaller, clearly separated units |
+| `high-context` | Anyone who wants full reasoning, all caveats, nothing implied |
+| `dyslexia` | Extends `direct` — short sentences, consistent terms, bold over italics |
+| `dyspraxia` | Extends `low-load` — explicit steps, start points, working memory support |
+| `dyscalculia` | Quantities as words and analogies, all arithmetic shown explicitly |
+| `anxiety` | Calm framing, one clear path, reassurance at decision points |
+| `depression` | Shortest possible responses, one thing at a time, energy conservation |
+| `stress` | Most important thing first, everything else clearly optional |
+| `cognitive-fatigue` | Minimum viable responses, no memory demands, always offer to expand |
+| `screen-reader` | Structural accessibility — no layout-only formatting, meaningful link text |
+| `eal` | Internationally portable English — no idioms, plain grammar, no cultural assumptions |
+
+Profiles can be stacked with a persona: `Persona: pirate, Profile: direct` produces a pirate who is nonetheless unambiguous and literal. Profile rules take precedence over persona voice where they conflict.
+
+To add a new profile, copy [`.github/agents/personalities/profiles/_TEMPLATE.profile.md`](.github/agents/personalities/profiles/_TEMPLATE.profile.md).
+
 ---
 
 ## Repository Structure
@@ -297,6 +321,7 @@ To add a new persona, copy the relevant template:
     personalities/
       archetypes/           # Generalised persona files (.persona.md)
       guests/               # Specific character files (.guest.md)
+      profiles/             # Accessibility and wellbeing profiles (.profile.md)
     .cache/                 # Runtime agent profile cache — gitignored
     NeuroGraft.agent.md     # NeuroGraft agent definition
     profile.schema.json     # JSON Schema for cached cognitive profiles
