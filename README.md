@@ -52,19 +52,23 @@ Install Symdicate agents into VS Code in one command. Choose **user-level** (ava
 Agents are placed in your VS Code user prompts folder and work in every workspace immediately.
 
 **PowerShell** (Windows, or macOS/Linux with [pwsh](https://github.com/PowerShell/PowerShell#get-powershell)):
+
 ```powershell
 irm https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.ps1 | iex
 ```
 
 **Bash** (macOS / Linux):
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.sh | bash
 ```
 
 > **Security note:** The one-liners above run directly from `main`. For production use, pin to a release tag and verify the SHA-256 checksum published on the [releases page](https://github.com/CTOUT/Symdicate/releases/latest):
+>
 > ```powershell
 > .\install.ps1 -Ref v1.0.0
 > ```
+>
 > See [SECURITY.md](SECURITY.md) for full verification guidance.
 
 ### Repo-level install — for sharing with a team
@@ -75,6 +79,7 @@ Agents are placed in `.github/agents/` and committed with the project.
 # PowerShell
 .\install.ps1 -Target repo
 ```
+
 ```bash
 # Bash
 bash install.sh --target repo
@@ -87,27 +92,28 @@ By default only the agent files are installed. Add `--include-personalities` / `
 ```powershell
 .\install.ps1 -IncludePersonalities
 ```
+
 ```bash
 bash install.sh --include-personalities
 ```
 
 ### Other options
 
-| Option | PowerShell | Bash | Description |
-|--------|-----------|------|-------------|
-| Dry run | `-DryRun` | `--dry-run` | Show what would change without writing files |
-| Uninstall | `-Uninstall` | `--uninstall` | Remove installed Symdicate files |
-| Pin to release | `-Ref v1.0.0` | `--ref v1.0.0` | Install a specific tagged version |
+| Option         | PowerShell    | Bash           | Description                                  |
+| -------------- | ------------- | -------------- | -------------------------------------------- |
+| Dry run        | `-DryRun`     | `--dry-run`    | Show what would change without writing files |
+| Uninstall      | `-Uninstall`  | `--uninstall`  | Remove installed Symdicate files             |
+| Pin to release | `-Ref v1.0.0` | `--ref v1.0.0` | Install a specific tagged version            |
 
 ### Manual install
 
 Download `symdicate-agents.zip` from the [latest release](https://github.com/CTOUT/Symdicate/releases/latest) and extract it into:
 
-| Platform | User-level path |
-|----------|-----------------|
-| Windows | `%APPDATA%\Code\User\prompts\` |
-| macOS | `~/Library/Application Support/Code/User/prompts/` |
-| Linux | `~/.config/Code/User/prompts/` |
+| Platform | User-level path                                    |
+| -------- | -------------------------------------------------- |
+| Windows  | `%APPDATA%\Code\User\prompts\`                     |
+| macOS    | `~/Library/Application Support/Code/User/prompts/` |
+| Linux    | `~/.config/Code/User/prompts/`                     |
 
 Or drop the extracted `agents/` folder into your repo's `.github/` directory for repo-level install.
 

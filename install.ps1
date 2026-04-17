@@ -82,10 +82,10 @@ $ErrorActionPreference = 'Stop'
 function Log {
     param([string]$Message, [string]$Level = 'INFO')
     $colour = switch ($Level) {
-        'ERROR'   { 'Red' }
-        'WARN'    { 'Yellow' }
+        'ERROR' { 'Red' }
+        'WARN' { 'Yellow' }
         'SUCCESS' { 'Green' }
-        default   { 'Cyan' }
+        default { 'Cyan' }
     }
     Write-Host "[$(Get-Date -Format 's')][$Level] $Message" -ForegroundColor $colour
 }
@@ -144,7 +144,8 @@ function Install-RemoteFile {
             if (-not $DryRun) { Move-Item $tempFile $DestPath -Force }
             else { Remove-Item $tempFile -Force }
             return 'updated'
-        } catch {
+        }
+        catch {
             if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
             throw
         }
@@ -170,7 +171,8 @@ function Remove-InstalledFile {
 
 $installDest = if ($Target -eq 'user') {
     Get-UserPromptsDir
-} else {
+}
+else {
     Join-Path $RepoPath '.github\agents'
 }
 
@@ -183,8 +185,8 @@ Log "Ref     : $Ref"
 
 #region Build file manifest from GitHub API
 
-$baseApi  = "https://api.github.com/repos/CTOUT/Symdicate/contents/.github/agents"
-$rawBase  = "https://raw.githubusercontent.com/CTOUT/Symdicate/$Ref/.github/agents"
+$baseApi = "https://api.github.com/repos/CTOUT/Symdicate/contents/.github/agents"
+$rawBase = "https://raw.githubusercontent.com/CTOUT/Symdicate/$Ref/.github/agents"
 
 # Files to always install
 $agentFiles = @(
@@ -198,15 +200,16 @@ $personalityFiles = @()
 if ($IncludePersonalities) {
     try {
         $archetypes = Get-RemoteFileList "$baseApi/personalities/archetypes?ref=$Ref" |
-            Where-Object { $_.type -eq 'file' } |
-            ForEach-Object { "personalities/archetypes/$($_.name)" }
+        Where-Object { $_.type -eq 'file' } |
+        ForEach-Object { "personalities/archetypes/$($_.name)" }
 
         $guests = Get-RemoteFileList "$baseApi/personalities/guests?ref=$Ref" |
-            Where-Object { $_.type -eq 'file' } |
-            ForEach-Object { "personalities/guests/$($_.name)" }
+        Where-Object { $_.type -eq 'file' } |
+        ForEach-Object { "personalities/guests/$($_.name)" }
 
         $personalityFiles = $archetypes + $guests
-    } catch {
+    }
+    catch {
         Log "Could not fetch personality file list from GitHub API — skipping personalities" 'WARN'
     }
 }
@@ -232,19 +235,21 @@ foreach ($file in $allFiles) {
         $result = Remove-InstalledFile -FilePath $destPath
         Log "  $result  $destPath"
         $counts[$result]++
-    } else {
+    }
+    else {
         $rawUrl = "$rawBase/$($file.Replace('\','/'))"
         try {
             $result = Install-RemoteFile -RawUrl $rawUrl -DestPath $destPath
             $symbol = switch ($result) {
-                'added'     { '+' }
-                'updated'   { '~' }
+                'added' { '+' }
+                'updated' { '~' }
                 'unchanged' { '=' }
-                default     { '?' }
+                default { '?' }
             }
             Log "  [$symbol] $destPath  ($result)"
             $counts[$result]++
-        } catch {
+        }
+        catch {
             Log "  FAILED  $destPath  — $_" 'ERROR'
             $counts['skipped']++
         }
@@ -258,16 +263,19 @@ foreach ($file in $allFiles) {
 Write-Host ''
 if ($Uninstall) {
     Log "Uninstall complete — removed: $($counts['removed'])  not-found: $($counts['not-found'])" 'SUCCESS'
-} elseif ($DryRun) {
+}
+elseif ($DryRun) {
     Log "Dry run complete — would add/update files in: $installDest" 'SUCCESS'
-} else {
+}
+else {
     Log "Install complete — added: $($counts['added'])  updated: $($counts['updated'])  unchanged: $($counts['unchanged'])  failed: $($counts['skipped'])" 'SUCCESS'
 
     if ($counts['added'] -gt 0 -or $counts['updated'] -gt 0) {
         Write-Host ''
         if ($Target -eq 'user') {
             Log "Restart VS Code (or reload the window) for the new agents to appear in the agent picker." 'WARN'
-        } else {
+        }
+        else {
             Log "Agents installed to $installDest — open this repo in VS Code and they will be available immediately." 'WARN'
         }
     }

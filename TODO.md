@@ -92,7 +92,7 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 **Motivation:** Neurodiverse users — including those with autism, ADHD, dyslexia, sensory processing differences, and others — often find default AI agent communication styles difficult to parse. Responses may rely on implied context, idiomatic language, ambiguous hedging, dense unstructured prose, or social cues that require neurotypical inference. An accessibility profile removes these frictions without removing capability.
 
-**Key design distinction from archetypes:** A `pirate` archetype is an overlay — the agent *becomes* a pirate. An accessibility profile is a *filter* — the agent remains itself, but communicates through a lens optimised for a specific processing style. The persona is subordinate to clarity.
+**Key design distinction from archetypes:** A `pirate` archetype is an overlay — the agent _becomes_ a pirate. An accessibility profile is a _filter_ — the agent remains itself, but communicates through a lens optimised for a specific processing style. The persona is subordinate to clarity.
 
 ### New category: `profiles/`
 
@@ -217,27 +217,27 @@ eal                   (standalone)
 ### Sub-tasks
 
 - [ ] **8.1 — Define the `.profile.md` schema and template**
-  Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `extends` (list of base profile names whose rules are inherited), `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
-  
+      Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `extends` (list of base profile names whose rules are inherited), `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
+
   **Inheritance rule:** NeuroGraft merges rule sets in order — base profiles first, child profile last. Child rules take precedence on conflict. Multiple inheritance is supported (e.g. `extends: [low-load, mental-health]`). Circular extends are an error.
 
 - [ ] **8.2 — Create `profiles/` folder and `_TEMPLATE.profile.md`**
 
 - [ ] **8.3 — Create seed profiles**
-  Foundation profiles (no extends): `direct`, `structured`, `low-load`, `high-context`, `mental-health` (base only — not for direct use), `dyscalculia`, `screen-reader`, `eal`.
-  Derived profiles: `dyslexia` (extends `direct`), `dyspraxia` (extends `low-load`), `anxiety` (extends `mental-health`), `depression` (extends `mental-health` + `low-load`), `stress` (extends `mental-health` + `low-load`), `cognitive-fatigue` (extends `low-load` + `mental-health`).
+      Foundation profiles (no extends): `direct`, `structured`, `low-load`, `high-context`, `mental-health` (base only — not for direct use), `dyscalculia`, `screen-reader`, `eal`.
+      Derived profiles: `dyslexia` (extends `direct`), `dyspraxia` (extends `low-load`), `anxiety` (extends `mental-health`), `depression` (extends `mental-health` + `low-load`), `stress` (extends `mental-health` + `low-load`), `cognitive-fatigue` (extends `low-load` + `mental-health`).
 
 - [ ] **8.4 — Update NeuroGraft persona resolution to check `profiles/`**
-  Resolution order extended: archetypes → guests → profiles → infer. A profile label resolves to a communication filter, not a character. The graft summary block shows `Profile` instead of `Persona` when a `.profile.md` is active.
+      Resolution order extended: archetypes → guests → profiles → infer. A profile label resolves to a communication filter, not a character. The graft summary block shows `Profile` instead of `Persona` when a `.profile.md` is active.
 
 - [ ] **8.5 — Profiles compose with personas**
-  A profile and a persona should be stackable: `Persona: pirate, Profile: direct` produces a pirate who is nonetheless unambiguous and literal. The profile's `neverDo` rules take precedence over persona voice where they conflict — clarity overrides character.
+      A profile and a persona should be stackable: `Persona: pirate, Profile: direct` produces a pirate who is nonetheless unambiguous and literal. The profile's `neverDo` rules take precedence over persona voice where they conflict — clarity overrides character.
 
 - [ ] **8.6 — Update Persona Discovery to include profiles**
-  `list profiles` or `list personas` both surface available profiles, clearly labelled as accessibility profiles with their `accessibilityFocus` description.
+      `list profiles` or `list personas` both surface available profiles, clearly labelled as accessibility profiles with their `accessibilityFocus` description.
 
 - [ ] **8.7 — Update installer to include profiles in `--include-personalities`**
-  The `profiles/` folder is included when `--include-personalities` / `-IncludePersonalities` is passed.
+      The `profiles/` folder is included when `--include-personalities` / `-IncludePersonalities` is passed.
 
 ---
 
@@ -248,23 +248,23 @@ eal                   (standalone)
 ### Sub-tasks
 
 - [x] **5.1 — Create `install.ps1` (PowerShell — Windows / macOS / Linux)**
-  Cross-platform installer supporting:
+      Cross-platform installer supporting:
   - `-Target user` (default) — installs to VS Code user prompts folder (per-platform path detection including Insiders)
   - `-Target repo` — installs to `.github/agents/` in the specified or current repo
   - `-IncludePersonalities` — also installs archetype and guest persona files
   - `-Ref` — pin to a specific branch, tag, or commit
   - `-DryRun` — preview without writing files
   - `-Uninstall` — remove installed files
-  Fetches files directly from GitHub raw URLs; hash-compares before overwriting.
+    Fetches files directly from GitHub raw URLs; hash-compares before overwriting.
 
 - [x] **5.2 — Create `install.sh` (Bash — macOS / Linux)**
-  Equivalent bash installer with the same options (`--target`, `--ref`, `--include-personalities`, `--dry-run`, `--uninstall`). Detects VS Code, VS Code Insiders, and Cursor prompts paths. Falls back to a hardcoded persona file list if `jq` is not available.
+      Equivalent bash installer with the same options (`--target`, `--ref`, `--include-personalities`, `--dry-run`, `--uninstall`). Detects VS Code, VS Code Insiders, and Cursor prompts paths. Falls back to a hardcoded persona file list if `jq` is not available.
 
 - [x] **5.3 — Create GitHub Actions release workflow**
-  `.github/workflows/release.yml` — triggers on `v*.*.*` tag push. Builds `symdicate-agents.zip` (agents folder, excluding `.cache/`) and attaches it to a GitHub release. Release body auto-includes install one-liners pinned to the release tag.
+      `.github/workflows/release.yml` — triggers on `v*.*.*` tag push. Builds `symdicate-agents.zip` (agents folder, excluding `.cache/`) and attaches it to a GitHub release. Release body auto-includes install one-liners pinned to the release tag.
 
 - [x] **5.4 — Update README with installation section**
-  Full installation section added covering: user-level vs repo-level, PowerShell one-liner, bash one-liner, optional personality install, all flags table, and manual zip install paths for all platforms.
+      Full installation section added covering: user-level vs repo-level, PowerShell one-liner, bash one-liner, optional personality install, all flags table, and manual zip install paths for all platforms.
 
 ---
 
@@ -273,6 +273,7 @@ eal                   (standalone)
 **Goal:** NeuroGraft currently relies on conversation history to hold the active graft (Mode, Persona, target Agent). When a new chat session starts, that context is gone and the graft must be re-stated. This item implements session persistence so NeuroGraft can resume a graft automatically in a new conversation.
 
 **Root cause of the drift problem:** There are actually two distinct failure modes:
+
 1. **Within-session drift** — NeuroGraft forgets the persona mid-conversation even though the history is present. This is a compliance issue in the agent instructions, fixable without any storage mechanism.
 2. **Cross-session loss** — A new chat window starts with no context. The graft is completely gone. This requires a storage mechanism.
 
@@ -281,22 +282,22 @@ Both must be addressed.
 ### Sub-tasks
 
 - [x] **6.1 — Fix within-session drift (instruction hardening)**
-  `Session State` section added to `NeuroGraft.agent.md` defining: active session tracking within a conversation, silent inheritance of Mode/Persona/Agent on follow-up prompts, new-session override behaviour, session commands (`end session`, `current graft?`, `resume: <token>`), and the character-persistence rule. Two new never-do rules added: never drop the graft between turns, never ask the user to re-state values the active session already holds.
+      `Session State` section added to `NeuroGraft.agent.md` defining: active session tracking within a conversation, silent inheritance of Mode/Persona/Agent on follow-up prompts, new-session override behaviour, session commands (`end session`, `current graft?`, `resume: <token>`), and the character-persistence rule. Two new never-do rules added: never drop the graft between turns, never ask the user to re-state values the active session already holds.
 
 - [x] **6.2 — Define session file schema**
-  Session file schema defined inline in Agent Reading Protocol Step 4. Fields: `sessionId`, `startedAt`, `mode`, `persona`, `personaSource`, `targetAgent`, `agentProfileHash`. Written to `.github/agents/.cache/neurograft-session.json`.
+      Session file schema defined inline in Agent Reading Protocol Step 4. Fields: `sessionId`, `startedAt`, `mode`, `persona`, `personaSource`, `targetAgent`, `agentProfileHash`. Written to `.github/agents/.cache/neurograft-session.json`.
 
 - [x] **6.3 — Update Agent Reading Protocol: session check**
-  Step 0 added to Agent Reading Protocol. Checks for `neurograft-session.json` before anything else; resumes silently if no new parameters provided; detects agent file changes via `agentProfileHash` comparison and re-extracts if stale.
+      Step 0 added to Agent Reading Protocol. Checks for `neurograft-session.json` before anything else; resumes silently if no new parameters provided; detects agent file changes via `agentProfileHash` comparison and re-extracts if stale.
 
 - [x] **6.4 — Add resume token to every response (Option B fallback)**
-  Resume token appended after all grafted content, separated by `---`. Format: `↩ Resume: \`Mode:X | Persona:Y | Agent:Z\``. Works cross-machine, cross-session, in read-only environments.
+      Resume token appended after all grafted content, separated by `---`. Format: `↩ Resume: \`Mode:X | Persona:Y | Agent:Z\``. Works cross-machine, cross-session, in read-only environments.
 
 - [x] **6.5 — Add session commands**
-  Session commands defined in `Session State` section (6.1) and Step 0 handles session file writes. Commands: `end session` / `clear session` / `reset`, `current graft?`, `resume: <token>`.
+      Session commands defined in `Session State` section (6.1) and Step 0 handles session file writes. Commands: `end session` / `clear session` / `reset`, `current graft?`, `resume: <token>`.
 
 - [x] **6.6 — Surface session status in the output header**
-  `Session` line added to graft summary block with three states: `NEW`, `RESUMED (started <startedAt>)`, `NONE (no session file)`.
+      `Session` line added to graft summary block with three states: `NEW`, `RESUMED (started <startedAt>)`, `NONE (no session file)`.
 
 ---
 
