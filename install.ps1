@@ -78,6 +78,14 @@
 
 $ErrorActionPreference = 'Stop'
 
+# Validate -Ref to prevent path traversal or shell injection via crafted ref values
+if ($Ref -notmatch '^[a-zA-Z0-9._/\-]+$') {
+    throw "Invalid -Ref value '$Ref'. Use a branch name, tag (e.g. v1.0.0), or commit SHA."
+}
+
+# Enforce TLS 1.2/1.3 — prevents downgrade on older PowerShell 5.1 / Windows systems
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
+
 #region Helpers
 
 function Log {
@@ -134,20 +142,22 @@ function Install-RemoteFile {
 
     if (Test-Path $DestPath) {
         $existing = (Get-FileHash $DestPath -Algorithm SHA256).Hash
-        $tempFile = [System.IO.Path]::GetTempFileName()
+        $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
+        $tempFile = Join-Path $tempDir 'download'
+        New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
         try {
             Invoke-WebRequest -Uri $RawUrl -OutFile $tempFile -Headers @{ 'User-Agent' = 'Symdicate-Installer' }
             $incoming = (Get-FileHash $tempFile -Algorithm SHA256).Hash
             if ($existing -eq $incoming) {
-                Remove-Item $tempFile -Force
+                Remove-Item $tempDir -Recurse -Force
                 return 'unchanged'
             }
             if (-not $DryRun) { Move-Item $tempFile $DestPath -Force }
-            else { Remove-Item $tempFile -Force }
+            Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
             return 'updated'
         }
         catch {
-            if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
+            if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
             throw
         }
     }
@@ -213,6 +223,11 @@ if ($IncludePersonalities) {
         ForEach-Object { "personalities/profiles/$($_.name)" }
 
         $personalityFiles = $archetypes + $guests + $profiles
+
+        # Validate API-returned filenames — prevent path traversal via crafted API response
+        $personalityFiles = $personalityFiles | Where-Object {
+            $_ -match '^personalities/[a-zA-Z0-9_\-]+/[a-zA-Z0-9_.\-]+$'
+        }
     }
     catch {
         Log "Could not fetch personality file list from GitHub API — skipping personalities" 'WARN'

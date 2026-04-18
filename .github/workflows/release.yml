@@ -46,11 +46,15 @@ jobs:
         run: |
           cd dist
           sha256sum symdicate-agents.zip > checksums.sha256
+          # Also checksum the installer scripts so users can verify before running
+          sha256sum ../install.ps1 ../install.sh >> checksums.sha256
           echo "Checksums:"
           cat checksums.sha256
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        env:
+          TAG_REF: ${{ github.ref_name }}
         with:
           name: ${{ github.ref_name }}
           body: |
@@ -62,12 +66,12 @@ jobs:
 
             **PowerShell (Windows / macOS / Linux with pwsh):**
             ```powershell
-            irm https://raw.githubusercontent.com/CTOUT/Symdicate/${{ github.ref_name }}/install.ps1 | iex
+            irm https://raw.githubusercontent.com/CTOUT/Symdicate/${{ env.TAG_REF }}/install.ps1 | iex
             ```
 
             **Bash (macOS / Linux):**
             ```bash
-            curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/${{ github.ref_name }}/install.sh | bash
+            curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/${{ env.TAG_REF }}/install.sh | bash
             ```
 
             **Manual:** download `symdicate-agents.zip` below and extract to `.github/agents/` in your repo, or `%APPDATA%\Code\User\prompts\` on Windows / `~/Library/Application Support/Code/User/prompts/` on macOS / `~/.config/Code/User/prompts/` on Linux.

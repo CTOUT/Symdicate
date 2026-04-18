@@ -61,3 +61,22 @@ The one-liner install commands (`irm ... | iex`, `curl ... | bash`) execute code
    # Bash
    bash install.sh --ref v1.0.0
    ```
+
+The `checksums.sha256` file published on each release includes SHA-256 hashes for **both the installer scripts and the agent bundle zip**.
+To verify an installer script before running it:
+
+```bash
+# Download and inspect before running
+curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/v1.0.0/install.sh -o install.sh
+# Verify hash matches the value in checksums.sha256 on the releases page
+sha256sum install.sh
+# Then run
+bash install.sh
+```
+
+```powershell
+# PowerShell equivalent
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/CTOUT/Symdicate/v1.0.0/install.ps1 -OutFile install.ps1
+(Get-FileHash install.ps1 -Algorithm SHA256).Hash  # compare to releases page
+.\install.ps1
+```

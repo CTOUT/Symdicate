@@ -63,6 +63,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Validate REF — prevent path traversal or injection via crafted ref values
+if [[ ! "$REF" =~ ^[a-zA-Z0-9._/-]+$ ]]; then
+    err "Invalid --ref value '$REF'. Use a branch name, tag (e.g. v1.0.0), or commit SHA."
+    exit 1
+fi
+
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -145,6 +151,7 @@ if [[ $INCLUDE_PERSONALITIES -eq 1 ]]; then
                 -H "User-Agent: Symdicate-Installer" \
                 "${API_BASE}/${path}?ref=${REF}" \
               | jq -r '.[] | select(.type=="file") | .name' 2>/dev/null \
+              | grep -E '^[a-zA-Z0-9_.\-]+$' \
               | while read -r name; do echo "${path}/${name}"; done
         }
         while IFS= read -r f; do PERSONALITY_FILES+=("$f"); done < <(fetch_dir_files "personalities/archetypes")
@@ -219,23 +226,24 @@ install_file() {
     fi
 
     if [[ -f "$dest_path" ]]; then
-        local tmp_file
-        tmp_file="$(mktemp)"
+        local tmp_dir tmp_file
+        tmp_dir="$(mktemp -d)"
+        tmp_file="${tmp_dir}/download"
         if curl -fsSL -H "User-Agent: Symdicate-Installer" -o "$tmp_file" "$raw_url" 2>/dev/null; then
             local src_hash dst_hash
             src_hash="$(sha256sum "$tmp_file" 2>/dev/null || shasum -a 256 "$tmp_file" 2>/dev/null | awk '{print $1}')"
             dst_hash="$(sha256sum "$dest_path" 2>/dev/null || shasum -a 256 "$dest_path" 2>/dev/null | awk '{print $1}')"
             if [[ "$src_hash" == "$dst_hash" ]]; then
-                rm -f "$tmp_file"
+                rm -rf "$tmp_dir"
                 log "  [=] $dest_path  (unchanged)"
                 ((unchanged++)) || true  # arithmetic '0' exit code is not an error
             else
-                if [[ $DRY_RUN -eq 0 ]]; then mv "$tmp_file" "$dest_path"; else rm -f "$tmp_file"; fi
+                if [[ $DRY_RUN -eq 0 ]]; then mv "$tmp_file" "$dest_path" && rm -rf "$tmp_dir"; else rm -rf "$tmp_dir"; fi
                 log "  [~] $dest_path  (updated)"
                 ((updated++)) || true  # arithmetic '0' exit code is not an error
             fi
         else
-            rm -f "$tmp_file"
+            rm -rf "$tmp_dir"
             err "  FAILED  $raw_url"
             ((failed++)) || true  # arithmetic '0' exit code is not an error
         fi

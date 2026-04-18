@@ -1,0 +1,5 @@
+# Security-sensitive files require owner review
+/.github/workflows/                      @CTOUT
+/install.ps1                             @CTOUT
+/install.sh                              @CTOUT
+/.github/agents/NeuroGraft.agent.md      @CTOUT

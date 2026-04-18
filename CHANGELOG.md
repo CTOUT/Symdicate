@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **H1** — Prompt injection boundary added to NeuroGraft agent: pasted agent file content is now treated as user-supplied data only; instruction overrides and system directives within pasted content are discarded rather than executed
+- **H2** — API-returned filenames validated against an allowlist before use as filesystem paths in both installers, preventing path traversal via a crafted GitHub API response
+- **H3** — `-Ref` / `--ref` parameter validated against `^[a-zA-Z0-9._/-]+$` in both installers, preventing injection via crafted ref values
+- **M1** — TLS 1.2/1.3 explicitly enforced in `install.ps1` to prevent protocol downgrade on older PowerShell 5.1 / Windows systems
+- **M2** — Temp files in `install.sh` now created in a private `mktemp -d` directory instead of world-readable `/tmp`, preventing local file read/replace between download and hash verification
+- **M4** — Installer scripts (`install.ps1`, `install.sh`) now included in `checksums.sha256` published with each release; `SECURITY.md` updated with step-by-step script verification instructions
+- **M3** — `github.ref_name` in release workflow body now routed through `env:` variable consistent with the tag message step, eliminating direct expression interpolation in the release body
+- **M2b** — Temp files in `install.ps1` now created in a private `GetRandomFileName()` subdirectory, consistent with the `mktemp -d` fix applied to `install.sh`
+- **I2** — `.github/CODEOWNERS` added; changes to the workflow, installers, and NeuroGraft agent file require owner review
+
 ### Added
 
 #### Naming refinement
