@@ -1,6 +1,11 @@
 # Agent profile cache (generated at runtime, never commit)
 .github/agents/.cache/
 
+# Ignore externally installed or test agent files — only track agents maintained by this repo
+# (agents installed via vscode-copilot-sync, install.ps1, or manual testing are not committed)
+.github/agents/*.agent.md
+!.github/agents/NeuroGraft.agent.md
+
 # VS Code local settings — ignore the folder, allow shared config files
 .vscode/*
 !.vscode/extensions.json
