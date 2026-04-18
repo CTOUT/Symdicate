@@ -6,6 +6,9 @@
 .github/agents/*.agent.md
 !.github/agents/NeuroGraft.agent.md
 
+# vscode-copilot-sync generated files
+.github/.copilot-subscriptions.json
+
 # VS Code local settings — ignore the folder, allow shared config files
 .vscode/*
 !.vscode/extensions.json
