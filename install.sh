@@ -174,7 +174,7 @@ if [[ $INCLUDE_PERSONALITIES -eq 1 ]]; then
             "personalities/guests/wednesday-addams.guest.md"
             "personalities/profiles/_TEMPLATE.profile.md"
             "personalities/profiles/direct.profile.md"
-            "personalities/profiles/low-load.profile.md"
+            "personalities/profiles/spacious.profile.md"
             "personalities/profiles/mental-health.profile.md"
             "personalities/profiles/structured.profile.md"
             "personalities/profiles/high-context.profile.md"

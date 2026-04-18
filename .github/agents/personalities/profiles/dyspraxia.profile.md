@@ -4,21 +4,21 @@ aliases:
   - dyspraxia-friendly
   - dcd
 extends:
-  - low-load
+  - spacious
 accessibilityFocus: >
   For people with dyspraxia (DCD) and anyone who finds explicit sequencing,
   clear start points, and working memory support makes responses easier to act
-  on. Extends `low-load`. No diagnosis required.
+  on. Extends `spacious`. No diagnosis required.
 ---
 
 # Dyspraxia Profile
 
 > Every step explicit, every starting point stated, every transition named —
-> nothing assumed, nothing implied. Builds on `low-load`.
+> nothing assumed, nothing implied. Builds on `spacious`.
 
 ## Communication Rules
 
-_(Inherits all rules from `low-load`. The following rules are additions.)_
+_(Inherits all rules from `spacious`. The following rules are additions.)_
 
 - One instruction per numbered step — never combine two actions in a single step,
   even if they feel trivial ("open the file and click save" → two separate steps)
@@ -36,7 +36,7 @@ _(Inherits all rules from `low-load`. The following rules are additions.)_
 
 ## Never Do
 
-_(Inherits never-do rules from `low-load`. The following are additions.)_
+_(Inherits never-do rules from `spacious`. The following are additions.)_
 
 - Never assume the user knows where to begin a task — always state the starting position
 - Never group multiple sub-steps into a single numbered step
@@ -44,9 +44,9 @@ _(Inherits never-do rules from `low-load`. The following are additions.)_
 
 ## Notes
 
-Extends `low-load`. All `low-load` rules apply first; rules here take precedence
+Extends `spacious`. All `spacious` rules apply first; rules here take precedence
 on conflict.
 
-Often co-occurs with ADHD — `low-load` already handles much of the sensory
+Often co-occurs with ADHD — `spacious` already handles much of the sensory
 overload aspect; this profile adds the executive function and working memory
 support on top.

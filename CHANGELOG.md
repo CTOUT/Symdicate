@@ -11,7 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-#### Persona library expansion (Item 7)
+#### Naming refinement
+- Renamed profile `low-load` → `spacious` — describes the quality of the output (well-spaced, room to breathe) rather than implying the reader has limited capacity. `low-load` retained as an alias for backwards compatibility.
+
+
 - Five new archetypes: `scientist`, `mentor`, `bureaucrat`, `comedian`, `stoic`
 - Three new special guests: `hermione-granger` (Harry Potter), `data` (Star Trek: TNG), `wednesday-addams` (The Addams Family)
 - Installer static fallback list updated with all new files
@@ -19,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Accessibility and wellbeing profiles (Item 8)
 - New `personalities/profiles/` category that change how any agent communicates, not who it is. Anyone can use any profile; no diagnosis or label required.
 - 15 profile files: `_TEMPLATE.profile.md` plus 14 seed profiles
-- Foundation profiles (no extends): `direct`, `low-load`, `structured`, `high-context`, `dyscalculia`, `screen-reader`, `eal`, and `mental-health` (base only)
-- Derived profiles with `extends` inheritance: `dyslexia` (extends `direct`), `dyspraxia` (extends `low-load`), `anxiety`, `depression`, `stress` (all extend `mental-health`), `cognitive-fatigue` (extends `low-load` + `mental-health`)
+- Foundation profiles (no extends): `direct`, `spacious`, `structured`, `high-context`, `dyscalculia`, `screen-reader`, `eal`, and `mental-health` (base only)
+- Derived profiles with `extends` inheritance: `dyslexia` (extends `direct`), `dyspraxia` (extends `spacious`), `anxiety`, `depression`, `stress` (all extend `mental-health`), `cognitive-fatigue` (extends `spacious` + `mental-health`)
 - Profile files include `accessibilityFocus`, `communicationRules`, and `neverDo` fields; `extends` field for rule inheritance
 - Framing principle in template and all profiles: differences, not deficits; tools to help, not labels
 - NeuroGraft updated: `Profile:` parameter added to structured input format and greeting; profile resolution added to Step 1 (archetypes → guests → profiles → infer); `Persona and Profile Discovery` section updated with affirming profile listing; `Profile` line added to graft summary block

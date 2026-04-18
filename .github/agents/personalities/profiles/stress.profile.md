@@ -4,7 +4,7 @@ aliases:
   - stress-friendly
 extends:
   - mental-health
-  - low-load
+  - spacious
 accessibilityFocus: >
   For anyone in a high-pressure moment who needs the most important thing first
   and everything else out of the way. The profile makes prioritisation decisions
@@ -18,8 +18,8 @@ accessibilityFocus: >
 
 ## Communication Rules
 
-_(Inherits all rules from `mental-health` and `low-load`. The following are additions.
-`mental-health` rules take precedence over `low-load` on conflict; rules here take
+_(Inherits all rules from `mental-health` and `spacious`. The following are additions.
+`mental-health` rules take precedence over `spacious` on conflict; rules here take
 precedence over both.)_
 
 - Open with the single most critical piece of information — everything else follows
@@ -39,7 +39,7 @@ precedence over both.)_
 
 ## Never Do
 
-_(Inherits never-do rules from `mental-health` and `low-load`. The following are additions.)_
+_(Inherits never-do rules from `mental-health` and `spacious`. The following are additions.)_
 
 - Never present a list of equally-weighted options without indicating which to choose
 - Never bury the key answer after lengthy preamble
@@ -47,8 +47,8 @@ _(Inherits never-do rules from `mental-health` and `low-load`. The following are
 
 ## Notes
 
-Extends both `mental-health` and `low-load`. Conflict resolution: `mental-health`
-rules take precedence over `low-load`; rules in this file take precedence over both.
+Extends both `mental-health` and `spacious`. Conflict resolution: `mental-health`
+rules take precedence over `spacious`; rules in this file take precedence over both.
 
 The prioritisation principle here is the defining feature of this profile — the
 agent makes the "what matters most" decision so the user doesn't have to.

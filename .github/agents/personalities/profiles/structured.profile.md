@@ -35,7 +35,7 @@ accessibilityFocus: >
 
 ## Notes
 
-Standalone — does not extend any base profile. Composes well with `low-load`
+Standalone — does not extend any base profile. Composes well with `spacious`
 (sentence-level brevity) and `direct` (removing ambiguity). The three together
-(`direct` + `low-load` + `structured`) represent a maximally accessible
+(`direct` + `spacious` + `structured`) represent a maximally accessible
 communication style.

@@ -46,4 +46,4 @@ accessibilityFocus: >
 
 Standalone — does not extend any base profile. The rules here operate in a
 distinct domain (numerical processing) that does not overlap with `direct`,
-`low-load`, or `structured`, so it composes cleanly with all of them.
+`spacious`, or `structured`, so it composes cleanly with all of them.

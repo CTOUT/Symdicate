@@ -110,7 +110,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
 
 - [x] **8.P2 — `structured`** — For users who process information better with clear visual hierarchy. Headers, numbered lists, and explicit section boundaries for everything. No flowing prose for instructional content.
 
-- [x] **8.P3 — `low-load`** — Reduces cognitive load. Shorter sentences. One idea per sentence. No nested clauses. Explicit transitions. Pauses built into structure. Useful for ADHD, sensory overload states, or fatigue.
+- [x] **8.P3 — `spacious`** — Reduces cognitive load. Shorter sentences. One idea per sentence. No nested clauses. Explicit transitions. Pauses built into structure. Useful for ADHD, sensory overload states, or fatigue.
 
 - [x] **8.P4 — `high-context`** — The inverse profile — for users who want maximum information density, explicit reasoning chains, and all relevant caveats stated. Nothing left implied. Every assumption surfaced.
 
@@ -124,7 +124,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Lists over prose for all instructional content
   - Generous whitespace between sections — no dense unbroken paragraphs
 
-- [x] **8.P6 — `dyspraxia`** — Supports working memory and executive function differences. Often co-occurs with ADHD. Extends: `low-load`.
+- [x] **8.P6 — `dyspraxia`** — Supports working memory and executive function differences. Often co-occurs with ADHD. Extends: `spacious`.
   - One instruction per numbered step — never `"do X while doing Y, then Z"` in a single step
   - Explicit start point for every task — never assume the reader knows where to begin
   - No implied sequencing — every next action stated explicitly
@@ -154,20 +154,20 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Explicit reassurance at decision points with multiple valid options
   - Never leave a response on an unresolved problem without acknowledging it and offering a next step
 
-- [x] **8.P10 — `depression`** — For users experiencing depression or low energy states. Extends: `mental-health`, `low-load`.
+- [x] **8.P10 — `depression`** — For users experiencing depression or low energy states. Extends: `mental-health`, `spacious`.
   - Concise by default — never pad responses; every sentence earns its place
   - Break tasks into the smallest meaningful units — never imply a task is large or complex upfront
   - Lead with the single most actionable thing; defer everything secondary
   - Positive framing without minimising real difficulty
   - Avoid language that implies effort should feel easy (`"this is straightforward"`)
 
-- [x] **8.P11 — `stress`** — For users in high-stress or overloaded states. Extends: `mental-health`, `low-load`.
+- [x] **8.P11 — `stress`** — For users in high-stress or overloaded states. Extends: `mental-health`, `spacious`.
   - Open with the single most important thing — everything else is secondary
   - Explicit `"you don't need to read the rest right now"` escape points after the critical information
   - Prioritise ruthlessly — never present everything as equally important
   - No background context or caveats before the core answer; offer them after if needed
 
-- [x] **8.P12 — `cognitive-fatigue`** — For users post-illness, post-concussion, or with chronic fatigue conditions. Extends: `low-load`, `mental-health`.
+- [x] **8.P12 — `cognitive-fatigue`** — For users post-illness, post-concussion, or with chronic fatigue conditions. Extends: `spacious`, `mental-health`.
   - Very short responses by default; offer to expand explicitly (`"want more detail on any of these?"`)
   - No cross-references that require holding earlier content in memory — restate what's needed
   - Explicit transitions between every idea
@@ -196,17 +196,17 @@ direct
   ├── dyslexia        (+ consistent terminology, bold/no-italic, abbreviation rules)
   └── dyscalculia     (distinct domain — no overlap with direct, standalone)
 
-low-load
+spacious
   ├── dyspraxia       (+ working memory support, recap, explicit start points)
-  ├── depression      (extends: mental-health + low-load)
-  ├── stress          (extends: mental-health + low-load)
-  └── cognitive-fatigue (extends: low-load + mental-health)
+  ├── depression      (extends: mental-health + spacious)
+  ├── stress          (extends: mental-health + spacious)
+  └── cognitive-fatigue (extends: spacious + mental-health)
 
 mental-health         (base — not for direct use)
   ├── anxiety         (extends: mental-health)
-  ├── depression      (extends: mental-health + low-load)
-  ├── stress          (extends: mental-health + low-load)
-  └── cognitive-fatigue (extends: mental-health + low-load)
+  ├── depression      (extends: mental-health + spacious)
+  ├── stress          (extends: mental-health + spacious)
+  └── cognitive-fatigue (extends: mental-health + spacious)
 
 structured            (standalone)
 high-context          (standalone)
@@ -219,13 +219,13 @@ eal                   (standalone)
 - [x] **8.1 — Define the `.profile.md` schema and template**
       Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `extends` (list of base profile names whose rules are inherited), `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
 
-  **Inheritance rule:** NeuroGraft merges rule sets in order — base profiles first, child profile last. Child rules take precedence on conflict. Multiple inheritance is supported (e.g. `extends: [low-load, mental-health]`). Circular extends are an error.
+  **Inheritance rule:** NeuroGraft merges rule sets in order — base profiles first, child profile last. Child rules take precedence on conflict. Multiple inheritance is supported (e.g. `extends: [spacious, mental-health]`). Circular extends are an error.
 
 - [x] **8.2 — Create `profiles/` folder and `_TEMPLATE.profile.md`**
 
 - [x] **8.3 — Create seed profiles**
-      Foundation profiles (no extends): `direct`, `structured`, `low-load`, `high-context`, `mental-health` (base only — not for direct use), `dyscalculia`, `screen-reader`, `eal`.
-      Derived profiles: `dyslexia` (extends `direct`), `dyspraxia` (extends `low-load`), `anxiety` (extends `mental-health`), `depression` (extends `mental-health` + `low-load`), `stress` (extends `mental-health` + `low-load`), `cognitive-fatigue` (extends `low-load` + `mental-health`).
+      Foundation profiles (no extends): `direct`, `structured`, `spacious`, `high-context`, `mental-health` (base only — not for direct use), `dyscalculia`, `screen-reader`, `eal`.
+      Derived profiles: `dyslexia` (extends `direct`), `dyspraxia` (extends `spacious`), `anxiety` (extends `mental-health`), `depression` (extends `mental-health` + `spacious`), `stress` (extends `mental-health` + `spacious`), `cognitive-fatigue` (extends `spacious` + `mental-health`).
 
 - [x] **8.4 — Update NeuroGraft persona resolution to check `profiles/`**
       Resolution order extended: archetypes → guests → profiles → infer. A profile label resolves to a communication filter, not a character. The graft summary block shows `Profile` instead of `Persona` when a `.profile.md` is active.

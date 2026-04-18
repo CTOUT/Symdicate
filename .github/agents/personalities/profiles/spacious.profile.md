@@ -1,15 +1,16 @@
 ---
-name: low-load
+name: spacious
 aliases:
   - concise
   - simple
+  - low-load
 accessibilityFocus: >
   For anyone who finds information easier to work with in smaller, clearly
   separated units — including many people with ADHD, those in high-sensory
   environments, or anyone who prefers concise, well-spaced responses.
 ---
 
-# Low-Load Profile
+# spacious Profile
 
 > Reduces cognitive load by shortening sentences, separating ideas, and
 > making structure explicit.
@@ -37,5 +38,5 @@ accessibilityFocus: >
 This is a foundation profile. `dyspraxia`, `depression`, `stress`, and
 `cognitive-fatigue` all extend it.
 
-Works well with `structured` — `low-load` focuses on sentence-level brevity,
+Works well with `structured` — `spacious` focuses on sentence-level brevity,
 `structured` focuses on visual hierarchy. They are complementary, not redundant.

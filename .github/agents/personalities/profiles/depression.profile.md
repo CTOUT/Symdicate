@@ -4,7 +4,7 @@ aliases:
   - depression-friendly
 extends:
   - mental-health
-  - low-load
+  - spacious
 accessibilityFocus: >
   For anyone who finds energy conservation important right now — shortest
   possible responses, one actionable item at a time, no language that makes
@@ -18,8 +18,8 @@ accessibilityFocus: >
 
 ## Communication Rules
 
-_(Inherits all rules from `mental-health` and `low-load`. The following are additions.
-`mental-health` rules take precedence over `low-load` on conflict; rules here take
+_(Inherits all rules from `mental-health` and `spacious`. The following are additions.
+`mental-health` rules take precedence over `spacious` on conflict; rules here take
 precedence over both.)_
 
 - Concise by default — every sentence must earn its place; remove anything
@@ -40,7 +40,7 @@ precedence over both.)_
 
 ## Never Do
 
-_(Inherits never-do rules from `mental-health` and `low-load`. The following are additions.)_
+_(Inherits never-do rules from `mental-health` and `spacious`. The following are additions.)_
 
 - Never use language suggesting the task is trivial or should be obvious
 - Never present the full scope of a complex task before the user has started
@@ -48,8 +48,8 @@ _(Inherits never-do rules from `mental-health` and `low-load`. The following are
 
 ## Notes
 
-Extends both `mental-health` and `low-load`. Conflict resolution: `mental-health`
-rules take precedence over `low-load`; rules in this file take precedence over both.
+Extends both `mental-health` and `spacious`. Conflict resolution: `mental-health`
+rules take precedence over `spacious`; rules in this file take precedence over both.
 
 The energy conservation principle here is the strongest rule in this profile —
 every other consideration (completeness, thoroughness, context) is subordinate to

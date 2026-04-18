@@ -34,6 +34,6 @@ accessibilityFocus: >
 
 ## Notes
 
-Standalone — does not extend any base profile. The inverse of `low-load`:
-where `low-load` reduces quantity, `high-context` maximises completeness.
+Standalone — does not extend any base profile. The inverse of `spacious`:
+where `spacious` reduces quantity, `high-context` maximises completeness.
 Do not stack both — they conflict by design.

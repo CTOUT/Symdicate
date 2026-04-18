@@ -303,10 +303,10 @@ Profiles are communication filters — they change how any agent communicates, n
 | ------- | ------------------------- |
 | `direct` | Anyone who prefers explicit, unambiguous communication with no subtext or idioms |
 | `structured` | Anyone who navigates by scanning rather than reading linearly |
-| `low-load` | Anyone who finds information easier in smaller, clearly separated units |
+| `spacious` | Anyone who finds information easier in smaller, clearly separated units |
 | `high-context` | Anyone who wants full reasoning, all caveats, nothing implied |
 | `dyslexia` | Extends `direct` — short sentences, consistent terms, bold over italics |
-| `dyspraxia` | Extends `low-load` — explicit steps, start points, working memory support |
+| `dyspraxia` | Extends `spacious` — explicit steps, start points, working memory support |
 | `dyscalculia` | Quantities as words and analogies, all arithmetic shown explicitly |
 | `anxiety` | Calm framing, one clear path, reassurance at decision points |
 | `depression` | Shortest possible responses, one thing at a time, energy conservation |

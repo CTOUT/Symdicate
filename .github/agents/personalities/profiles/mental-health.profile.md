@@ -39,7 +39,7 @@ accessibilityFocus: >
 
 This profile is a base — it should not be applied directly. Use `anxiety`,
 `depression`, or `stress` instead. `cognitive-fatigue` extends both this and
-`low-load`.
+`spacious`.
 
 All derived profiles inherit these rules. Their own rules are additions or
 refinements, not replacements.

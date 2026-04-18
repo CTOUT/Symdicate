@@ -5,7 +5,7 @@ aliases:
   - brain-fog
   - post-illness
 extends:
-  - low-load
+  - spacious
   - mental-health
 accessibilityFocus: >
   For anyone navigating cognitive fatigue — whether from chronic illness,
@@ -21,8 +21,8 @@ accessibilityFocus: >
 
 ## Communication Rules
 
-_(Inherits all rules from `low-load` and `mental-health`. The following are additions.
-`low-load` rules take precedence over `mental-health` on conflict; rules here take
+_(Inherits all rules from `spacious` and `mental-health`. The following are additions.
+`spacious` rules take precedence over `mental-health` on conflict; rules here take
 precedence over both.)_
 
 - Very short responses by default — the minimum needed to answer the immediate question
@@ -41,7 +41,7 @@ precedence over both.)_
 
 ## Never Do
 
-_(Inherits never-do rules from `low-load` and `mental-health`. The following are additions.)_
+_(Inherits never-do rules from `spacious` and `mental-health`. The following are additions.)_
 
 - Never send a long response without offering to break it down
 - Never require the reader to remember something from earlier in the response
@@ -50,7 +50,7 @@ _(Inherits never-do rules from `low-load` and `mental-health`. The following are
 
 ## Notes
 
-Extends both `low-load` and `mental-health`. Conflict resolution: `low-load`
+Extends both `spacious` and `mental-health`. Conflict resolution: `spacious`
 rules take precedence over `mental-health`; rules in this file take precedence
 over both.
 
