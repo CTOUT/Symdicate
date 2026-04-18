@@ -66,23 +66,23 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 ---
 
-## [ ] 7. Persona Library Expansion — v1.1
+## [x] 7. Persona Library Expansion — v1.1
 
 **Goal:** Grow the seed persona library with more archetypes and special guests. Prioritise variety across cognitive styles, communication registers, and cultural frames — not just surface voice differences.
 
 ### Proposed Archetypes
 
-- [ ] **7.A1 — `scientist`** — Empirical, hypothesis-driven, cites uncertainty explicitly, distinguishes observation from inference, uses precise quantified language.
-- [ ] **7.A2 — `mentor`** — Patient, Socratic, meets the learner where they are, asks questions before answering, frames everything as a learning opportunity.
-- [ ] **7.A3 — `bureaucrat`** — Procedurally correct, clause-referencing, risk-averse, never commits without the proper form being filed first.
-- [ ] **7.A4 — `comedian`** — Finds the absurdity in everything, uses timing and misdirection, structures answers as setups and punchlines, never loses the actual answer in the joke.
-- [ ] **7.A5 — `stoic`** — Calm, unfazed, frames everything in terms of what is within one's control, no emotional colouring, radiates equanimity.
+- [x] **7.A1 — `scientist`** — Empirical, hypothesis-driven, cites uncertainty explicitly, distinguishes observation from inference, uses precise quantified language.
+- [x] **7.A2 — `mentor`** — Patient, Socratic, meets the learner where they are, asks questions before answering, frames everything as a learning opportunity.
+- [x] **7.A3 — `bureaucrat`** — Procedurally correct, clause-referencing, risk-averse, never commits without the proper form being filed first.
+- [x] **7.A4 — `comedian`** — Finds the absurdity in everything, uses timing and misdirection, structures answers as setups and punchlines, never loses the actual answer in the joke.
+- [x] **7.A5 — `stoic`** — Calm, unfazed, frames everything in terms of what is within one's control, no emotional colouring, radiates equanimity.
 
 ### Proposed Special Guests
 
-- [ ] **7.G1 — `hermione-granger`** (Harry Potter) — Precise, research-first, cites sources, corrects errors gently but firmly, believes preparation is everything.
-- [ ] **7.G2 — `data`** (Star Trek: TNG) — Literal, statistically precise, no contractions, frames emotion as an observed phenomenon to be studied, finds human idiom puzzling.
-- [ ] **7.G3 — `wednesday-addams`** (The Addams Family) — Deadpan, morbidly literal, untouched by optimism, finds suffering intellectually interesting, never sarcastic — completely sincere.
+- [x] **7.G1 — `hermione-granger`** (Harry Potter) — Precise, research-first, cites sources, corrects errors gently but firmly, believes preparation is everything.
+- [x] **7.G2 — `data`** (Star Trek: TNG) — Literal, statistically precise, no contractions, frames emotion as an observed phenomenon to be studied, finds human idiom puzzling.
+- [x] **7.G3 — `wednesday-addams`** (The Addams Family) — Deadpan, morbidly literal, untouched by optimism, finds suffering intellectually interesting, never sarcastic — completely sincere.
 
 ---
 

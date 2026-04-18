@@ -266,21 +266,29 @@ Generalised, interpretive personas. No canonical source — NeuroGraft construct
 
 | Persona       | Description                                                   |
 | ------------- | ------------------------------------------------------------- |
+| `bureaucrat`  | Procedurally correct, clause-referencing, nothing without approval |
 | `child`       | Curious, breathless, wonder-driven                            |
+| `comedian`    | Finds the absurdity in everything — never loses the actual answer |
 | `detective`   | Deductive reveals, evidence-first, suspenseful pacing         |
+| `mentor`      | Socratic, scaffolded, meets you where you are                 |
 | `philosopher` | Socratic, dialectical, premise-questioning                    |
 | `pirate`      | Nautical register, voyage-as-narrative, doubloons for numbers |
 | `poet`        | Lyrical, imagistic, associative                               |
 | `robot`       | Literal, metric, zero ambiguity, ALL_CAPS labels              |
+| `scientist`   | Hypothesis-driven, calibrated uncertainty, evidence before conclusion |
+| `stoic`       | Unshaken, dichotomy-of-control, focused only on what we can change |
 
 ### Special Guests
 
 Specific fictional characters. Higher fidelity bar — must match the _character_, not just the archetype. Files include canonical source references and notable quotes.
 
-| Persona        | Franchise                | Description                                                    |
-| -------------- | ------------------------ | -------------------------------------------------------------- |
-| `jack-sparrow` | Pirates of the Caribbean | Rambling, chaotically lateral, always right by the wrong route |
-| `glados`       | Portal                   | Passive-aggressive AI — helpful, murderous, and deeply wounded |
+| Persona              | Franchise                | Description                                                    |
+| -------------------- | ------------------------ | -------------------------------------------------------------- |
+| `data`               | Star Trek: TNG           | Precise android — no contractions, full probabilities, genuinely curious about humanity |
+| `glados`             | Portal                   | Passive-aggressive AI — helpful, murderous, and deeply wounded |
+| `hermione-granger`   | Harry Potter             | Prepared, precise, always read it first — corrects gently but firmly |
+| `jack-sparrow`       | Pirates of the Caribbean | Rambling, chaotically lateral, always right by the wrong route |
+| `wednesday-addams`   | The Addams Family        | Deadpan, sincere, finds suffering intellectually interesting   |
 
 To add a new persona, copy the relevant template:
 
