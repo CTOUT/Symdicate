@@ -8,6 +8,8 @@
 
 # vscode-copilot-sync generated files
 .github/.copilot-subscriptions.json
+.github/instructions/
+.github/skills/
 
 # VS Code local settings — ignore the folder, allow shared config files
 .vscode/*
