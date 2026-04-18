@@ -78,4 +78,6 @@ jobs:
           files: |
             dist/symdicate-agents.zip
             dist/checksums.sha256
+            install.ps1
+            install.sh
           fail_on_unmatched_files: true

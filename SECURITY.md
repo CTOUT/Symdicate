@@ -66,17 +66,19 @@ The `checksums.sha256` file published on each release includes SHA-256 hashes fo
 To verify an installer script before running it:
 
 ```bash
-# Download and inspect before running
-curl -fsSL https://raw.githubusercontent.com/CTOUT/Symdicate/v1.0.0/install.sh -o install.sh
-# Verify hash matches the value in checksums.sha256 on the releases page
-sha256sum install.sh
+# Download the installer and checksum file from the releases page
+curl -fsSL https://github.com/CTOUT/Symdicate/releases/download/v1.0.0/install.sh -o install.sh
+curl -fsSL https://github.com/CTOUT/Symdicate/releases/download/v1.0.0/checksums.sha256 -o checksums.sha256
+# Verify
+sha256sum --check --ignore-missing checksums.sha256
 # Then run
 bash install.sh
 ```
 
 ```powershell
 # PowerShell equivalent
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/CTOUT/Symdicate/v1.0.0/install.ps1 -OutFile install.ps1
-(Get-FileHash install.ps1 -Algorithm SHA256).Hash  # compare to releases page
+Invoke-WebRequest -Uri https://github.com/CTOUT/Symdicate/releases/download/v1.0.0/install.ps1 -OutFile install.ps1
+Invoke-WebRequest -Uri https://github.com/CTOUT/Symdicate/releases/download/v1.0.0/checksums.sha256 -OutFile checksums.sha256
+(Get-FileHash install.ps1 -Algorithm SHA256).Hash  # compare to the value in checksums.sha256
 .\install.ps1
 ```
