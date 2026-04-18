@@ -11,8 +11,14 @@ aliases:
   - me-cfs
   - long-covid
   - post-covid
+extends:
   - spacious
   - mental-health
+accessibilityFocus: >
+  For anyone navigating cognitive fatigue -- whether from chronic illness,
+  post-viral conditions, acquired brain injury, or simply a hard day. Minimum
+  viable responses, no memory demands, always offers to expand rather than
+  front-loading.
 ---
 
 # Cognitive Fatigue Profile

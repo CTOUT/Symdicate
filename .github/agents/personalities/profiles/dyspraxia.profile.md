@@ -4,7 +4,12 @@ aliases:
   - dyspraxia-friendly
   - dyspraxic
   - dcd
+extends:
   - spacious
+accessibilityFocus: >
+  For people with dyspraxia (DCD) and anyone who finds explicit sequencing,
+  clear start points, and working memory support makes responses easier to act on.
+  Extends `spacious`. No diagnosis required.
 ---
 
 # Dyspraxia Profile
