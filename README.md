@@ -223,6 +223,77 @@ Question: How do we migrate this monolith to microservices?
 @NeuroGraft Make @gem-documentation-writer explain this API as a poet.
 ```
 
+### Using profiles
+
+Profiles change how the agent communicates — not its voice or character. Add `Profile:` to any request:
+
+```text
+Profile: direct
+Agent: gem-reviewer
+Question: Is this authentication implementation secure?
+```
+
+```text
+Profile: spacious
+Agent: gem-debugger
+Question: Why is my build failing?
+```
+
+**Stack a profile with a persona** — the profile's rules take precedence over the persona's voice where they conflict. The pirate stays a pirate, but every step is numbered and every idiom is gone:
+
+```text
+Mode: B
+Persona: pirate
+Profile: direct
+Agent: gem-planner
+Question: How do we migrate this monolith to microservices?
+```
+
+**Use an alias** — NeuroGraft resolves it to the canonical profile silently. Any of these activate `spacious`:
+
+```text
+Profile: adhd
+Profile: too-much
+Profile: low-load
+```
+
+**Use a mental state alias** — NeuroGraft meets you where you are and activates the right profile:
+
+```text
+Profile: overwhelmed
+Profile: struggling
+Profile: foggy
+```
+
+The graft summary block always shows the canonical profile name, never the alias.
+
+### Discovery and session commands
+
+**List available personas:**
+
+```text
+@NeuroGraft list personas
+@NeuroGraft list profiles
+```
+
+**Check the active graft mid-conversation:**
+
+```text
+@NeuroGraft current graft?
+```
+
+**Resume a previous session** using the resume token appended to every response:
+
+```text
+@NeuroGraft resume: Mode:B | Persona:pirate | Agent:gem-planner
+```
+
+**End the active session:**
+
+```text
+@NeuroGraft end session
+```
+
 ### What NeuroGraft outputs
 
 Every response opens with a summary block showing what was applied:
