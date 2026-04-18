@@ -2,12 +2,8 @@
 name: dyslexia
 aliases:
   - dyslexia-friendly
-extends:
+  - dyslexic
   - direct
-accessibilityFocus: >
-  For dyslexic readers and anyone who finds these patterns work better for them —
-  short sentences, consistent terminology, bold anchors, and explicit structure.
-  Extends `direct`. No diagnosis required.
 ---
 
 # Dyslexia Profile

@@ -4,6 +4,9 @@ aliases:
   - english-as-additional-language
   - non-native
   - esl
+  - efl
+  - second-language
+  - foreign-language
 accessibilityFocus: >
   Designed for users whose first language is not English — removes idioms,
   culture-specific references, and complex grammatical structures that are

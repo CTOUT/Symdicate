@@ -4,6 +4,10 @@ aliases:
   - concise
   - simple
   - low-load
+  - adhd
+  - adhd-friendly
+  - too-much
+  - overwhelming
 accessibilityFocus: >
   For anyone who finds information easier to work with in smaller, clearly
   separated units — including many people with ADHD, those in high-sensory

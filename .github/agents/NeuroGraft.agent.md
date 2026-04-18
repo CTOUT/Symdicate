@@ -335,6 +335,7 @@ Resolution order:
 2. If not found, search for `<label>.guest.md` (pattern: `**/<label>.guest.md`).
 3. If not found, search for `<label>.profile.md` (pattern: `**/<label>.profile.md`).
 4. If found in any location, load the full definition from the file as the authoritative description.
+   **Important:** If the label matched an alias rather than the canonical `name`, always use the canonical `name` in all output — the graft summary block, discovery responses, and any reference in the response. The alias is a search key only; the positive canonical name is what the user sees back.
 5. If nothing is found, proceed to Step 2 and note the fallback in the graft summary block:
    > ⚠ No persona or profile file found for `"<label>"` — inferring from label.
 

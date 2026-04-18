@@ -3,6 +3,10 @@ name: direct
 aliases:
   - clear
   - explicit
+  - literal
+  - no-fluff
+  - plain
+  - blunt
 accessibilityFocus: >
   For anyone who prefers communication where every statement means exactly what
   it says — no subtext, no idioms, no implied meaning. Works well for autistic

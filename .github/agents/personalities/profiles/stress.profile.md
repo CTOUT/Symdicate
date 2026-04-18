@@ -2,6 +2,9 @@
 name: stress
 aliases:
   - stress-friendly
+  - overwhelmed
+  - overloaded
+  - frantic
 extends:
   - mental-health
   - spacious

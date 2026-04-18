@@ -2,6 +2,10 @@
 name: anxiety
 aliases:
   - anxiety-friendly
+  - reassuring
+  - calm
+  - worried
+  - nervous
 extends:
   - mental-health
 accessibilityFocus: >

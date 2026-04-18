@@ -4,6 +4,9 @@ aliases:
   - detailed
   - exhaustive
   - thorough
+  - comprehensive
+  - verbose
+  - in-depth
 accessibilityFocus: >
   For anyone who wants to fully understand something before acting — analytical
   thinkers, detail-oriented users, or anyone who finds implicit assumptions and

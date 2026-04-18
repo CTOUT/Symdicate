@@ -4,6 +4,9 @@ aliases:
   - a11y
   - accessible
   - low-vision
+  - visual-impairment
+  - assistive-tech
+  - blind
 accessibilityFocus: >
   For screen reader users, low-vision users, and anyone accessing content
   through non-visual interfaces — ensures all information is in the text itself,

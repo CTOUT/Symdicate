@@ -3,6 +3,7 @@ name: dyscalculia
 aliases:
   - no-numbers
   - number-friendly
+  - dyscalculic
 accessibilityFocus: >
   For anyone who finds bare numbers harder to process than words or analogies —
   including people with dyscalculia, and anyone who simply prefers quantities

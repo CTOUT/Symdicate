@@ -2,6 +2,10 @@
 name: depression
 aliases:
   - depression-friendly
+  - struggling
+  - no-energy
+  - burnt-out
+  - burnout
 extends:
   - mental-health
   - spacious

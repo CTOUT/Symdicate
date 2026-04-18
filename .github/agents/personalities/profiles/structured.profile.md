@@ -3,6 +3,8 @@ name: structured
 aliases:
   - organised
   - hierarchical
+  - formatted
+  - outline
 accessibilityFocus: >
   For anyone who navigates responses by scanning rather than reading linearly —
   including many people with ADHD or dyslexia, and anyone who simply prefers
