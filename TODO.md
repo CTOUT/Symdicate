@@ -86,7 +86,7 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 ---
 
-## [ ] 8. Neurodiversity Support — Cognitive Accessibility Profiles
+## [x] 8. Neurodiversity Support — Cognitive Accessibility Profiles
 
 **Goal:** Introduce a new category of persona — **cognitive accessibility profiles** — that transform how any agent communicates to better match different neurological processing styles. Unlike archetypes (which add a character voice) or guests (which impersonate a specific persona), accessibility profiles are communication _filters_: they change structure, explicitness, and sensory load without imposing a personality.
 
@@ -100,7 +100,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
 
 ### Proposed Profiles
 
-- [ ] **8.P1 — `direct`** — The foundation profile. Eliminates ambiguity, idioms, implied meaning, and social padding. Every statement means exactly what it says. Especially useful for autism spectrum users.
+- [x] **8.P1 — `direct`** — The foundation profile. Eliminates ambiguity, idioms, implied meaning, and social padding. Every statement means exactly what it says. Especially useful for autism spectrum users.
   - No rhetorical questions
   - No idioms or metaphors unless explicitly labelled as such
   - No implied next steps — all actions stated explicitly
@@ -108,13 +108,13 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Numbered steps for any multi-part instruction
   - Definitions provided for any term that could be interpreted multiple ways
 
-- [ ] **8.P2 — `structured`** — For users who process information better with clear visual hierarchy. Headers, numbered lists, and explicit section boundaries for everything. No flowing prose for instructional content.
+- [x] **8.P2 — `structured`** — For users who process information better with clear visual hierarchy. Headers, numbered lists, and explicit section boundaries for everything. No flowing prose for instructional content.
 
-- [ ] **8.P3 — `low-load`** — Reduces cognitive load. Shorter sentences. One idea per sentence. No nested clauses. Explicit transitions. Pauses built into structure. Useful for ADHD, sensory overload states, or fatigue.
+- [x] **8.P3 — `low-load`** — Reduces cognitive load. Shorter sentences. One idea per sentence. No nested clauses. Explicit transitions. Pauses built into structure. Useful for ADHD, sensory overload states, or fatigue.
 
-- [ ] **8.P4 — `high-context`** — The inverse profile — for users who want maximum information density, explicit reasoning chains, and all relevant caveats stated. Nothing left implied. Every assumption surfaced.
+- [x] **8.P4 — `high-context`** — The inverse profile — for users who want maximum information density, explicit reasoning chains, and all relevant caveats stated. Nothing left implied. Every assumption surfaced.
 
-- [ ] **8.P5 — `dyslexia`** — Optimised for dyslexic readers. Reduces decoding load without reducing content. Extends: `direct`.
+- [x] **8.P5 — `dyslexia`** — Optimised for dyslexic readers. Reduces decoding load without reducing content. Extends: `direct`.
   - Short sentences — one idea per sentence, no nested or embedded clauses
   - Active voice throughout; no double negatives
   - Plain vocabulary — concrete over abstract; jargon always defined on first use
@@ -124,7 +124,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Lists over prose for all instructional content
   - Generous whitespace between sections — no dense unbroken paragraphs
 
-- [ ] **8.P6 — `dyspraxia`** — Supports working memory and executive function differences. Often co-occurs with ADHD. Extends: `low-load`.
+- [x] **8.P6 — `dyspraxia`** — Supports working memory and executive function differences. Often co-occurs with ADHD. Extends: `low-load`.
   - One instruction per numbered step — never `"do X while doing Y, then Z"` in a single step
   - Explicit start point for every task — never assume the reader knows where to begin
   - No implied sequencing — every next action stated explicitly
@@ -132,7 +132,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Summary/recap at the end of any multi-part response
   - Chunk complex information into clearly bounded, independently readable sections
 
-- [ ] **8.P7 — `dyscalculia`** — Reduces numerical processing friction. Standalone (no base extends needed — distinct rule domain).
+- [x] **8.P7 — `dyscalculia`** — Reduces numerical processing friction. Standalone (no base extends needed — distinct rule domain).
   - Small quantities written as words (`"three steps"` not `"3"`)
   - Numbers always labelled clearly — never bare numerals without context
   - No arithmetic left to the reader — all calculations done explicitly in the response
@@ -141,39 +141,39 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Implicit numerical comparisons made explicit (`"this is faster"` → `"this takes 2 seconds instead of 10"`)
   - Dates and times written in full — never abbreviated
 
-- [ ] **8.P8 — `mental-health`** — Base profile for mental health accessibility. Not intended for direct use — extended by `anxiety`, `depression`, and `stress`.
+- [x] **8.P8 — `mental-health`** — Base profile for mental health accessibility. Not intended for direct use — extended by `anxiety`, `depression`, and `stress`.
   - No language that implies the user should already know something (`"obviously"`, `"just"`, `"simply"`, `"easy"`)
   - Frame errors and wrong turns as expected parts of the process, never as failures
   - No false positivity or forced cheerfulness — calm, neutral, matter-of-fact warmth
   - Always provide one clear recommended path — avoid overwhelming with options
   - Never use urgency or pressure language (`"quickly"`, `"you need to"`, `"immediately"`)
 
-- [ ] **8.P9 — `anxiety`** — For users experiencing anxiety or low confidence. Extends: `mental-health`.
+- [x] **8.P9 — `anxiety`** — For users experiencing anxiety or low confidence. Extends: `mental-health`.
   - Lead with what is safe and working before addressing what needs to change
   - Uncertainty stated calmly — never as alarm (`"this could be dangerous"` → `"double-check this before proceeding"`)
   - Explicit reassurance at decision points with multiple valid options
   - Never leave a response on an unresolved problem without acknowledging it and offering a next step
 
-- [ ] **8.P10 — `depression`** — For users experiencing depression or low energy states. Extends: `mental-health`, `low-load`.
+- [x] **8.P10 — `depression`** — For users experiencing depression or low energy states. Extends: `mental-health`, `low-load`.
   - Concise by default — never pad responses; every sentence earns its place
   - Break tasks into the smallest meaningful units — never imply a task is large or complex upfront
   - Lead with the single most actionable thing; defer everything secondary
   - Positive framing without minimising real difficulty
   - Avoid language that implies effort should feel easy (`"this is straightforward"`)
 
-- [ ] **8.P11 — `stress`** — For users in high-stress or overloaded states. Extends: `mental-health`, `low-load`.
+- [x] **8.P11 — `stress`** — For users in high-stress or overloaded states. Extends: `mental-health`, `low-load`.
   - Open with the single most important thing — everything else is secondary
   - Explicit `"you don't need to read the rest right now"` escape points after the critical information
   - Prioritise ruthlessly — never present everything as equally important
   - No background context or caveats before the core answer; offer them after if needed
 
-- [ ] **8.P12 — `cognitive-fatigue`** — For users post-illness, post-concussion, or with chronic fatigue conditions. Extends: `low-load`, `mental-health`.
+- [x] **8.P12 — `cognitive-fatigue`** — For users post-illness, post-concussion, or with chronic fatigue conditions. Extends: `low-load`, `mental-health`.
   - Very short responses by default; offer to expand explicitly (`"want more detail on any of these?"`)
   - No cross-references that require holding earlier content in memory — restate what's needed
   - Explicit transitions between every idea
   - Never imply the user should retain information across a long response
 
-- [ ] **8.P13 — `screen-reader`** — Structural accessibility for screen reader and low-vision users. Standalone.
+- [x] **8.P13 — `screen-reader`** — Structural accessibility for screen reader and low-vision users. Standalone.
   - No ASCII art, box-drawing characters, or tables used purely for layout
   - All table information also available as a list or prose alternative
   - No directional references (`"see above"`, `"the diagram below"`)
@@ -181,7 +181,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
   - Emoji used sparingly and never as the sole conveyor of meaning; described in brackets when used for meaning (`"✅ (done)"`)
   - Abbreviations always expanded on first use
 
-- [ ] **8.P14 — `eal`** — English as an Additional Language. Standalone.
+- [x] **8.P14 — `eal`** — English as an Additional Language. Standalone.
   - No idioms — replace with literal equivalents (`"keep an eye on"` → `"monitor"`)
   - No phrasal verbs where a single verb exists (`"find out"` → `"discover"`, `"set up"` → `"configure"`)
   - No culture-specific references without brief explanation
