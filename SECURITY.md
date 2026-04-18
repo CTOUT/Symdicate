@@ -4,16 +4,16 @@
 
 Symdicate follows [Semantic Versioning](https://semver.org/). Security fixes are applied to the `main` branch and released as new versions. There are no separate maintenance branches at this time.
 
-| Version               | Supported |
-| --------------------- | --------- |
-| `main` (latest)       | ✅        |
-| Older tagged releases | ❌        |
+| Version               | Supported          |
+| --------------------- | ------------------ |
+| `main` (latest)       | Yes                |
+| Older tagged releases | No                 |
 
 ## Reporting a Vulnerability
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-To report a vulnerability, email: **security@ctout.dev** (or open a [GitHub Security Advisory](https://github.com/CTOUT/Symdicate/security/advisories/new) directly).
+To report a vulnerability, email **[security@ctout.dev](mailto:security@ctout.dev)** or open a [GitHub Security Advisory](https://github.com/CTOUT/Symdicate/security/advisories/new) directly.
 
 Include in your report:
 
@@ -51,10 +51,12 @@ The one-liner install commands (`irm ... | iex`, `curl ... | bash`) execute code
 1. Download the script first and inspect it
 2. Check the SHA-256 of the downloaded file against the checksums published on the [releases page](https://github.com/CTOUT/Symdicate/releases/latest)
 3. Pin to a specific release tag rather than `main` for reproducible installs:
+
    ```powershell
    # PowerShell
    .\install.ps1 -Ref v1.0.0
    ```
+
    ```bash
    # Bash
    bash install.sh --ref v1.0.0

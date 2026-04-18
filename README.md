@@ -14,7 +14,7 @@ NeuroGraft reads a target agent's instruction profile and grafts a persona onto 
 
 **Input format:**
 
-```
+```text
 Mode: <A | B | C | D>
 Persona: <description or short label>
 Agent: <name of the target agent>
@@ -137,7 +137,7 @@ Invoke NeuroGraft with a mode, persona, target agent, and question. All fields e
 
 **Structured format:**
 
-```
+```text
 Mode: B
 Persona: pirate
 Agent: gem-debugger
@@ -146,11 +146,11 @@ Question: Why is my API returning 500 errors intermittently?
 
 **Natural language:**
 
-```
+```text
 Make @gem-debugger answer as a pirate: why is my API returning 500 errors intermittently?
 ```
 
-```
+```text
 Graft a detective persona onto @gem-reviewer using mode C and ask: is this authentication implementation secure?
 ```
 
@@ -167,7 +167,7 @@ Graft a detective persona onto @gem-reviewer using mode C and ask: is this authe
 
 **Use a built-in archetype** — just name it:
 
-```
+```text
 Persona: detective
 Persona: philosopher
 Persona: robot
@@ -175,14 +175,14 @@ Persona: robot
 
 **Use a special guest** — just name them:
 
-```
+```text
 Persona: glados
 Persona: jack-sparrow
 ```
 
 **Use a rich description** — NeuroGraft will construct the full profile from it:
 
-```
+```text
 Persona: a exhausted senior developer who has seen everything go wrong before and is mildly surprised this hasn't broken yet
 ```
 
@@ -192,7 +192,7 @@ Persona: a exhausted senior developer who has seen everything go wrong before an
 
 **Debug session with GLaDOS (Mode D):**
 
-```
+```text
 Mode: D
 Persona: glados
 Agent: gem-debugger
@@ -201,7 +201,7 @@ Question: My tests were passing yesterday and now they all fail. What happened?
 
 **Code review as a Victorian philosopher (Mode C):**
 
-```
+```text
 Mode: C
 Persona: a Victorian-era natural philosopher who finds software architecture morally instructive
 Agent: gem-reviewer
@@ -210,7 +210,7 @@ Question: Review this authentication module for security issues.
 
 **Planning with a pirate (Mode B):**
 
-```
+```text
 Mode: B
 Persona: pirate
 Agent: gem-planner
@@ -219,7 +219,7 @@ Question: How do we migrate this monolith to microservices?
 
 **Quick — omit mode and let it default to B:**
 
-```
+```text
 @NeuroGraft Make @gem-documentation-writer explain this API as a poet.
 ```
 
@@ -227,7 +227,7 @@ Question: How do we migrate this monolith to microservices?
 
 Every response opens with a summary block showing what was applied:
 
-```
+```text
 ┌─ NeuroGraft: Transformation Active ────────────────────────────┐
   Mode          : D
   Persona       : glados
@@ -244,7 +244,7 @@ Then the full response in the grafted voice follows.
 
 Copy the appropriate template, fill in the dimensions, and drop it in the right folder — NeuroGraft picks it up automatically:
 
-```
+```text
 # For a generalised archetype (e.g. "cowboy", "surfer", "accountant"):
 .github/agents/personalities/archetypes/cowboy.persona.md
 
@@ -264,31 +264,31 @@ Personas are stored as individual markdown files with YAML frontmatter. Two cate
 
 Generalised, interpretive personas. No canonical source — NeuroGraft constructs a composite from the file's dimensions.
 
-| Persona       | Description                                                   |
-| ------------- | ------------------------------------------------------------- |
-| `bureaucrat`  | Procedurally correct, clause-referencing, nothing without approval |
-| `child`       | Curious, breathless, wonder-driven                            |
-| `comedian`    | Finds the absurdity in everything — never loses the actual answer |
-| `detective`   | Deductive reveals, evidence-first, suspenseful pacing         |
-| `mentor`      | Socratic, scaffolded, meets you where you are                 |
-| `philosopher` | Socratic, dialectical, premise-questioning                    |
-| `pirate`      | Nautical register, voyage-as-narrative, doubloons for numbers |
-| `poet`        | Lyrical, imagistic, associative                               |
-| `robot`       | Literal, metric, zero ambiguity, ALL_CAPS labels              |
-| `scientist`   | Hypothesis-driven, calibrated uncertainty, evidence before conclusion |
-| `stoic`       | Unshaken, dichotomy-of-control, focused only on what we can change |
+| Persona       | Description                                                                       |
+| ------------- | --------------------------------------------------------------------------------- |
+| `bureaucrat`  | Procedurally correct, clause-referencing, nothing without approval                |
+| `child`       | Curious, breathless, wonder-driven                                                |
+| `comedian`    | Finds the absurdity in everything — never loses the actual answer                   |
+| `detective`   | Deductive reveals, evidence-first, suspenseful pacing                             |
+| `mentor`      | Socratic, scaffolded, meets you where you are                                     |
+| `philosopher` | Socratic, dialectical, premise-questioning                                        |
+| `pirate`      | Nautical register, voyage-as-narrative, doubloons for numbers                     |
+| `poet`        | Lyrical, imagistic, associative                                                   |
+| `robot`       | Literal, metric, zero ambiguity, ALL_CAPS labels                                  |
+| `scientist`   | Hypothesis-driven, calibrated uncertainty, evidence before conclusion             |
+| `stoic`       | Unshaken, dichotomy-of-control, focused only on what we can change                |
 
 ### Special Guests
 
 Specific fictional characters. Higher fidelity bar — must match the _character_, not just the archetype. Files include canonical source references and notable quotes.
 
-| Persona              | Franchise                | Description                                                    |
-| -------------------- | ------------------------ | -------------------------------------------------------------- |
+| Persona              | Franchise                | Description                                                                          |
+| -------------------- | ------------------------ | ------------------------------------------------------------------------------------ |
 | `data`               | Star Trek: TNG           | Precise android — no contractions, full probabilities, genuinely curious about humanity |
-| `glados`             | Portal                   | Passive-aggressive AI — helpful, murderous, and deeply wounded |
-| `hermione-granger`   | Harry Potter             | Prepared, precise, always read it first — corrects gently but firmly |
-| `jack-sparrow`       | Pirates of the Caribbean | Rambling, chaotically lateral, always right by the wrong route |
-| `wednesday-addams`   | The Addams Family        | Deadpan, sincere, finds suffering intellectually interesting   |
+| `glados`             | Portal                   | Passive-aggressive AI — helpful, murderous, and deeply wounded                         |
+| `hermione-granger`   | Harry Potter             | Prepared, precise, always read it first — corrects gently but firmly                   |
+| `jack-sparrow`       | Pirates of the Caribbean | Rambling, chaotically lateral, always right by the wrong route                       |
+| `wednesday-addams`   | The Addams Family        | Deadpan, sincere, finds suffering intellectually interesting                          |
 
 To add a new persona, copy the relevant template:
 
@@ -323,7 +323,7 @@ To add a new profile, copy [`.github/agents/personalities/profiles/_TEMPLATE.pro
 
 ## Repository Structure
 
-```
+```text
 .github/
   agents/
     personalities/

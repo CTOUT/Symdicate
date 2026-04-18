@@ -9,6 +9,7 @@ Thanks for your interest in contributing. This document covers the development w
 Before every commit, run through this list:
 
 ### Agent changes (`NeuroGraft.agent.md`, persona files, schema files)
+
 - [ ] Instructions are clear, unambiguous, and internally consistent
 - [ ] New tools added to the frontmatter only if actually used in the instructions
 - [ ] No hardcoded paths — use `**/*` glob patterns for workspace searches
@@ -16,6 +17,7 @@ Before every commit, run through this list:
 - [ ] `README.md` updated if the change affects user-facing behaviour or the repo structure
 
 ### Installer changes (`install.ps1`, `install.sh`)
+
 - [ ] Both installers kept functionally equivalent where possible
 - [ ] `install.sh` uses SHA-256 comparison (not `diff -q`)
 - [ ] Any new `Invoke-RestMethod` calls include `-TimeoutSec 30`
@@ -23,6 +25,7 @@ Before every commit, run through this list:
 - [ ] `CHANGELOG.md` updated
 
 ### Persona files (`.persona.md`, `.guest.md`)
+
 - [ ] All five dimensions populated (voice, reasoning style, reference frame, format preferences, behavioural tells)
 - [ ] Guest files include `franchise`, `canonicalSource`, and `contentNote` fields
 - [ ] Real-person guests: `contentNote` explicitly prohibits fabricating opinions or private facts
@@ -30,6 +33,7 @@ Before every commit, run through this list:
 - [ ] `README.md` persona table updated if adding a new seed persona
 
 ### Profile files (`.profile.md`)
+
 - [ ] `accessibilityFocus` framed positively — who finds it useful, not what is wrong with them
 - [ ] No deficit language, no gatekeeping by diagnosis — "anyone can use any profile"
 - [ ] `communicationRules` are concrete and prescriptive — each rule describes a specific change
@@ -39,6 +43,7 @@ Before every commit, run through this list:
 - [ ] `README.md` profiles table updated if adding a new profile
 
 ### Repository / docs changes
+
 - [ ] `README.md` Repository Structure section reflects any new/removed files
 - [ ] `CHANGELOG.md` updated
 - [ ] `TODO.md` updated if a tracked item is completed or a new one is added
@@ -80,6 +85,7 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add entries und
 ## Adding a Persona
 
 **Accessibility/Wellbeing Profile** (communication filter, no canonical source):
+
 1. Copy `.github/agents/personalities/profiles/_TEMPLATE.profile.md`
 2. Name it `<label>.profile.md` and fill in all fields
 3. Frame `accessibilityFocus` positively — who finds it useful, not what condition they have
@@ -87,11 +93,13 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add entries und
 5. Add to the README profiles table
 
 **Archetype** (generalised, no canonical source):
+
 1. Copy `.github/agents/personalities/archetypes/_TEMPLATE.archetype.md`
 2. Name it `<label>.persona.md` and fill in all five dimensions
 3. Add to the README archetypes table
 
 **Special Guest** (specific fictional character):
+
 1. Copy `.github/agents/personalities/guests/_TEMPLATE.guest.md`
 2. Name it `<character-name>.guest.md` and fill in all fields including `franchise`, `canonicalSource`, and `contentNote`
 3. Add to the README special guests table
@@ -101,6 +109,7 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add entries und
 ## Adding an Agent to Symdicate
 
 Each agent needs:
+
 - A `.agent.md` file under `.github/agents/` with YAML frontmatter (`name`, `description`, `tools`) and markdown instructions
 - An entry in `README.md`
 - An entry in `CHANGELOG.md`

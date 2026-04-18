@@ -8,7 +8,7 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 **Goal:** Avoid re-analysing an `agent.md` file on every invocation. If the file content has not changed since the last read, load the cached cognitive identity instead of re-extracting it with tokens.
 
-### Sub-tasks
+### Sub-tasks (Item 1)
 
 - [x] **1.1 — Define cache key strategy**
       The cache key is the **SHA-256 hex digest** of the full raw content of the source `.agent.md` file, stored in the `sourceHash` field of the cache entry. Content hashing is preferred over modification timestamps, which are unreliable across git checkouts and different execution environments. Schema formalised in `.github/agents/profile.schema.json`.
@@ -34,7 +34,7 @@ Tracked expansion items for the NeuroGraft persona transformer.
 
 **Goal:** Move the inline persona examples out of `NeuroGraft.agent.md` and into a dedicated `personalities/` subfolder. Each personality becomes a standalone, reusable `.persona.md` file that any agent in the Symdicate framework can reference.
 
-### Sub-tasks
+### Sub-tasks (Item 2)
 
 - [x] **2.1 — Create the personalities folder**
       `.github/agents/personalities/` created and populated.
@@ -191,7 +191,7 @@ Accessibility profiles live in a new subfolder: `.github/agents/personalities/pr
 
 ### Profile Inheritance Tree
 
-```
+```text
 direct
   ├── dyslexia        (+ consistent terminology, bold/no-italic, abbreviation rules)
   └── dyscalculia     (distinct domain — no overlap with direct, standalone)
@@ -214,7 +214,7 @@ screen-reader         (standalone — structural, not cognitive)
 eal                   (standalone)
 ```
 
-### Sub-tasks
+### Sub-tasks (Item 8)
 
 - [x] **8.1 — Define the `.profile.md` schema and template**
       Distinct from `.persona.md` — frontmatter fields: `name`, `aliases`, `extends` (list of base profile names whose rules are inherited), `accessibilityFocus` (freetext description of target neurological context), `communicationRules` (explicit list), `neverDo` (absolute prohibitions). No personality dimensions section.
@@ -245,7 +245,7 @@ eal                   (standalone)
 
 **Goal:** Allow users to install Symdicate agents without cloning the entire repo. Provide platform-appropriate one-liners for Windows, macOS, and Linux, plus a downloadable zip artifact for manual installs.
 
-### Sub-tasks
+### Sub-tasks (Item 5)
 
 - [x] **5.1 — Create `install.ps1` (PowerShell — Windows / macOS / Linux)**
       Cross-platform installer supporting:
@@ -279,7 +279,7 @@ eal                   (standalone)
 
 Both must be addressed.
 
-### Sub-tasks
+### Sub-tasks (Item 6)
 
 - [x] **6.1 — Fix within-session drift (instruction hardening)**
       `Session State` section added to `NeuroGraft.agent.md` defining: active session tracking within a conversation, silent inheritance of Mode/Persona/Agent on follow-up prompts, new-session override behaviour, session commands (`end session`, `current graft?`, `resume: <token>`), and the character-persistence rule. Two new never-do rules added: never drop the graft between turns, never ask the user to re-state values the active session already holds.
@@ -339,8 +339,9 @@ Both must be addressed.
 - [ ] **3.2 — Implement conflict detection and resolution logic** (resolves 3.Q2)
 - [ ] **3.3 — Extend Agent Reading Protocol** to support reading and merging multiple agents in a single pass
 - [ ] **3.4 — Extend cache schema** to support composite cache keys for chimera profiles (resolves 3.Q5)
-- [ ] **3.5 — Update graft summary block** to list all source agents and the field-to-agent mapping:
-  ```
+- [ ] **3.5 — Update graft summary block** to list all source agents and the field-to-agent mapping:\
+
+  ```text
   ║  Mode         : C                                              ║
   ║  Chimera      : YES                                           ║
   ║  reasoning    : @ThinkingBeastMode                            ║
@@ -348,6 +349,7 @@ Both must be addressed.
   ║  style        : @gem-documentation-writer                     ║
   ║  Persona      : detective                                     ║
   ```
+
 - [ ] **3.6 — Add chimera discovery** — NeuroGraft can list the available agents and their cognitive identity fields so the user can make informed composition choices
 
 ---
@@ -359,7 +361,7 @@ Both must be addressed.
 - `personalities/archetypes/` — generalised, interpretive personas (pirate, robot, detective). No single canonical source. NeuroGraft constructs a composite from the dimensions in the file. "Correct" means internally consistent and recognisable as the _type_.
 - `personalities/guests/` — specific fictional or public characters (Jack Sparrow, GLaDOS, Sherlock Holmes). Canonical source material exists. NeuroGraft must match the _character_, not just the archetype. Fidelity bar is higher.
 
-### Sub-tasks
+### Sub-tasks (Item 4)
 
 - [x] **4.1 — Move existing persona files into `archetypes/`**
       All six seed files moved to `personalities/archetypes/`. `_TEMPLATE.persona.md` renamed to `_TEMPLATE.archetype.md`.
