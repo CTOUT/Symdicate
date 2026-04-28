@@ -438,3 +438,35 @@ In progress / planned:
 ## Ecosystem
 
 Symdicate is built on top of GitHub Copilot's agent customisation framework. If you're exploring what's possible in that space, the community-maintained [**🤖 Awesome GitHub Copilot**](https://github.com/github/awesome-copilot) repository is the place to start — a curated collection of agents, instructions, skills, hooks, agentic workflows, and plugins contributed by 300+ developers. Browse the full catalogue at [awesome-copilot.github.com](https://awesome-copilot.github.com/).
+
+---
+
+## FAQ
+
+**What is a Symdicate agent?**
+A Symdicate agent is a GitHub Copilot chat agent with a structured cognitive identity — a defined purpose, reasoning style, toolset, and communication rules — that makes its behaviour predictable and composable with other agents.
+
+**How is Symdicate different from a `.github/copilot-instructions.md` file?**
+Instructions files apply a single set of rules to every Copilot interaction. Symdicate agents are discrete, named, selectable units with their own identity. You invoke a specific agent for a specific task, and multiple agents can be layered or fused using NeuroGraft.
+
+**Do I need a paid GitHub Copilot plan?**
+You need a GitHub Copilot subscription (Individual, Business, or Enterprise) that includes Copilot Chat. The agent features used by Symdicate are available on all paid tiers.
+
+**What is NeuroGraft?**
+NeuroGraft is Symdicate's meta-agent. It overlays a persona — from a light voice change (Mode A) to complete cognitive transformation (Mode D) — onto any existing Copilot agent without replacing its underlying capabilities.
+
+**Can I use Symdicate agents with agents from other repos?**
+Yes. NeuroGraft resolves agent names against your current workspace first, then against the `github/awesome-copilot` community catalogue — so any publicly available agent works as a NeuroGraft target without copying files.
+
+**Does Symdicate work on macOS and Linux?**
+Yes. The PowerShell installer (`install.ps1`) runs on all platforms via `pwsh`, and the Bash installer (`install.sh`) covers macOS and Linux natively.
+
+---
+
+## Related Projects
+
+| Project | Description |
+| --- | --- |
+| [ReFrame](https://github.com/CTOUT/ReFrame) | GitHub Copilot agent for PC game configuration optimisation — detects hardware and recommends targeted performance improvements |
+| [vscode-copilot-sync](https://github.com/CTOUT/vscode-copilot-sync) | PowerShell toolkit to sync and manage Copilot agents, instructions, and skills from the awesome-copilot community catalogue |
+| [awesome-copilot](https://github.com/github/awesome-copilot) | Community catalogue of Copilot agents, instructions, skills, hooks, and workflows — Symdicate agents are available here |

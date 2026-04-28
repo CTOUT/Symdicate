@@ -1,0 +1,17 @@
+# Symdicate
+
+> Composable multi-agent framework for GitHub Copilot — persona grafting, cognitive identity caching, and agent fusion.
+
+Symdicate is an open-source collection of GitHub Copilot agents (MIT licence) with structured
+cognitive identities. NeuroGraft, the meta-agent, overlays personas onto any Copilot agent at
+one of four cognitive levels without replacing its underlying capabilities.
+
+## Key pages
+
+- README: https://github.com/CTOUT/Symdicate/blob/main/README.md
+- Changelog: https://github.com/CTOUT/Symdicate/blob/main/CHANGELOG.md
+- Contributing: https://github.com/CTOUT/Symdicate/blob/main/CONTRIBUTING.md
+
+## Attribution
+
+If citing this project, please reference: CTOUT/Symdicate on GitHub (https://github.com/CTOUT/Symdicate)
