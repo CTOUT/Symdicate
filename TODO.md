@@ -380,3 +380,190 @@ Both must be addressed.
 
 - [x] **4.6 — Add real-person safeguard to NeuroGraft**
       Rule added to _What You Must Never Do_: fabricating opinions, statements, or private facts about real individuals is prohibited even in-character. `contentNote` field on guest files is an absolute constraint that overrides user instruction.
+
+---
+
+## [ ] 9. Token Budget Management
+
+**Goal:** Minimise token consumption across every NeuroGraft invocation through intelligent caching extension, lazy section loading, parallelised tool reads, and a prompt compression protocol for near-limit scenarios. The existing agent profile cache (Item 1) handles the most expensive case — full cognitive identity re-extraction — but persona files, profile files, and multi-tool read sequences remain unoptimised.
+
+**Design principle:** Token savings must never degrade output quality. Every optimisation must be transparent (surfaced in the graft summary block when relevant) and must fall back silently to the full unoptimised path if a shortcut fails.
+
+### Sub-tasks (Item 9)
+
+- [ ] **9.1 — Extend cache coverage to persona and profile files**
+      The existing `*.profile.json` agent cache (Item 1) is keyed on the agent file hash. Apply the same pattern to `*.persona.md` (archetypes, guests) and `*.profile.md` (accessibility profiles): on first load, extract the resolved rule set and write a companion `.cache/<label>.persona.json` or `.cache/<label>.profile.json`. On subsequent loads, hash-compare and return the cached rule set if unchanged. Particularly valuable for derived profiles that require inheritance chain resolution at every load.
+
+- [ ] **9.2 — Lazy section loading by graft mode**
+      Not all graft modes require the full cognitive identity. Define a per-mode field manifest:
+  - **Mode A (Surface Graft):** `communicationStyle` only — no `reasoningStyle`, `toolset`, or `behaviouralRules` needed.
+  - **Mode B (Voice Graft):** `communicationStyle` + `purpose`.
+  - **Mode C (Cognitive Graft):** `communicationStyle` + `reasoningStyle` + `purpose`.
+  - **Mode D (Full Symbiote Graft):** all fields.
+  NeuroGraft reads only the sections required for the active mode. The Agent Reading Protocol is updated to gate field extraction behind the mode manifest. Fields not loaded are recorded as `skipped (mode A–C)` in cache metadata.
+
+- [ ] **9.3 — Parallelised tool reads**
+      Currently, NeuroGraft executes tool reads sequentially: (1) check session file, (2) check agent cache, (3) read agent file, (4) read persona file. Steps 1 and 2 have no dependency on each other; steps 3 and 4 have no dependency on each other once the file paths are known. Define a batched read protocol in the Agent Reading Protocol: issue concurrent tool calls where dependency allows, coalesce results before proceeding. Reduces total tool round-trips per cold-start invocation.
+
+- [ ] **9.4 — Prompt compression protocol**
+      When the active context is approaching the model's context window limit, NeuroGraft applies a defined compression sequence rather than truncating arbitrarily:
+      1. Drop resume token (re-generatable on demand).
+      2. Collapse persona rule set to a compact summary (`active profile: direct — omit idioms, state all steps explicitly`).
+      3. Drop cached agent profile fields not required by the active mode (see 9.2).
+      4. Reduce graft summary block to one line.
+      5. Emit `⚠ Context compressed — full persona detail omitted to stay within limit.` in the response header.
+      Compression is never applied silently without the warning line.
+
+- [ ] **9.5 — Token usage diagnostic in graft summary block**
+      Add an optional `Token budget` line to the graft summary block, disabled by default, enabled by user command `diagnostics on`. When enabled, surfaces: cache hits (profile, persona, session), fields loaded vs skipped, and whether compression was applied. Example:
+      ```
+      ║  Token budget  : cache HIT (profile+persona) | fields: 2/5 | no compression  ║
+      ```
+
+---
+
+## [ ] 10. Hydra — Cross-Model Consensus Agent
+
+**Goal:** A dedicated Symdicate agent that actively reaches out to multiple AI tools — GitHub Copilot, Claude, Gemini, or any other VS Code-accessible model — and produces a structured consensus verdict. Like the mythological Hydra that grows a new head for every one cut, Hydra's analysis becomes richer as more model participants are available. Hydra does not answer questions itself; it reasons about the quality, consistency, and confidence of answers that other models have already produced. The user gets a meta-level view: where the models agree, where they diverge, and which position is better supported.
+
+**Why a separate agent from NeuroGraft:** Hydra's cognitive identity is fundamentally different — it is an evaluator, not a transformer. It needs explicit extension invocation permissions that are inappropriate to add to NeuroGraft's toolset. Its input format, reasoning style, and output structure have nothing in common with a persona graft. Coupling them would violate the single-responsibility principle that defines each Symdicate agent.
+
+**Extension invocation model:** VS Code supports invoking other language model participants (e.g. `@claude`, `@gemini`) within the same chat session via the Language Model API. Hydra requests the `lm` tool permission to issue secondary queries directly where the extension API permits, rather than requiring the user to manually paste responses. A manual paste fallback is always available for tools not accessible via the API.
+
+### Design Questions to Resolve Before Implementation
+
+- [ ] **10.Q1 — Invocation method for secondary models**
+      VS Code's Language Model API (`vscode.lm.selectChatModels`) allows selecting and querying registered model providers. Claude and Gemini VS Code extensions expose their models as `ChatModelProvider` entries. Hydra should attempt auto-invocation via `lm` tool; if the target extension is not installed or the model is unavailable, fall back to the manual paste protocol. Confirm which extensions currently register models this way and what their model IDs are.
+
+- [ ] **10.Q2 — Input schema for manual paste fallback**
+      When auto-invocation is unavailable, the user runs the same question in a second tool and pastes the response into Hydra's input. Define a clean structured format that makes it unambiguous which response came from which model, and which was primary (Copilot). Proposed:
+      ```
+      Question: <original question>
+      ---
+      [Model A: GitHub Copilot]
+      <paste response>
+      ---
+      [Model B: Claude]
+      <paste response>
+      ```
+
+- [ ] **10.Q3 — Analysis dimensions**
+      What Hydra analyses across the responses. Proposed dimensions:
+      - **Factual agreement** — where both models assert the same thing
+      - **Factual divergence** — where claims conflict; Hydra surfaces the conflict without fabricating a resolution
+      - **Reasoning path** — do the models reach the same conclusion via different reasoning? Is one path more rigorous?
+      - **Confidence signals** — hedging language, caveats, explicit uncertainty; does one model express more appropriate uncertainty than the other?
+      - **Omission asymmetry** — what did one model address that the other did not?
+      - **Recommended position** — Hydra's synthesis: which answer or which parts of each answer are best supported
+
+- [ ] **10.Q4 — Verdict format**
+      Hydra's output must be structured and scannable. The user asked a question; they want a clear verdict, not a wall of analysis. Proposed format:
+      ```
+      ┌─ Hydra Verdict ──────────────────────────────────────┐
+      │  Question     : <question>                            │
+      │  Models       : GitHub Copilot · Claude               │
+      │  Agreement    : HIGH / PARTIAL / LOW                  │
+      │  Recommended  : [Model A] / [Model B] / Synthesis     │
+      └───────────────────────────────────────────────────────┘
+
+      ### Where they agree
+      ### Where they diverge
+      ### Omissions
+      ### Hydra's recommended position
+      ```
+
+- [ ] **10.Q5 — Composability with NeuroGraft**
+      A user may want Hydra's verdict delivered through a persona (e.g. a `scientist` archetype for maximum rigour framing). Define whether Hydra can be targeted by NeuroGraft as a valid `Agent:` value, and whether that produces useful results or introduces noise into the verdict.
+
+### Sub-tasks (once design questions are resolved)
+
+- [ ] **10.1 — Define Hydra's cognitive identity**
+      Purpose, reasoning style (`comparative`, `evidence-first`, `non-partisan`), toolset, behavioural rules, and communication style. Hydra never takes a side based on preference — only on evidence quality and reasoning rigour. Behavioural rules must prohibit fabricating consensus where genuine divergence exists.
+
+- [ ] **10.2 — Create `Hydra.agent.md`**
+      Full agent file in `.github/agents/`. Toolset includes `lm` for model invocation. Input format covers both auto-invocation and manual paste paths. Greeting/session banner distinct from NeuroGraft.
+
+- [ ] **10.3 — Implement auto-invocation protocol** (resolves 10.Q1)
+      Hydra checks for available secondary model providers via `lm` tool. Generates and issues the same question to the secondary model. Surfaces model IDs used in the verdict header. Falls back to paste protocol with a `⚠ Auto-invocation unavailable — please paste [Model B] response` prompt if no secondary provider is found.
+
+- [ ] **10.4 — Define and document manual paste fallback format** (resolves 10.Q2)
+      Paste protocol documented in the agent file and in a `docs/hydra-workflow.md` reference page. Include examples for two-model and three-model comparisons.
+
+- [ ] **10.5 — Implement analysis dimensions and verdict format** (resolves 10.Q3, 10.Q4)
+      Hydra's reasoning protocol: read all responses, extract claims with source attribution, compare claims pairwise, classify agreements/divergences/omissions, synthesise recommended position. Verdict block produced as defined in 10.Q4.
+
+- [ ] **10.6 — Add NeuroGraft composability** (resolves 10.Q5)
+      Test and document Hydra as a valid NeuroGraft `Agent:` target. If composability produces degraded verdicts, add a guard rule to NeuroGraft (`never apply persona grafting to Hydra's verdict block — analysis must remain neutral`) and document the limitation.
+
+- [ ] **10.7 — Add Hydra to installer**
+      `install.ps1` and `install.sh` updated to include `Hydra.agent.md` in the default agent list.
+
+- [ ] **10.8 — Update README**
+      Hydra section added to the README agent catalogue, covering: purpose, use case, input format, auto-invocation vs paste fallback, and composability note.
+
+---
+
+## [ ] 11. Cerberus — Single-Response Validation Agent
+
+**Goal:** A zero-dependency Symdicate agent for users who do not have Claude, Gemini, or other secondary AI extensions installed — or who want to validate responses from any source, not just rival AI tools. Cerberus accepts a single response — from a first AI tool, documentation, a Stack Overflow answer, a colleague's suggestion, or any other origin — and applies a structured three-head analysis to surface gaps, inconsistencies, and risks. Like the mythological three-headed guardian that stands between the living and the underworld, Cerberus checks the answer from three independent angles before letting it through.
+
+Unlike Hydra, Cerberus never invokes external models and requires no special tool permissions. It reasons entirely about the content provided to it.
+
+**The three heads:**
+- **Head 1 — Completeness:** Did the response actually address the full question? What dimensions were not answered?
+- **Head 2 — Consistency:** Are claims internally consistent? Do any contradict each other or well-established practice?
+- **Head 3 — Risk:** What could go wrong if the user acts on this response as-is? What assumptions are unstated, what caveats are missing, what shortcuts are dangerous?
+
+**Key distinction from Hydra:** Hydra compares *multiple responses against each other*. Cerberus interrogates *a single response against itself and the question*. They are complementary — Cerberus is the right tool when you have one answer and want confidence; Hydra is the right tool when you have two answers and want resolution.
+
+### Design Questions to Resolve Before Implementation
+
+- [ ] **11.Q1 — Scope of source types**
+      Cerberus is designed to validate any source, not just AI responses. Define whether the analysis dimensions differ by source type (e.g. a documentation excerpt is assessed for accuracy differently than an AI-generated code snippet), or whether the three-head framework is universal and source-agnostic. Source-agnostic is simpler and more flexible; source-typed is more precise. Proposed: source-agnostic framework with an optional `Source: <type>` hint that lets Cerberus tailor confidence framing (e.g. for `Source: documentation` Cerberus would note version/date staleness as a risk).
+
+- [ ] **11.Q2 — Confidence scoring**
+      Hydra expresses consensus as `HIGH / PARTIAL / LOW`. Define an equivalent signal for Cerberus's single-response verdict. Proposed: a `Confidence` rating (`HIGH / MODERATE / LOW / INSUFFICIENT`) derived from: completeness score, internal consistency, and severity of identified risks. This gives the user a single scannable signal before they read the detail.
+
+- [ ] **11.Q3 — Output format**
+      Cerberus's verdict block should mirror Hydra's structure for consistency, adapted for single-source input. Proposed:
+      ```
+      ┌─ Cerberus Verdict ───────────────────────────────────────┐
+      │  Question     : <question>                                │
+      │  Source       : <model / doc / other>                     │
+      │  Confidence   : HIGH / MODERATE / LOW / INSUFFICIENT      │
+      └────────────────────────────────────────────────────────────┘
+
+      ### Head 1 — Completeness
+      ### Head 2 — Consistency
+      ### Head 3 — Risk
+      ### Cerberus's verdict
+      ```
+
+- [ ] **11.Q4 — Escalation path to Hydra**
+      If Cerberus identifies a low-confidence verdict, it should offer a clear escalation prompt: `⚠ Confidence is LOW — consider running this question through Hydra with a second model for a cross-check.` Define the conditions under which this escalation prompt fires and ensure it is non-intrusive on high-confidence verdicts.
+
+- [ ] **11.Q5 — Composability with NeuroGraft**
+      Same question as Hydra's 10.Q5. Cerberus performing validation through a `scientist` or `sceptic` persona may be genuinely useful. Evaluate whether the three-head framework survives persona layering or whether the persona must be restricted to framing/presentation only (not analysis logic).
+
+### Sub-tasks (once design questions are resolved)
+
+- [ ] **11.1 — Define Cerberus's cognitive identity**
+      Purpose, reasoning style (`interrogative`, `sceptical-but-fair`, `evidence-anchored`), toolset (no `lm` required), behavioural rules, and communication style. Cerberus never invents problems — every risk it surfaces must be grounded in the submitted response. Behavioural rules must prohibit inventing flaws for responses that are sound.
+
+- [ ] **11.2 — Create `Cerberus.agent.md`**
+      Full agent file in `.github/agents/`. No `lm` toolset entry. Input format accepts a single question + response block. Greeting/session banner distinct from NeuroGraft and Hydra.
+
+- [ ] **11.3 — Implement three-head analysis protocol** (resolves 11.Q1, 11.Q2)
+      Cerberus's reasoning protocol: parse the submitted response against the question; run Head 1 (completeness gap analysis), Head 2 (internal consistency check), Head 3 (risk surface scan); compute confidence rating; produce verdict block. Optional `Source:` hint adjusts risk framing (see 11.Q1).
+
+- [ ] **11.4 — Implement verdict format and escalation** (resolves 11.Q3, 11.Q4)
+      Verdict block produced as defined in 11.Q3. Escalation-to-Hydra prompt fires when `Confidence: LOW` or `Confidence: INSUFFICIENT`. Escalation is a single line, not a section — it does not dominate the verdict.
+
+- [ ] **11.5 — Add NeuroGraft composability** (resolves 11.Q5)
+      Test and document Cerberus as a valid NeuroGraft `Agent:` target. If composability produces degraded analysis, add a guard rule to NeuroGraft (`persona grafting applies to framing and presentation only — never override Cerberus's three-head analysis logic`) and document the limitation.
+
+- [ ] **11.6 — Add Cerberus to installer**
+      `install.ps1` and `install.sh` updated to include `Cerberus.agent.md` in the default agent list.
+
+- [ ] **11.7 — Update README**
+      Cerberus section added to the README agent catalogue, covering: purpose, use case, three-head framework, distinction from Hydra, and escalation path.
