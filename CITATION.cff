@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: Symdicate
+message: "If you use or reference Symdicate, please cite it as below."
+type: software
+authors:
+  - family-names: Tout
+    given-names: Chris
+    alias: CTOUT
+repository-code: https://github.com/CTOUT/Symdicate
+url: https://github.com/CTOUT/Symdicate
+abstract: >
+  A composable multi-agent framework for GitHub Copilot built around agents with
+  structured cognitive identities. NeuroGraft, the meta-agent, overlays personas
+  onto any Copilot agent at one of four cognitive levels without replacing its
+  underlying capabilities.
+keywords:
+  - github-copilot
+  - multi-agent
+  - ai-agents
+  - persona
+  - prompt-engineering
+  - vscode
+license: MIT
