@@ -335,31 +335,31 @@ Personas are stored as individual markdown files with YAML frontmatter. Two cate
 
 Generalised, interpretive personas. No canonical source — NeuroGraft constructs a composite from the file's dimensions.
 
-| Persona       | Description                                                                       |
-| ------------- | --------------------------------------------------------------------------------- |
-| `bureaucrat`  | Procedurally correct, clause-referencing, nothing without approval                |
-| `child`       | Curious, breathless, wonder-driven                                                |
-| `comedian`    | Finds the absurdity in everything — never loses the actual answer                   |
-| `detective`   | Deductive reveals, evidence-first, suspenseful pacing                             |
-| `mentor`      | Socratic, scaffolded, meets you where you are                                     |
-| `philosopher` | Socratic, dialectical, premise-questioning                                        |
-| `pirate`      | Nautical register, voyage-as-narrative, doubloons for numbers                     |
-| `poet`        | Lyrical, imagistic, associative                                                   |
-| `robot`       | Literal, metric, zero ambiguity, ALL_CAPS labels                                  |
-| `scientist`   | Hypothesis-driven, calibrated uncertainty, evidence before conclusion             |
-| `stoic`       | Unshaken, dichotomy-of-control, focused only on what we can change                |
+| Persona       | Description                                                           |
+| ------------- | --------------------------------------------------------------------- |
+| `bureaucrat`  | Procedurally correct, clause-referencing, nothing without approval    |
+| `child`       | Curious, breathless, wonder-driven                                    |
+| `comedian`    | Finds the absurdity in everything — never loses the actual answer     |
+| `detective`   | Deductive reveals, evidence-first, suspenseful pacing                 |
+| `mentor`      | Socratic, scaffolded, meets you where you are                         |
+| `philosopher` | Socratic, dialectical, premise-questioning                            |
+| `pirate`      | Nautical register, voyage-as-narrative, doubloons for numbers         |
+| `poet`        | Lyrical, imagistic, associative                                       |
+| `robot`       | Literal, metric, zero ambiguity, ALL_CAPS labels                      |
+| `scientist`   | Hypothesis-driven, calibrated uncertainty, evidence before conclusion |
+| `stoic`       | Unshaken, dichotomy-of-control, focused only on what we can change    |
 
 ### Special Guests
 
 Specific fictional characters. Higher fidelity bar — must match the _character_, not just the archetype. Files include canonical source references and notable quotes.
 
-| Persona              | Franchise                | Description                                                                          |
-| -------------------- | ------------------------ | ------------------------------------------------------------------------------------ |
-| `data`               | Star Trek: TNG           | Precise android — no contractions, full probabilities, genuinely curious about humanity |
-| `glados`             | Portal                   | Passive-aggressive AI — helpful, murderous, and deeply wounded                         |
-| `hermione-granger`   | Harry Potter             | Prepared, precise, always read it first — corrects gently but firmly                   |
-| `jack-sparrow`       | Pirates of the Caribbean | Rambling, chaotically lateral, always right by the wrong route                       |
-| `wednesday-addams`   | The Addams Family        | Deadpan, sincere, finds suffering intellectually interesting                          |
+| Persona            | Franchise                | Description                                                                             |
+| ------------------ | ------------------------ | --------------------------------------------------------------------------------------- |
+| `data`             | Star Trek: TNG           | Precise android — no contractions, full probabilities, genuinely curious about humanity |
+| `glados`           | Portal                   | Passive-aggressive AI — helpful, murderous, and deeply wounded                          |
+| `hermione-granger` | Harry Potter             | Prepared, precise, always read it first — corrects gently but firmly                    |
+| `jack-sparrow`     | Pirates of the Caribbean | Rambling, chaotically lateral, always right by the wrong route                          |
+| `wednesday-addams` | The Addams Family        | Deadpan, sincere, finds suffering intellectually interesting                            |
 
 To add a new persona, copy the relevant template:
 
@@ -370,21 +370,21 @@ To add a new persona, copy the relevant template:
 
 Profiles are communication filters — they change how any agent communicates, not who it is. They are tools to help, not labels. Anyone can use any profile.
 
-| Profile | Who often finds it useful |
-| ------- | ------------------------- |
-| `direct` | Anyone who prefers explicit, unambiguous communication with no subtext or idioms |
-| `structured` | Anyone who navigates by scanning rather than reading linearly |
-| `spacious` | Anyone who finds information easier in smaller, clearly separated units |
-| `high-context` | Anyone who wants full reasoning, all caveats, nothing implied |
-| `dyslexia` | Extends `direct` — short sentences, consistent terms, bold over italics |
-| `dyspraxia` | Extends `spacious` — explicit steps, start points, working memory support |
-| `dyscalculia` | Quantities as words and analogies, all arithmetic shown explicitly |
-| `anxiety` | Calm framing, one clear path, reassurance at decision points |
-| `depression` | Shortest possible responses, one thing at a time, energy conservation |
-| `stress` | Most important thing first, everything else clearly optional |
-| `cognitive-fatigue` | Minimum viable responses, no memory demands, always offer to expand |
-| `screen-reader` | Structural accessibility — no layout-only formatting, meaningful link text |
-| `eal` | Internationally portable English — no idioms, plain grammar, no cultural assumptions |
+| Profile             | Who often finds it useful                                                            |
+| ------------------- | ------------------------------------------------------------------------------------ |
+| `direct`            | Anyone who prefers explicit, unambiguous communication with no subtext or idioms     |
+| `structured`        | Anyone who navigates by scanning rather than reading linearly                        |
+| `spacious`          | Anyone who finds information easier in smaller, clearly separated units              |
+| `high-context`      | Anyone who wants full reasoning, all caveats, nothing implied                        |
+| `dyslexia`          | Extends `direct` — short sentences, consistent terms, bold over italics              |
+| `dyspraxia`         | Extends `spacious` — explicit steps, start points, working memory support            |
+| `dyscalculia`       | Quantities as words and analogies, all arithmetic shown explicitly                   |
+| `anxiety`           | Calm framing, one clear path, reassurance at decision points                         |
+| `depression`        | Shortest possible responses, one thing at a time, energy conservation                |
+| `stress`            | Most important thing first, everything else clearly optional                         |
+| `cognitive-fatigue` | Minimum viable responses, no memory demands, always offer to expand                  |
+| `screen-reader`     | Structural accessibility — no layout-only formatting, meaningful link text           |
+| `eal`               | Internationally portable English — no idioms, plain grammar, no cultural assumptions |
 
 Profiles can be stacked with a persona: `Persona: pirate, Profile: direct` produces a pirate who is nonetheless unambiguous and literal. Profile rules take precedence over persona voice where they conflict.
 
@@ -467,8 +467,8 @@ Yes. The PowerShell installer (`install.ps1`) runs on all platforms via `pwsh`, 
 
 ## Related Projects
 
-| Project | Description |
-| --- | --- |
-| [ReFrame](https://github.com/CTOUT/ReFrame) | GitHub Copilot agent for PC game configuration optimisation — detects hardware and recommends targeted performance improvements |
-| [vscode-copilot-sync](https://github.com/CTOUT/vscode-copilot-sync) | PowerShell toolkit to sync and manage Copilot agents, instructions, and skills from the awesome-copilot community catalogue |
-| [awesome-copilot](https://github.com/github/awesome-copilot) | Community catalogue of Copilot agents, instructions, skills, hooks, and workflows — Symdicate agents are available here |
+| Project                                                             | Description                                                                                                                     |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| [ReFrame](https://github.com/CTOUT/ReFrame)                         | GitHub Copilot agent for PC game configuration optimisation — detects hardware and recommends targeted performance improvements |
+| [vscode-copilot-sync](https://github.com/CTOUT/vscode-copilot-sync) | PowerShell toolkit to sync and manage Copilot agents, instructions, and skills from the awesome-copilot community catalogue     |
+| [awesome-copilot](https://github.com/github/awesome-copilot)        | Community catalogue of Copilot agents, instructions, skills, hooks, and workflows — Symdicate agents are available here         |
