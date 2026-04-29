@@ -409,10 +409,12 @@ To add a new profile, copy [`.github/agents/personalities/profiles/_TEMPLATE.pro
     release.yml             # GitHub Actions — builds agent bundle zip on tag push
 install.ps1                 # Installer — PowerShell (Windows / macOS / Linux)
 install.sh                  # Installer — Bash (macOS / Linux)
+CITATION.cff                # Citation metadata ("Cite this repository" button)
 CONTRIBUTING.md             # Pre-commit checklist and contribution guide
 SECURITY.md                 # Vulnerability reporting and disclosure policy
 Symdicate.code-workspace
 TODO.md                     # Tracked expansion roadmap
+llms.txt                    # AI crawler guidance
 README.md
 ```
 
