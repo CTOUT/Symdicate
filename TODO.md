@@ -70,7 +70,7 @@ Tracked expansion items for the Symdicate multi-agent framework.
 
 **Goal:** Give every user a single, platform-neutral source of truth for their AI identity — the Imprint — so they never have to re-introduce themselves when moving between platforms or starting a new session.
 
-### Sub-tasks (Item 9)
+### Sub-tasks (Fetch)
 
 - [x] **9.1 — Design the Imprint schema**
       `Imprint.schema.json` created (JSON Schema draft-07). Defines seven top-level sections: `identity`, `style`, `rules`, `neverDo`, `expertise`, `projects`, `memory`, and `platforms`. Two-tier constraint model: `neverDo` entries are immutable and embedded with priority language in every bridge file; `rules` are baseline defaults that project-level config may extend. Reference example at `Imprint.example.json`.
@@ -327,7 +327,7 @@ Both must be addressed.
 
 **Key distinction from running agents in sequence:** Sequential execution produces separate outputs that the user reconciles. ChimeraGraft fuses the cognitive identity _before_ any response is generated — the agent reasons and responds as a single, unified entity whose personality is an engineered composite.
 
-### Design Questions to Resolve Before Implementation
+### Design Questions — ChimeraGraft
 
 - [ ] **3.Q1 — Field-level selection syntax**
       How does the user specify which field comes from which agent? Options:
@@ -353,13 +353,13 @@ Both must be addressed.
 - [ ] **3.Q5 — Cache interaction**
       Each source agent in a chimera will have its own cache entry (from Item 1). The chimera's composed identity should also be cacheable. The cache key would need to encode the full composition — agent names, fields selected, and hashes of all source files — so any change to any source invalidates the chimera cache.
 
-### Sub-tasks (once design questions are resolved)
+### Sub-tasks — ChimeraGraft
 
 - [ ] **3.1 — Define chimera input format** (resolves 3.Q1)
 - [ ] **3.2 — Implement conflict detection and resolution logic** (resolves 3.Q2)
 - [ ] **3.3 — Extend Agent Reading Protocol** to support reading and merging multiple agents in a single pass
 - [ ] **3.4 — Extend cache schema** to support composite cache keys for chimera profiles (resolves 3.Q5)
-- [ ] **3.5 — Update graft summary block** to list all source agents and the field-to-agent mapping:\
+- [ ] **3.5 — Update graft summary block** to list all source agents and the field-to-agent mapping:
 
   ```text
   ║  Mode         : C                                              ║
@@ -436,9 +436,10 @@ Both must be addressed.
 
 - [ ] **9.5 — Token usage diagnostic in graft summary block**
       Add an optional `Token budget` line to the graft summary block, disabled by default, enabled by user command `diagnostics on`. When enabled, surfaces: cache hits (profile, persona, session), fields loaded vs skipped, and whether compression was applied. Example:
-      ```
-      ║  Token budget  : cache HIT (profile+persona) | fields: 2/5 | no compression  ║
-      ```
+
+  ```text
+  ║  Token budget  : cache HIT (profile+persona) | fields: 2/5 | no compression  ║
+  ```
 
 ---
 
@@ -450,22 +451,23 @@ Both must be addressed.
 
 **Extension invocation model:** VS Code supports invoking other language model participants (e.g. `@claude`, `@gemini`) within the same chat session via the Language Model API. Hydra requests the `lm` tool permission to issue secondary queries directly where the extension API permits, rather than requiring the user to manually paste responses. A manual paste fallback is always available for tools not accessible via the API.
 
-### Design Questions to Resolve Before Implementation
+### Design Questions — Hydra
 
 - [ ] **10.Q1 — Invocation method for secondary models**
       VS Code's Language Model API (`vscode.lm.selectChatModels`) allows selecting and querying registered model providers. Claude and Gemini VS Code extensions expose their models as `ChatModelProvider` entries. Hydra should attempt auto-invocation via `lm` tool; if the target extension is not installed or the model is unavailable, fall back to the manual paste protocol. Confirm which extensions currently register models this way and what their model IDs are.
 
 - [ ] **10.Q2 — Input schema for manual paste fallback**
       When auto-invocation is unavailable, the user runs the same question in a second tool and pastes the response into Hydra's input. Define a clean structured format that makes it unambiguous which response came from which model, and which was primary (Copilot). Proposed:
-      ```
-      Question: <original question>
-      ---
-      [Model A: GitHub Copilot]
-      <paste response>
-      ---
-      [Model B: Claude]
-      <paste response>
-      ```
+
+  ```text
+  Question: <original question>
+  ---
+  [Model A: GitHub Copilot]
+  <paste response>
+  ---
+  [Model B: Claude]
+  <paste response>
+  ```
 
 - [ ] **10.Q3 — Analysis dimensions**
       What Hydra analyses across the responses. Proposed dimensions:
@@ -478,24 +480,25 @@ Both must be addressed.
 
 - [ ] **10.Q4 — Verdict format**
       Hydra's output must be structured and scannable. The user asked a question; they want a clear verdict, not a wall of analysis. Proposed format:
-      ```
-      ┌─ Hydra Verdict ──────────────────────────────────────┐
-      │  Question     : <question>                            │
-      │  Models       : GitHub Copilot · Claude               │
-      │  Agreement    : HIGH / PARTIAL / LOW                  │
-      │  Recommended  : [Model A] / [Model B] / Synthesis     │
-      └───────────────────────────────────────────────────────┘
 
-      ### Where they agree
-      ### Where they diverge
-      ### Omissions
-      ### Hydra's recommended position
-      ```
+  ```text
+  ┌─ Hydra Verdict ──────────────────────────────────────┐
+  │  Question     : <question>                            │
+  │  Models       : GitHub Copilot · Claude               │
+  │  Agreement    : HIGH / PARTIAL / LOW                  │
+  │  Recommended  : [Model A] / [Model B] / Synthesis     │
+  └───────────────────────────────────────────────────────┘
+
+  ### Where they agree
+  ### Where they diverge
+  ### Omissions
+  ### Hydra's recommended position
+  ```
 
 - [ ] **10.Q5 — Composability with NeuroGraft**
       A user may want Hydra's verdict delivered through a persona (e.g. a `scientist` archetype for maximum rigour framing). Define whether Hydra can be targeted by NeuroGraft as a valid `Agent:` value, and whether that produces useful results or introduces noise into the verdict.
 
-### Sub-tasks (once design questions are resolved)
+### Sub-tasks — Hydra
 
 - [ ] **10.1 — Define Hydra's cognitive identity**
       Purpose, reasoning style (`comparative`, `evidence-first`, `non-partisan`), toolset, behavioural rules, and communication style. Hydra never takes a side based on preference — only on evidence quality and reasoning rigour. Behavioural rules must prohibit fabricating consensus where genuine divergence exists.
@@ -530,13 +533,14 @@ Both must be addressed.
 Unlike Hydra, Cerberus never invokes external models and requires no special tool permissions. It reasons entirely about the content provided to it.
 
 **The three heads:**
+
 - **Head 1 — Completeness:** Did the response actually address the full question? What dimensions were not answered?
 - **Head 2 — Consistency:** Are claims internally consistent? Do any contradict each other or well-established practice?
 - **Head 3 — Risk:** What could go wrong if the user acts on this response as-is? What assumptions are unstated, what caveats are missing, what shortcuts are dangerous?
 
-**Key distinction from Hydra:** Hydra compares *multiple responses against each other*. Cerberus interrogates *a single response against itself and the question*. They are complementary — Cerberus is the right tool when you have one answer and want confidence; Hydra is the right tool when you have two answers and want resolution.
+**Key distinction from Hydra:** Hydra compares _multiple responses against each other_. Cerberus interrogates _a single response against itself and the question_. They are complementary — Cerberus is the right tool when you have one answer and want confidence; Hydra is the right tool when you have two answers and want resolution.
 
-### Design Questions to Resolve Before Implementation
+### Design Questions — Cerberus
 
 - [ ] **11.Q1 — Scope of source types**
       Cerberus is designed to validate any source, not just AI responses. Define whether the analysis dimensions differ by source type (e.g. a documentation excerpt is assessed for accuracy differently than an AI-generated code snippet), or whether the three-head framework is universal and source-agnostic. Source-agnostic is simpler and more flexible; source-typed is more precise. Proposed: source-agnostic framework with an optional `Source: <type>` hint that lets Cerberus tailor confidence framing (e.g. for `Source: documentation` Cerberus would note version/date staleness as a risk).
@@ -546,18 +550,19 @@ Unlike Hydra, Cerberus never invokes external models and requires no special too
 
 - [ ] **11.Q3 — Output format**
       Cerberus's verdict block should mirror Hydra's structure for consistency, adapted for single-source input. Proposed:
-      ```
-      ┌─ Cerberus Verdict ───────────────────────────────────────┐
-      │  Question     : <question>                                │
-      │  Source       : <model / doc / other>                     │
-      │  Confidence   : HIGH / MODERATE / LOW / INSUFFICIENT      │
-      └────────────────────────────────────────────────────────────┘
 
-      ### Head 1 — Completeness
-      ### Head 2 — Consistency
-      ### Head 3 — Risk
-      ### Cerberus's verdict
-      ```
+  ```text
+  ┌─ Cerberus Verdict ───────────────────────────────────────┐
+  │  Question     : <question>                                │
+  │  Source       : <model / doc / other>                     │
+  │  Confidence   : HIGH / MODERATE / LOW / INSUFFICIENT      │
+  └────────────────────────────────────────────────────────────┘
+
+  ### Head 1 — Completeness
+  ### Head 2 — Consistency
+  ### Head 3 — Risk
+  ### Cerberus's verdict
+  ```
 
 - [ ] **11.Q4 — Escalation path to Hydra**
       If Cerberus identifies a low-confidence verdict, it should offer a clear escalation prompt: `⚠ Confidence is LOW — consider running this question through Hydra with a second model for a cross-check.` Define the conditions under which this escalation prompt fires and ensure it is non-intrusive on high-confidence verdicts.
@@ -565,7 +570,7 @@ Unlike Hydra, Cerberus never invokes external models and requires no special too
 - [ ] **11.Q5 — Composability with NeuroGraft**
       Same question as Hydra's 10.Q5. Cerberus performing validation through a `scientist` or `sceptic` persona may be genuinely useful. Evaluate whether the three-head framework survives persona layering or whether the persona must be restricted to framing/presentation only (not analysis logic).
 
-### Sub-tasks (once design questions are resolved)
+### Sub-tasks — Cerberus
 
 - [ ] **11.1 — Define Cerberus's cognitive identity**
       Purpose, reasoning style (`interrogative`, `sceptical-but-fair`, `evidence-anchored`), toolset (no `lm` required), behavioural rules, and communication style. Cerberus never invents problems — every risk it surfaces must be grounded in the submitted response. Behavioural rules must prohibit inventing flaws for responses that are sound.
