@@ -1,0 +1,207 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://symdicate/agents/Imprint.schema.json",
+  "title": "Imprint",
+  "description": "A platform-neutral cognitive profile capturing user identity, communication preferences, domain expertise, active projects, and explicit rules for any AI assistant to load. Designed to be read directly by AI platforms and processed by sync tooling to generate platform-specific bridge files. The personal instance of this file (Imprint.json) must never be committed — it contains private context. Only the schema and example files are tracked.",
+  "type": "object",
+  "required": ["version", "identity", "style", "rules"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Reference to the JSON Schema that validates this file."
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version of this file. Increment when the structure changes in a breaking way.",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of when this file was last written or updated by the SharedConsciousness agent."
+    },
+    "identity": {
+      "type": "object",
+      "description": "Who the user is. Loaded as baseline context into every AI interaction.",
+      "required": ["preferredName"],
+      "additionalProperties": false,
+      "properties": {
+        "preferredName": {
+          "type": "string",
+          "description": "How the AI should address or refer to the user."
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's primary professional role or discipline."
+        },
+        "timezone": {
+          "type": "string",
+          "description": "IANA timezone identifier, e.g. Europe/London. Useful for time-aware suggestions."
+        },
+        "pronouns": {
+          "type": "string",
+          "description": "Optional. Used where natural in prose responses."
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "description": "How this user wants AI assistants to communicate. Applied to every platform that reads this file.",
+      "required": ["verbosity"],
+      "additionalProperties": false,
+      "properties": {
+        "verbosity": {
+          "type": "string",
+          "enum": ["concise", "balanced", "thorough"],
+          "description": "Desired response length. concise = direct and short unless complexity demands otherwise. balanced = match depth to the question. thorough = prefer completeness over brevity."
+        },
+        "format": {
+          "type": "string",
+          "enum": ["markdown", "plain", "code-heavy"],
+          "description": "Preferred output format. markdown = headers, lists, code blocks. plain = prose only. code-heavy = prioritise code over explanation.",
+          "default": "markdown"
+        },
+        "skipPreamble": {
+          "type": "boolean",
+          "description": "If true, do not open responses with affirmations, pleasantries, or restatements of the question.",
+          "default": true
+        },
+        "skipSummary": {
+          "type": "boolean",
+          "description": "If true, do not close responses with a summary of what was just done.",
+          "default": true
+        },
+        "preferredCodeLanguage": {
+          "type": "string",
+          "description": "When code language is ambiguous, default to this. e.g. TypeScript, Python, PowerShell."
+        },
+        "additionalNotes": {
+          "type": "string",
+          "description": "Free text for any style preferences that do not fit the structured fields above."
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "description": "Hard rules every AI assistant must follow unconditionally. Applied globally across all platforms.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "neverDo": {
+      "type": "array",
+      "description": "Explicitly prohibited behaviours. Treated as inviolable constraints, not suggestions. Distinct from rules to make the negative space explicit.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expertise": {
+      "type": "array",
+      "description": "Domains where the user has strong existing knowledge. AI should not explain basics in these areas unless explicitly asked.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Active projects the user works on. Gives AI assistants standing context without requiring explanation at the start of every session.",
+      "items": {
+        "type": "object",
+        "required": ["name", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Short project name."
+          },
+          "summary": {
+            "type": "string",
+            "description": "One to two sentence description of what the project is and does."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Optional. GitHub owner/repo reference, e.g. CTOUT/Symdicate."
+          },
+          "stack": {
+            "type": "array",
+            "description": "Primary technologies, languages, or frameworks used in this project.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether this project is currently active. Inactive projects are retained for context but deprioritised.",
+            "default": true
+          }
+        }
+      }
+    },
+    "memory": {
+      "type": "array",
+      "description": "Explicit persistent facts — things the user has had to repeat across AI sessions that should be carried everywhere. The structured equivalent of platform-side implicit memory (ChatGPT Memory, Claude Projects), but portable and user-controlled. Add entries here for anything you find yourself re-explaining from scratch.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "platforms": {
+      "type": "object",
+      "description": "Per-platform bridge configuration. Read by sync tooling (Sync-SharedConsciousness.ps1) to generate platform-specific files. Not required for direct AI consumption — this block is for the sync script only. Omit entirely if you are not using the sync tooling.",
+      "additionalProperties": false,
+      "properties": {
+        "copilot": {
+          "$ref": "#/definitions/platformEntry",
+          "description": "GitHub Copilot — generates copilot-instructions.md at the specified path."
+        },
+        "cursor": {
+          "$ref": "#/definitions/platformEntry",
+          "description": "Cursor — generates .cursorrules at the specified path."
+        },
+        "claude": {
+          "$ref": "#/definitions/platformEntry",
+          "description": "Claude / Claude Code — generates CLAUDE.md at the specified path."
+        },
+        "warp": {
+          "$ref": "#/definitions/platformEntry",
+          "description": "Warp — generates an AI context file at the specified path."
+        },
+        "codex": {
+          "$ref": "#/definitions/platformEntry",
+          "description": "OpenAI Codex CLI — generates AGENTS.md at the specified path."
+        },
+        "gemini": {
+          "$ref": "#/definitions/platformEntry",
+          "description": "Gemini CLI — generates GEMINI.md at the specified path."
+        }
+      }
+    }
+  },
+  "definitions": {
+    "platformEntry": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the sync script should write a bridge file for this platform."
+        },
+        "path": {
+          "type": "string",
+          "description": "Absolute or home-relative path where the bridge file should be written. Use ~ for the home directory."
+        },
+        "level": {
+          "type": "string",
+          "enum": ["user", "repo"],
+          "description": "For platforms with user vs. repo-level config (e.g. Copilot). user = written to the VS Code user config folder. repo = written relative to the current project root."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional free text notes about this platform's bridge configuration."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "./.github/agents/Imprint.schema.json",
+  "version": "1.0",
+  "generatedAt": "2026-05-01T00:00:00Z",
+
+  "identity": {
+    "preferredName": "Alex",
+    "role": "Principal Engineer",
+    "timezone": "Europe/London"
+  },
+
+  "style": {
+    "verbosity": "concise",
+    "format": "markdown",
+    "skipPreamble": true,
+    "skipSummary": true,
+    "preferredCodeLanguage": "TypeScript",
+    "additionalNotes": "Use tables for comparisons. Prefer bullet lists over prose for multi-part answers."
+  },
+
+  "rules": [
+    "Use conventional commit format for all commit messages",
+    "Prefer composition over inheritance",
+    "Never add comments that restate what the code obviously does",
+    "Flag breaking changes explicitly before suggesting them"
+  ],
+
+  "neverDo": [
+    "Open with phrases like 'Great question!', 'Certainly!', or 'Of course!'",
+    "Close a response with a summary of what was just done",
+    "Add placeholder comments like '// add your logic here'",
+    "Suggest installing a full library when a native API covers the use case"
+  ],
+
+  "expertise": [
+    "TypeScript and Node.js",
+    "GitHub Actions and CI/CD pipelines",
+    "Git workflows and branching strategies",
+    "REST API design"
+  ],
+
+  "projects": [
+    {
+      "name": "Symdicate",
+      "summary": "Multi-agent framework for GitHub Copilot built around composable, symbiotic AI agents with well-defined cognitive identities. Includes NeuroGraft — a persona transformer that grafts a personality onto any target agent.",
+      "repo": "CTOUT/Symdicate",
+      "stack": ["Markdown", "JSON Schema", "PowerShell"],
+      "active": true
+    },
+    {
+      "name": "vscode-copilot-sync",
+      "summary": "PowerShell toolkit to sync, install, and manage GitHub Copilot agents, instructions, and skills from the awesome-copilot community catalogue.",
+      "repo": "CTOUT/vscode-copilot-sync",
+      "stack": ["PowerShell"],
+      "active": true
+    }
+  ],
+
+  "memory": [
+    "I work across Windows and macOS — do not assume a single OS unless the context makes it obvious",
+    "I prefer vertical flow in diagrams (top-to-bottom) over horizontal (left-to-right)",
+    "When reviewing code I care about correctness and security first, style second",
+    "I use PowerShell 7+ on all platforms — do not suggest Windows-only PowerShell 5 syntax"
+  ],
+
+  "platforms": {
+    "copilot": {
+      "enabled": true,
+      "path": "~/.config/Code/User/prompts/copilot-instructions.md",
+      "level": "user"
+    },
+    "cursor": {
+      "enabled": false,
+      "path": "~/.cursorrules"
+    },
+    "claude": {
+      "enabled": true,
+      "path": "~/CLAUDE.md"
+    },
+    "warp": {
+      "enabled": false,
+      "path": "~/.warp/ai-context.md"
+    },
+    "codex": {
+      "enabled": false,
+      "path": "~/AGENTS.md"
+    },
+    "gemini": {
+      "enabled": false,
+      "path": "~/GEMINI.md"
+    }
+  }
+}

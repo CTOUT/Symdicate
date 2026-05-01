@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### Fetch — Cognitive Imprint agent (Item 9)
+
+- **`Fetch.agent.md`** — new Symdicate agent that builds, maintains, and projects the user's cognitive identity across every AI platform
+- Five commands: `/init` (scan existing platform config files + structured interview + confirm before write), `/update` (natural language targeted edits — no re-interview), `/sync` (generate platform bridge files for all enabled platforms), `/show` (human-readable Imprint summary), `/load` (compact context output for other Symdicate agents to consume)
+- `/init` Phase 1 scans all known platform config files automatically: `copilot-instructions.md`, `CLAUDE.md`, `.cursorrules`, `AGENTS.md`, `GEMINI.md`, Warp context files
+- `/init` Phase 2 surfaces and asks the user to resolve conflicts where existing files contradict each other — never silently picks one
+- `/sync` generates bridge files with an explicit two-tier priority block at the top of every file: `neverDo` entries as immutable constraints (cannot be overridden by project-level config), `rules` entries as extensible baseline defaults
+- `/load` outputs a compact prose block that any agent — including NeuroGraft — can consume to personalise its behaviour without running Fetch's full workflow
+- Bridge file support for: GitHub Copilot (`copilot-instructions.md`, user-level and repo-level), Claude / Claude Code (`CLAUDE.md`), Cursor (`.cursorrules`), OpenAI Codex CLI (`AGENTS.md`), Gemini CLI (`GEMINI.md`), Warp context
+- Safety rules: never writes without user confirmation; never exposes raw JSON by default; refuses to store secrets or credentials; never writes outside home directory or current workspace without explicit confirmation
+
+#### Imprint schema
+
+- **`Imprint.schema.json`** — JSON Schema draft-07 for the platform-neutral user cognitive profile. Seven top-level sections: `identity`, `style`, `rules`, `neverDo`, `expertise`, `projects`, `memory`, `platforms`
+- Two-tier constraint model formalised in schema: `neverDo` (immutable, priority-language in bridge files) vs `rules` (baseline defaults, project-context extensible)
+- `platforms` block drives the `/sync` bridge generator — each entry has `enabled`, `path`, `level`, and optional `notes`
+- **`Imprint.example.json`** — committed reference example using a fictional user; follows the same convention as `profile.example.json`
+
+#### Repository
+
+- `.gitignore` updated: `Imprint.json` excluded at all paths (personal instance is private); generated bridge files at repo root (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) excluded; `Fetch.agent.md` added to the tracked-agents exception list alongside `NeuroGraft.agent.md`
+- `TODO.md` title updated from "NeuroGraft Roadmap" to "Symdicate Roadmap" to reflect the full framework scope; Item 9 (Fetch) added as completed
+- `README.md` updated: agent summary table added to intro; full Fetch agent section added; repository structure updated; roadmap and FAQ updated
+
 ---
 
 ## [v1.0.1] — 2026-04-18

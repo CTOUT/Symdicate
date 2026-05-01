@@ -1,6 +1,6 @@
-# Symdicate — NeuroGraft Roadmap
+# Symdicate — Roadmap
 
-Tracked expansion items for the NeuroGraft persona transformer.
+Tracked expansion items for the Symdicate multi-agent framework.
 
 ---
 
@@ -63,6 +63,26 @@ Tracked expansion items for the NeuroGraft persona transformer.
 - **Per-agent default persona** — allow an `agent.md` file to declare a preferred default persona for when NeuroGraft targets it.
 - **Cache TTL option** — optional `maxAge` field in the cache entry to force re-extraction after a set period even if the file hash is unchanged.
 - **awesome-copilot submission** — submit NeuroGraft as a plugin to [github/awesome-copilot](https://github.com/github/awesome-copilot) for wider distribution once the agent is stable.
+
+---
+
+## [x] 9. Fetch — Cognitive Imprint Agent
+
+**Goal:** Give every user a single, platform-neutral source of truth for their AI identity — the Imprint — so they never have to re-introduce themselves when moving between platforms or starting a new session.
+
+### Sub-tasks (Item 9)
+
+- [x] **9.1 — Design the Imprint schema**
+      `Imprint.schema.json` created (JSON Schema draft-07). Defines seven top-level sections: `identity`, `style`, `rules`, `neverDo`, `expertise`, `projects`, `memory`, and `platforms`. Two-tier constraint model: `neverDo` entries are immutable and embedded with priority language in every bridge file; `rules` are baseline defaults that project-level config may extend. Reference example at `Imprint.example.json`.
+
+- [x] **9.2 — Define gitignore rules**
+      `Imprint.json` (personal instance) excluded at all paths — private context must never be committed. Generated bridge files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) excluded at repo root. Schema and example files remain tracked.
+
+- [x] **9.3 — Create Fetch agent**
+      `Fetch.agent.md` created. Five commands: `/init` (three-phase onboarding: scan existing files, interview, confirm and write), `/update` (natural language targeted edits), `/sync` (generate bridge files for all enabled platforms), `/show` (human-readable summary), `/load` (compact context output for other agents to consume). Conflict resolution and platform priority documented in the Behavioural Rules section.
+
+- [x] **9.4 — Update README and TODO**
+      README updated with Fetch agent section, updated repository structure, roadmap entry, and FAQ entries for Fetch and Imprint. TODO title updated to reflect the full framework scope.
 
 ---
 

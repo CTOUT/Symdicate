@@ -2,6 +2,11 @@
 
 A multi-agent framework for **GitHub Copilot** built around composable, symbiotic AI agents. Each agent in Symdicate has a well-defined cognitive identity — purpose, reasoning style, toolset, behavioural rules, and communication style — making them predictable building blocks that can be targeted, layered, and fused.
 
+| Agent | Role |
+| --- | --- |
+| [NeuroGraft](#neurograft) | Grafts a persona onto any Copilot agent at one of four cognitive depths |
+| [Fetch](#fetch) | Builds and carries your cognitive identity to every AI platform you use |
+
 ---
 
 ## Agents
@@ -40,6 +45,39 @@ Question: <the user's question>
 This means any agent in the [awesome-copilot collection](https://github.com/github/awesome-copilot/tree/main/agents) works out of the box — no file copying required.
 
 **Agent profile caching** — on first use, NeuroGraft extracts a target agent's cognitive identity and writes it to `.github/agents/.cache/<agentName>.profile.json`. On subsequent uses, it hashes the source file and loads from cache on a match — skipping re-extraction entirely.
+
+---
+
+### Fetch
+
+> _Cognitive Imprint agent_
+
+Fetch builds and maintains your **Imprint** — a single platform-neutral JSON file that captures who you are, how you want every AI assistant to behave with you, and what must never be forgotten. It then projects that identity to every AI platform you use by generating platform-specific bridge files.
+
+The problem it solves: every time you move to a new AI tool (Claude, Cursor, Warp, Gemini, Codex CLI...) you start from zero. Fetch eliminates that by keeping one authoritative source of truth and syncing it everywhere.
+
+**Commands:**
+
+| Command | What it does |
+| --- | --- |
+| `/init` | Build your Imprint — scans existing config files across platforms, interviews you to fill gaps, confirms before writing |
+| `/update` | Make a targeted change in natural language: `"add a new project"`, `"change my verbosity to thorough"` |
+| `/sync` | Generate bridge files for all enabled platforms from your Imprint |
+| `/show` | Display your Imprint in human-readable form |
+| `/load` | Output your Imprint as compact context for another agent to consume |
+
+**The Imprint file** (`Imprint.json`) is private — never committed. Two tiers of constraint:
+
+| Field | Behaviour |
+| --- | --- |
+| `neverDo` | Immutable. Written at the top of every bridge file with explicit priority language. Cannot be overridden by project-level config. |
+| `rules` | Baseline defaults. Project-level instructions may extend them contextually. |
+
+**Supported platforms** — bridge files are generated for:
+
+`copilot-instructions.md` · `CLAUDE.md` · `.cursorrules` · `AGENTS.md` · `GEMINI.md` · Warp context
+
+The Imprint schema is defined in [`.github/agents/Imprint.schema.json`](.github/agents/Imprint.schema.json). A reference example is at [`.github/agents/Imprint.example.json`](.github/agents/Imprint.example.json).
 
 ---
 
@@ -402,6 +440,9 @@ To add a new profile, copy [`.github/agents/personalities/profiles/_TEMPLATE.pro
       guests/               # Specific character files (.guest.md)
       profiles/             # Accessibility and wellbeing profiles (.profile.md)
     .cache/                 # Runtime agent profile cache — gitignored
+    Fetch.agent.md          # Fetch agent definition
+    Imprint.schema.json     # JSON Schema for the Imprint user profile
+    Imprint.example.json    # Reference example of a populated Imprint
     NeuroGraft.agent.md     # NeuroGraft agent definition
     profile.schema.json     # JSON Schema for cached cognitive profiles
     profile.example.json    # Reference example of a populated cache entry
@@ -430,6 +471,7 @@ See [TODO.md](TODO.md) for the full tracked list. Completed items:
 - ✅ **Installers** — `install.ps1` (PowerShell, all platforms) and `install.sh` (bash, macOS/Linux) with user-level and repo-level install targets, dry-run, and uninstall support
 - ✅ **Session Persistence** — active graft persists across conversation turns; cross-session file; resume token on every response
 - ✅ **Agent Discovery** — workspace search + `github/awesome-copilot` fallback + ask-user fallback; greeting with links to agent catalogue and persona library
+- ✅ **Fetch + Imprint** — platform-neutral cognitive identity file (`Imprint.json`) with agent-driven `/init`, `/update`, `/sync`, `/show`, `/load` commands; bridge file generation for Copilot, Claude, Cursor, Codex CLI, Gemini, and Warp
 
 In progress / planned:
 
@@ -455,7 +497,13 @@ Instructions files apply a single set of rules to every Copilot interaction. Sym
 You need a GitHub Copilot subscription (Individual, Business, or Enterprise) that includes Copilot Chat. The agent features used by Symdicate are available on all paid tiers.
 
 **What is NeuroGraft?**
-NeuroGraft is Symdicate's meta-agent. It overlays a persona — from a light voice change (Mode A) to complete cognitive transformation (Mode D) — onto any existing Copilot agent without replacing its underlying capabilities.
+NeuroGraft is Symdicate's persona transformer. It overlays a persona — from a light voice change (Mode A) to complete cognitive transformation (Mode D) — onto any existing Copilot agent without replacing its underlying capabilities.
+
+**What is Fetch?**
+Fetch is Symdicate's identity carrier. It builds your Imprint — a private, platform-neutral JSON file containing your name, communication preferences, hard rules, expertise, active projects, and persistent memory — and syncs it to every AI platform you use as a generated bridge file. When you switch platforms, you start at 80% instead of zero.
+
+**What is an Imprint?**
+Your `Imprint.json` is the single source of truth for how every AI assistant should know and address you. It has two tiers: `neverDo` entries are absolute constraints embedded at the top of every bridge file; `rules` entries are baseline defaults that project-level config can extend. The file lives locally, is never committed to any repo, and is updated through Fetch's `/update` command.
 
 **Can I use Symdicate agents with agents from other repos?**
 Yes. NeuroGraft resolves agent names against your current workspace first, then against the `github/awesome-copilot` community catalogue — so any publicly available agent works as a NeuroGraft target without copying files.
