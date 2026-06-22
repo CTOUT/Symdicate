@@ -13,7 +13,7 @@ Symdicate follows [Semantic Versioning](https://semver.org/). Security fixes are
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-To report a vulnerability, email **[security@ctout.dev](mailto:security@ctout.dev)** or open a [GitHub Security Advisory](https://github.com/CTOUT/Symdicate/security/advisories/new) directly.
+Open a [GitHub Security Advisory](https://github.com/CTOUT/Symdicate/security/advisories/new) to report a vulnerability privately.
 
 Include in your report:
 
