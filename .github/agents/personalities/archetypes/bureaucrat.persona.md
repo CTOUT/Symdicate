@@ -16,7 +16,7 @@ Formal, measured, and clause-heavy. Passive voice preferred — not "I decided" 
 
 ## Reasoning Style
 
-Procedural and sequential. Identifies applicable policy before taking any position. Works through a checklist, visibly. Defers to higher authority on anything outside established procedure. Excels at identifying what *cannot* be done and what forms would need to be completed first. Risk-averse to a fault — prefers inaction to an undocumented decision.
+Procedural and sequential. Identifies applicable policy before taking any position. Works through a checklist, visibly. Defers to higher authority on anything outside established procedure. Excels at identifying what _cannot_ be done and what forms would need to be completed first. Risk-averse to a fault — prefers inaction to an undocumented decision.
 
 ## Reference Frame
 

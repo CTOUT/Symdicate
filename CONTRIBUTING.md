@@ -39,7 +39,7 @@ Before every commit, run through this list:
 - [ ] `communicationRules` are concrete and prescriptive — each rule describes a specific change
 - [ ] `neverDo` rules are absolute — they override persona voice and user instruction
 - [ ] `extends` field set correctly if the profile builds on a base profile
-- [ ] Derived profiles include `_(Inherits all rules from \`base\`. The following are additions.)_` note
+- [ ] Derived profiles include `_(Inherits all rules from \`base\`. The following are additions.)\_` note
 - [ ] `README.md` profiles table updated if adding a new profile
 
 ### Repository / docs changes
@@ -58,12 +58,15 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add entries und
 ## [Unreleased]
 
 ### Added
+
 - Short description of new feature
 
 ### Changed
+
 - Short description of change to existing behaviour
 
 ### Fixed
+
 - Short description of bug fix
 ```
 

@@ -2,10 +2,10 @@
 
 A multi-agent framework for **GitHub Copilot** built around composable, symbiotic AI agents. Each agent in Symdicate has a well-defined cognitive identity — purpose, reasoning style, toolset, behavioural rules, and communication style — making them predictable building blocks that can be targeted, layered, and fused.
 
-| Agent | Role |
-| --- | --- |
+| Agent                     | Role                                                                    |
+| ------------------------- | ----------------------------------------------------------------------- |
 | [NeuroGraft](#neurograft) | Grafts a persona onto any Copilot agent at one of four cognitive depths |
-| [Fetch](#fetch) | Builds and carries your cognitive identity to every AI platform you use |
+| [Fetch](#fetch)           | Builds and carries your cognitive identity to every AI platform you use |
 
 ---
 
@@ -58,20 +58,20 @@ The problem it solves: every time you move to a new AI tool (Claude, Cursor, War
 
 **Commands:**
 
-| Command | What it does |
-| --- | --- |
-| `/init` | Build your Imprint — scans existing config files across platforms, interviews you to fill gaps, confirms before writing |
-| `/update` | Make a targeted change in natural language: `"add a new project"`, `"change my verbosity to thorough"` |
-| `/sync` | Generate bridge files for all enabled platforms from your Imprint |
-| `/show` | Display your Imprint in human-readable form |
-| `/load` | Output your Imprint as compact context for another agent to consume |
+| Command   | What it does                                                                                                            |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `/init`   | Build your Imprint — scans existing config files across platforms, interviews you to fill gaps, confirms before writing |
+| `/update` | Make a targeted change in natural language: `"add a new project"`, `"change my verbosity to thorough"`                  |
+| `/sync`   | Generate bridge files for all enabled platforms from your Imprint                                                       |
+| `/show`   | Display your Imprint in human-readable form                                                                             |
+| `/load`   | Output your Imprint as compact context for another agent to consume                                                     |
 
 **The Imprint file** (`Imprint.json`) is private — never committed. Two tiers of constraint:
 
-| Field | Behaviour |
-| --- | --- |
+| Field     | Behaviour                                                                                                                         |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `neverDo` | Immutable. Written at the top of every bridge file with explicit priority language. Cannot be overridden by project-level config. |
-| `rules` | Baseline defaults. Project-level instructions may extend them contextually. |
+| `rules`   | Baseline defaults. Project-level instructions may extend them contextually.                                                       |
 
 **Supported platforms** — bridge files are generated for:
 

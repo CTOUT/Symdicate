@@ -3,7 +3,7 @@ name: <short-label>
 aliases:
   - <alternative label 1>
 extends:
-  - <base-profile-name>   # omit if standalone
+  - <base-profile-name> # omit if standalone
 accessibilityFocus: >
   One or two sentences describing who finds this profile useful and what it does
   for them — framed around what works, not what is wrong. Avoid deficit language.

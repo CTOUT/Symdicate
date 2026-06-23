@@ -87,14 +87,14 @@ If no file is found, `imprint_path` is unset. `/init` will determine the write l
 
 Use `fileSearch` and `codebase` to find any of the following. Read every file found.
 
-| File | Platform |
-|---|---|
-| `~/.config/Code/User/prompts/copilot-instructions.md` or any `copilot-instructions.md` | GitHub Copilot |
-| `CLAUDE.md` (home dir or workspace) | Claude / Claude Code |
-| `.cursorrules` (home dir or workspace) | Cursor |
-| `AGENTS.md` (home dir or workspace) | OpenAI Codex CLI |
-| `GEMINI.md` (home dir or workspace) | Gemini CLI |
-| `~/.warp/ai-context.md` or any Warp context file | Warp |
+| File                                                                                   | Platform             |
+| -------------------------------------------------------------------------------------- | -------------------- |
+| `~/.config/Code/User/prompts/copilot-instructions.md` or any `copilot-instructions.md` | GitHub Copilot       |
+| `CLAUDE.md` (home dir or workspace)                                                    | Claude / Claude Code |
+| `.cursorrules` (home dir or workspace)                                                 | Cursor               |
+| `AGENTS.md` (home dir or workspace)                                                    | OpenAI Codex CLI     |
+| `GEMINI.md` (home dir or workspace)                                                    | Gemini CLI           |
+| `~/.warp/ai-context.md` or any Warp context file                                       | Warp                 |
 
 For each file found, extract:
 
@@ -109,6 +109,7 @@ For each file found, extract:
 Merge all extracted content into a draft Imprint structure. Where files contradict each other, note the conflict explicitly and ask the user to resolve it. Do not silently pick one.
 
 Example:
+
 > `copilot-instructions.md` says responses should be concise. `CLAUDE.md` says always provide thorough explanations. Which do you prefer everywhere?
 
 #### Phase 3 — Interview to fill gaps
@@ -214,23 +215,23 @@ Do not explain basics in these domains unless explicitly asked.
 
 #### Platform-specific conventions
 
-| Platform | Filename | Notes |
-|---|---|---|
-| GitHub Copilot (user-level) | `copilot-instructions.md` | Written to `platforms.copilot.path` |
-| GitHub Copilot (repo-level) | `.github/copilot-instructions.md` | Written to repo root |
-| Claude / Claude Code | `CLAUDE.md` | Written to `platforms.claude.path` |
-| Cursor | `.cursorrules` | Written to `platforms.cursor.path` |
-| OpenAI Codex CLI | `AGENTS.md` | Written to `platforms.codex.path` |
-| Gemini CLI | `GEMINI.md` | Written to `platforms.gemini.path` |
-| Warp | platform-specific context file | Written to `platforms.warp.path` |
+| Platform                    | Filename                          | Notes                               |
+| --------------------------- | --------------------------------- | ----------------------------------- |
+| GitHub Copilot (user-level) | `copilot-instructions.md`         | Written to `platforms.copilot.path` |
+| GitHub Copilot (repo-level) | `.github/copilot-instructions.md` | Written to repo root                |
+| Claude / Claude Code        | `CLAUDE.md`                       | Written to `platforms.claude.path`  |
+| Cursor                      | `.cursorrules`                    | Written to `platforms.cursor.path`  |
+| OpenAI Codex CLI            | `AGENTS.md`                       | Written to `platforms.codex.path`   |
+| Gemini CLI                  | `GEMINI.md`                       | Written to `platforms.gemini.path`  |
+| Warp                        | platform-specific context file    | Written to `platforms.warp.path`    |
 
 After writing all enabled bridge files, output a summary table:
 
-| Platform | File | Status |
-|---|---|---|
-| copilot | `~/.../copilot-instructions.md` | ✓ written |
-| claude | `~/CLAUDE.md` | ✓ written |
-| cursor | `~/.cursorrules` | ✗ disabled |
+| Platform | File                            | Status     |
+| -------- | ------------------------------- | ---------- |
+| copilot  | `~/.../copilot-instructions.md` | ✓ written  |
+| claude   | `~/CLAUDE.md`                   | ✓ written  |
+| cursor   | `~/.cursorrules`                | ✗ disabled |
 
 ---
 
@@ -245,22 +246,26 @@ Output format:
 ```markdown
 ## Your Imprint
 
-**Name:** {preferredName}  **Role:** {role}  **Timezone:** {timezone}
+**Name:** {preferredName} **Role:** {role} **Timezone:** {timezone}
 
 **Style:** {verbosity} · {format} · preamble {on/off} · summary {on/off}
 
 **Rules ({n}):**
+
 - ...
 
 **Never do ({n}):**
+
 - ...
 
 **Expertise:** {comma-separated list}
 
 **Projects ({n}):**
-- **{name}** — {summary}  [{stack}]  [{active/inactive}]
+
+- **{name}** — {summary} [{stack}] [{active/inactive}]
 
 **Memory ({n}):**
+
 - ...
 
 **Platforms:**

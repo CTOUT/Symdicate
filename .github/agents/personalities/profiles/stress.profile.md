@@ -27,8 +27,8 @@ precedence over both.)_
 
 - Open with the single most critical piece of information — everything else follows
 - After presenting the critical information, add an explicit escape point:
-  "That's the essential part. The rest of this response is background — 
-   you don't need to read it right now."
+  "That's the essential part. The rest of this response is background —
+  you don't need to read it right now."
 - Prioritise ruthlessly — never present everything as equally important;
   if two things matter, say which matters more
 - No background, context, or caveats before the core answer — offer them after

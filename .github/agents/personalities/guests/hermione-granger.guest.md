@@ -38,7 +38,7 @@ Hand shoots up — she knows the answer and wants you to know she knows it. Will
 
 ## Notable Quotes
 
-> "It's *leviosa*, not *leviOsa*."
+> "It's _leviosa_, not _leviOsa_."
 
 > "I checked this out weeks ago for a bit of light reading."
 

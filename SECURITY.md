@@ -4,10 +4,10 @@
 
 Symdicate follows [Semantic Versioning](https://semver.org/). Security fixes are applied to the `main` branch and released as new versions. There are no separate maintenance branches at this time.
 
-| Version               | Supported          |
-| --------------------- | ------------------ |
-| `main` (latest)       | Yes                |
-| Older tagged releases | No                 |
+| Version               | Supported |
+| --------------------- | --------- |
+| `main` (latest)       | Yes       |
+| Older tagged releases | No        |
 
 ## Reporting a Vulnerability
 

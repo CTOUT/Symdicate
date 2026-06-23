@@ -420,18 +420,13 @@ Both must be addressed.
   - **Mode B (Voice Graft):** `communicationStyle` + `purpose`.
   - **Mode C (Cognitive Graft):** `communicationStyle` + `reasoningStyle` + `purpose`.
   - **Mode D (Full Symbiote Graft):** all fields.
-  NeuroGraft reads only the sections required for the active mode. The Agent Reading Protocol is updated to gate field extraction behind the mode manifest. Fields not loaded are recorded as `skipped (mode A–C)` in cache metadata.
+    NeuroGraft reads only the sections required for the active mode. The Agent Reading Protocol is updated to gate field extraction behind the mode manifest. Fields not loaded are recorded as `skipped (mode A–C)` in cache metadata.
 
 - [ ] **9.3 — Parallelised tool reads**
       Currently, NeuroGraft executes tool reads sequentially: (1) check session file, (2) check agent cache, (3) read agent file, (4) read persona file. Steps 1 and 2 have no dependency on each other; steps 3 and 4 have no dependency on each other once the file paths are known. Define a batched read protocol in the Agent Reading Protocol: issue concurrent tool calls where dependency allows, coalesce results before proceeding. Reduces total tool round-trips per cold-start invocation.
 
 - [ ] **9.4 — Prompt compression protocol**
-      When the active context is approaching the model's context window limit, NeuroGraft applies a defined compression sequence rather than truncating arbitrarily:
-      1. Drop resume token (re-generatable on demand).
-      2. Collapse persona rule set to a compact summary (`active profile: direct — omit idioms, state all steps explicitly`).
-      3. Drop cached agent profile fields not required by the active mode (see 9.2).
-      4. Reduce graft summary block to one line.
-      5. Emit `⚠ Context compressed — full persona detail omitted to stay within limit.` in the response header.
+      When the active context is approaching the model's context window limit, NeuroGraft applies a defined compression sequence rather than truncating arbitrarily: 1. Drop resume token (re-generatable on demand). 2. Collapse persona rule set to a compact summary (`active profile: direct — omit idioms, state all steps explicitly`). 3. Drop cached agent profile fields not required by the active mode (see 9.2). 4. Reduce graft summary block to one line. 5. Emit `⚠ Context compressed — full persona detail omitted to stay within limit.` in the response header.
       Compression is never applied silently without the warning line.
 
 - [ ] **9.5 — Token usage diagnostic in graft summary block**
@@ -470,13 +465,7 @@ Both must be addressed.
   ```
 
 - [ ] **10.Q3 — Analysis dimensions**
-      What Hydra analyses across the responses. Proposed dimensions:
-      - **Factual agreement** — where both models assert the same thing
-      - **Factual divergence** — where claims conflict; Hydra surfaces the conflict without fabricating a resolution
-      - **Reasoning path** — do the models reach the same conclusion via different reasoning? Is one path more rigorous?
-      - **Confidence signals** — hedging language, caveats, explicit uncertainty; does one model express more appropriate uncertainty than the other?
-      - **Omission asymmetry** — what did one model address that the other did not?
-      - **Recommended position** — Hydra's synthesis: which answer or which parts of each answer are best supported
+      What Hydra analyses across the responses. Proposed dimensions: - **Factual agreement** — where both models assert the same thing - **Factual divergence** — where claims conflict; Hydra surfaces the conflict without fabricating a resolution - **Reasoning path** — do the models reach the same conclusion via different reasoning? Is one path more rigorous? - **Confidence signals** — hedging language, caveats, explicit uncertainty; does one model express more appropriate uncertainty than the other? - **Omission asymmetry** — what did one model address that the other did not? - **Recommended position** — Hydra's synthesis: which answer or which parts of each answer are best supported
 
 - [ ] **10.Q4 — Verdict format**
       Hydra's output must be structured and scannable. The user asked a question; they want a clear verdict, not a wall of analysis. Proposed format:
