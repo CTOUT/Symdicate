@@ -43,10 +43,10 @@ This directory is **engine-neutral**. The projection script (`project.ps1` /
 `project.sh`) creates engine-specific copies in the locations each AI engine
 expects:
 
-| Engine  | Projection Target          |
-|---------|----------------------------|
-| Copilot | `.github/skills/<name>/`   |
-| Gemini  | `.agents/skills/<name>/`   |
+| Engine  | Projection Target        |
+| ------- | ------------------------ |
+| Copilot | `.github/skills/<name>/` |
+| Gemini  | `.agents/skills/<name>/` |
 
 Run `.\project.ps1` (or `bash project.sh`) to project skills to both engines.
 

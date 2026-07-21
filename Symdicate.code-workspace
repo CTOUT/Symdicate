@@ -1,14 +1,14 @@
 {
-  "folders": [
-    {
-      "path": ".",
+    "folders": [
+        {
+            "path": ".",
+        },
+    ],
+    "settings": {
+        "chat.tools.terminal.autoApprove": {
+            "git add": true,
+            "git commit": true,
+            "git push": true,
+        },
     },
-  ],
-  "settings": {
-    "chat.tools.terminal.autoApprove": {
-      "git add": true,
-      "git commit": true,
-      "git push": true
-    }
-  },
 }
