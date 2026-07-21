@@ -614,4 +614,3 @@ Unlike Hydra, Cerberus never invokes external models and requires no special too
 
 - [ ] **12.6 — Instruction file migration (future)**
       Build the canonical `instructions/` directory and projection logic for instruction files. Copilot uses `.github/instructions/`, Gemini uses `.agents/AGENTS.md` (concatenated). Planned for a future release.
-

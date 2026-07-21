@@ -269,9 +269,10 @@ Output format:
 - ...
 
 **Platforms:**
+
 | Platform | Enabled | Path |
-|---|---|---|
-...
+| -------- | ------- | ---- |
+| ...      |
 
 Last updated: {generatedAt}
 ```
