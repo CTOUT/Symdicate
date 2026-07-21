@@ -581,3 +581,37 @@ Unlike Hydra, Cerberus never invokes external models and requires no special too
 
 - [ ] **11.7 — Update README**
       Cerberus section added to the README agent catalogue, covering: purpose, use case, three-head framework, distinction from Hydra, and escalation path.
+
+---
+
+## [/] 12. Multi-Engine Skill Architecture
+
+**Goal:** Allow Symdicate skills to be consumed by both GitHub Copilot and Google Gemini from a single canonical source. Eliminate skill duplication across engines.
+
+### Key decisions
+
+- **12.D1 — Canonical source location:** `skills/` at the repo root. Engine-neutral. `.github/skills/` and `.agents/skills/` are projection targets, not source locations.
+- **12.D2 — Projection mechanism:** Dual approach — `project.ps1` / `project.sh` for local dev (symlink or copy); `install.ps1` / `install.sh` for distribution (remote download).
+- **12.D3 — Scope:** Skills only for v1. Agent files remain Copilot-only. Instruction file migration planned for a future iteration.
+- **12.D4 — Copilot `allowed-tools` field:** Accepted as a non-issue — Gemini ignores unknown frontmatter fields.
+
+### Sub-tasks — Multi-Engine Skills
+
+- [x] **12.1 — Create canonical `skills/` directory**
+      Top-level `skills/` directory with a `README.md` explaining format, structure, and authoring guidelines. Engine-neutral.
+
+- [x] **12.2 — Create projection scripts**
+      `project.ps1` (PowerShell) and `project.sh` (bash). Support `-Engine` / `--engine` (copilot, gemini, all), `-Symlink` / `--symlink`, `-Clean` / `--clean`, and `-DryRun` / `--dry-run`. Only manage Symdicate-authored skills — never touch vscode-copilot-sync subscriptions.
+
+- [x] **12.3 — Update installers**
+      `-Engine` / `--engine` parameter added to both `install.ps1` and `install.sh`. Supports `copilot` (default), `gemini`, or `all`. `-IncludeSkills` / `--include-skills` for explicit skill installation. Gemini skills installed to `~/.gemini/config/skills/`.
+
+- [x] **12.4 — Update documentation**
+      README, CHANGELOG, CONTRIBUTING, TODO, llms.txt, and .gitignore all updated. Multi-Engine Support section added to README.
+
+- [ ] **12.5 — Author first cross-engine skill**
+      Create a Symdicate skill in `skills/` that works with both Copilot and Gemini. Validate end-to-end: author → project → discover in both engines.
+
+- [ ] **12.6 — Instruction file migration (future)**
+      Build the canonical `instructions/` directory and projection logic for instruction files. Copilot uses `.github/instructions/`, Gemini uses `.agents/AGENTS.md` (concatenated). Planned for a future release.
+

@@ -1,22 +1,33 @@
 <#
 .SYNOPSIS
-    Install Symdicate agents into VS Code (user-level or repo-level).
+    Install Symdicate agents and skills into VS Code or Gemini.
 
 .DESCRIPTION
-    Downloads the .github/agents/ folder from the Symdicate repository and
-    installs it to one of two targets:
+    Downloads agents from .github/agents/ and skills from skills/ in the
+    Symdicate repository and installs them to engine-specific locations.
 
+    Copilot (default):
       User-level  — agents available in every repo, no .github/ needed
                     Windows : %APPDATA%\Code\User\prompts\
                     macOS   : ~/Library/Application Support/Code/User/prompts/
                     Linux   : ~/.config/Code/User/prompts/
-
       Repo-level  — agents scoped to the current repository
                     All OS  : <RepoPath>\.github\agents\
+
+    Gemini:
+      Skills installed to the global Gemini config directory:
+                    Windows : %USERPROFILE%\.gemini\config\skills\
+                    macOS   : ~/.gemini/config/skills/
+                    Linux   : ~/.gemini/config/skills/
 
 .PARAMETER Target
     'user'  — install to VS Code user prompts folder (default)
     'repo'  — install to .github/agents/ in the current (or specified) repo
+
+.PARAMETER Engine
+    'copilot'  — install agents to Copilot locations (default)
+    'gemini'   — install skills to Gemini config directory
+    'all'      — install to both Copilot and Gemini locations
 
 .PARAMETER RepoPath
     Path to the target repository when using -Target repo.
@@ -36,14 +47,29 @@
     Also install persona and profile files from personalities/archetypes/, personalities/guests/,
     and personalities/profiles/ (accessibility and wellbeing profiles).
     By default only the agent files (*.agent.md, *.schema.json, *.example.json) are installed.
+    Only applies to the Copilot engine.
+
+.PARAMETER IncludeSkills
+    Also install Symdicate-authored skills from the canonical skills/ directory.
+    For Copilot, skills are placed alongside agents. For Gemini, skills are
+    installed to ~/.gemini/config/skills/. When -Engine is 'gemini', skills are
+    always included.
 
 .EXAMPLE
-    # Install to user level (available in all repos)
+    # Install agents to user level (Copilot, available in all repos)
     irm https://raw.githubusercontent.com/CTOUT/Symdicate/main/install.ps1 | iex
 
 .EXAMPLE
-    # Install to current repo
+    # Install to current repo (Copilot)
     .\install.ps1 -Target repo
+
+.EXAMPLE
+    # Install skills to Gemini
+    .\install.ps1 -Engine gemini
+
+.EXAMPLE
+    # Install to both engines
+    .\install.ps1 -Engine all -IncludeSkills
 
 .EXAMPLE
     # Install including persona files to user level
@@ -65,6 +91,9 @@
     [ValidateSet('user', 'repo')]
     [string]$Target = 'user',
 
+    [ValidateSet('copilot', 'gemini', 'all')]
+    [string]$Engine = 'copilot',
+
     [string]$RepoPath = (Get-Location).Path,
 
     [string]$Ref = 'main',
@@ -73,7 +102,9 @@
 
     [switch]$DryRun,
 
-    [switch]$IncludePersonalities
+    [switch]$IncludePersonalities,
+
+    [switch]$IncludeSkills
 )
 
 $ErrorActionPreference = 'Stop'
@@ -97,6 +128,13 @@ function Log {
         default { 'Cyan' }
     }
     Write-Host "[$(Get-Date -Format 's')][$Level] $Message" -ForegroundColor $colour
+}
+
+function Get-GeminiSkillsDir {
+    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
+        return Join-Path $env:USERPROFILE '.gemini\config\skills'
+    }
+    return Join-Path $HOME '.gemini/config/skills'
 }
 
 function Get-UserPromptsDir {
@@ -178,47 +216,61 @@ function Remove-InstalledFile {
 
 #endregion
 
-#region Resolve install destination
+#region Resolve install destinations
 
-$installDest = if ($Target -eq 'user') {
+# Copilot destination (agents + optionally skills)
+$copilotDest = if ($Target -eq 'user') {
     Get-UserPromptsDir
 }
 else {
     Join-Path $RepoPath '.github\agents'
 }
 
+# Gemini destination (skills only)
+$geminiDest = Get-GeminiSkillsDir
+
+# When engine is gemini-only, skills are always included
+if ($Engine -eq 'gemini') { $IncludeSkills = $true }
+
 if ($DryRun) { Log "DRY RUN — no files will be written" 'WARN' }
+Log "Engine  : $Engine"
 Log "Target  : $Target"
-Log "Dest    : $installDest"
+if ($Engine -in 'copilot', 'all') { Log "Copilot : $copilotDest" }
+if ($Engine -in 'gemini', 'all')  { Log "Gemini  : $geminiDest" }
 Log "Ref     : $Ref"
 
 #endregion
 
 #region Build file manifest from GitHub API
 
-$baseApi = "https://api.github.com/repos/CTOUT/Symdicate/contents/.github/agents"
-$rawBase = "https://raw.githubusercontent.com/CTOUT/Symdicate/$Ref/.github/agents"
+$agentsApi = "https://api.github.com/repos/CTOUT/Symdicate/contents/.github/agents"
+$agentsRawBase = "https://raw.githubusercontent.com/CTOUT/Symdicate/$Ref/.github/agents"
+$skillsApi = "https://api.github.com/repos/CTOUT/Symdicate/contents/skills"
+$skillsRawBase = "https://raw.githubusercontent.com/CTOUT/Symdicate/$Ref/skills"
 
-# Files to always install
+# Agent files (Copilot only)
 $agentFiles = @(
     'NeuroGraft.agent.md',
+    'Fetch.agent.md',
     'profile.schema.json',
-    'profile.example.json'
+    'profile.example.json',
+    'Imprint.schema.json',
+    'Imprint.example.json'
 )
 
-# Personality files — fetched dynamically from the API
+# Personality files — fetched dynamically from the API (Copilot only)
 $personalityFiles = @()
-if ($IncludePersonalities) {
+if ($IncludePersonalities -and $Engine -in 'copilot', 'all') {
     try {
-        $archetypes = Get-RemoteFileList "$baseApi/personalities/archetypes?ref=$Ref" |
+        $archetypes = Get-RemoteFileList "$agentsApi/personalities/archetypes?ref=$Ref" |
         Where-Object { $_.type -eq 'file' } |
         ForEach-Object { "personalities/archetypes/$($_.name)" }
 
-        $guests = Get-RemoteFileList "$baseApi/personalities/guests?ref=$Ref" |
+        $guests = Get-RemoteFileList "$agentsApi/personalities/guests?ref=$Ref" |
         Where-Object { $_.type -eq 'file' } |
         ForEach-Object { "personalities/guests/$($_.name)" }
 
-        $profiles = Get-RemoteFileList "$baseApi/personalities/profiles?ref=$Ref" |
+        $profiles = Get-RemoteFileList "$agentsApi/personalities/profiles?ref=$Ref" |
         Where-Object { $_.type -eq 'file' } |
         ForEach-Object { "personalities/profiles/$($_.name)" }
 
@@ -234,7 +286,37 @@ if ($IncludePersonalities) {
     }
 }
 
-$allFiles = $agentFiles + $personalityFiles
+# Skill directories — fetched dynamically from the API (both engines)
+# Each skill is a directory containing SKILL.md and optional supporting files
+$skillEntries = @()  # Array of @{ Name; Files } objects
+if ($IncludeSkills) {
+    try {
+        $skillDirs = Get-RemoteFileList "$skillsApi`?ref=$Ref" |
+            Where-Object { $_.type -eq 'dir' -and $_.name -match '^[a-zA-Z0-9_\-]+$' }
+
+        foreach ($skillDir in $skillDirs) {
+            $skillName = $skillDir.name
+            try {
+                $skillFiles = Get-RemoteFileList "$skillsApi/$skillName`?ref=$Ref" |
+                    Where-Object { $_.type -eq 'file' -and $_.name -match '^[a-zA-Z0-9_.\-]+$' } |
+                    ForEach-Object { $_.name }
+
+                if ($skillFiles -contains 'SKILL.md') {
+                    $skillEntries += @{ Name = $skillName; Files = $skillFiles }
+                }
+            }
+            catch {
+                Log "  Could not list files for skill '$skillName' — skipping" 'WARN'
+            }
+        }
+        Log "Found $($skillEntries.Count) skill(s) to install"
+    }
+    catch {
+        Log "Could not fetch skill list from GitHub API — skipping skills" 'WARN'
+    }
+}
+
+$copilotFiles = $agentFiles + $personalityFiles
 
 #endregion
 
@@ -242,36 +324,94 @@ $allFiles = $agentFiles + $personalityFiles
 
 $counts = @{ added = 0; updated = 0; unchanged = 0; removed = 0; skipped = 0; 'not-found' = 0; 'would-remove' = 0 }
 
-foreach ($file in $allFiles) {
-    $fileName = Split-Path $file -Leaf
-    $destPath = Join-Path $installDest $fileName
+# --- Copilot: agents + personalities ---
+if ($Engine -in 'copilot', 'all') {
+    Log 'Installing Copilot agents...'
+    foreach ($file in $copilotFiles) {
+        $fileName = Split-Path $file -Leaf
+        $destPath = Join-Path $copilotDest $fileName
 
-    # For personalities, preserve subfolder structure at user level
-    if ($file -match '^personalities/') {
-        $destPath = Join-Path $installDest $file.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
-    }
+        # For personalities, preserve subfolder structure at user level
+        if ($file -match '^personalities/') {
+            $destPath = Join-Path $copilotDest $file.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
+        }
 
-    if ($Uninstall) {
-        $result = Remove-InstalledFile -FilePath $destPath
-        Log "  $result  $destPath"
-        $counts[$result]++
-    }
-    else {
-        $rawUrl = "$rawBase/$($file.Replace('\','/'))"
-        try {
-            $result = Install-RemoteFile -RawUrl $rawUrl -DestPath $destPath
-            $symbol = switch ($result) {
-                'added' { '+' }
-                'updated' { '~' }
-                'unchanged' { '=' }
-                default { '?' }
-            }
-            Log "  [$symbol] $destPath  ($result)"
+        if ($Uninstall) {
+            $result = Remove-InstalledFile -FilePath $destPath
+            Log "  $result  $destPath"
             $counts[$result]++
         }
-        catch {
-            Log "  FAILED  $destPath  — $_" 'ERROR'
-            $counts['skipped']++
+        else {
+            $rawUrl = "$agentsRawBase/$($file.Replace('\','/'))"
+            try {
+                $result = Install-RemoteFile -RawUrl $rawUrl -DestPath $destPath
+                $symbol = switch ($result) {
+                    'added' { '+' }
+                    'updated' { '~' }
+                    'unchanged' { '=' }
+                    default { '?' }
+                }
+                Log "  [$symbol] $destPath  ($result)"
+                $counts[$result]++
+            }
+            catch {
+                Log "  FAILED  $destPath  — $_" 'ERROR'
+                $counts['skipped']++
+            }
+        }
+    }
+}
+
+# --- Skills (both engines) ---
+if ($IncludeSkills -and $skillEntries.Count -gt 0) {
+    # Determine skill install targets based on engine
+    $skillTargets = @()
+    if ($Engine -in 'copilot', 'all') {
+        # Copilot skills go to a skills/ subfolder under the agent destination
+        $copilotSkillBase = if ($Target -eq 'user') {
+            # User-level: skills sit alongside agents in the prompts folder
+            Join-Path (Split-Path $copilotDest -Parent) 'skills'
+        } else {
+            # Repo-level: .github/skills/
+            Join-Path (Split-Path (Split-Path $copilotDest -Parent) -Parent) '.github' 'skills'
+        }
+        $skillTargets += @{ Dest = $copilotSkillBase; Engine = 'Copilot' }
+    }
+    if ($Engine -in 'gemini', 'all') {
+        $skillTargets += @{ Dest = $geminiDest; Engine = 'Gemini' }
+    }
+
+    foreach ($target in $skillTargets) {
+        Log "Installing skills to $($target.Engine) ($($target.Dest))..."
+        foreach ($skill in $skillEntries) {
+            $skillName = $skill.Name
+            foreach ($skillFile in $skill.Files) {
+                $destPath = Join-Path $target.Dest $skillName $skillFile
+                $rawUrl = "$skillsRawBase/$skillName/$skillFile"
+
+                if ($Uninstall) {
+                    $result = Remove-InstalledFile -FilePath $destPath
+                    Log "  $result  $destPath"
+                    $counts[$result]++
+                }
+                else {
+                    try {
+                        $result = Install-RemoteFile -RawUrl $rawUrl -DestPath $destPath
+                        $symbol = switch ($result) {
+                            'added' { '+' }
+                            'updated' { '~' }
+                            'unchanged' { '=' }
+                            default { '?' }
+                        }
+                        Log "  [$symbol] $destPath  ($result)"
+                        $counts[$result]++
+                    }
+                    catch {
+                        Log "  FAILED  $destPath  — $_" 'ERROR'
+                        $counts['skipped']++
+                    }
+                }
+            }
         }
     }
 }
@@ -285,18 +425,26 @@ if ($Uninstall) {
     Log "Uninstall complete — removed: $($counts['removed'])  not-found: $($counts['not-found'])" 'SUCCESS'
 }
 elseif ($DryRun) {
-    Log "Dry run complete — would add/update files in: $installDest" 'SUCCESS'
+    $dests = @()
+    if ($Engine -in 'copilot', 'all') { $dests += "Copilot: $copilotDest" }
+    if ($Engine -in 'gemini', 'all')  { $dests += "Gemini: $geminiDest" }
+    Log "Dry run complete — would install to: $($dests -join ', ')" 'SUCCESS'
 }
 else {
     Log "Install complete — added: $($counts['added'])  updated: $($counts['updated'])  unchanged: $($counts['unchanged'])  failed: $($counts['skipped'])" 'SUCCESS'
 
     if ($counts['added'] -gt 0 -or $counts['updated'] -gt 0) {
         Write-Host ''
-        if ($Target -eq 'user') {
-            Log "Restart VS Code (or reload the window) for the new agents to appear in the agent picker." 'WARN'
+        if ($Engine -in 'copilot', 'all') {
+            if ($Target -eq 'user') {
+                Log "Restart VS Code (or reload the window) for the new agents to appear in the agent picker." 'WARN'
+            }
+            else {
+                Log "Agents installed to $copilotDest — open this repo in VS Code and they will be available immediately." 'WARN'
+            }
         }
-        else {
-            Log "Agents installed to $installDest — open this repo in VS Code and they will be available immediately." 'WARN'
+        if ($Engine -in 'gemini', 'all') {
+            Log "Gemini skills installed to $geminiDest — they will be available in your next Gemini session." 'WARN'
         }
     }
 }

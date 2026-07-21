@@ -48,64 +48,34 @@ Before every commit, run through this list:
 - [ ] `CHANGELOG.md` updated
 - [ ] `TODO.md` updated if a tracked item is completed or a new one is added
 
----
+### Skill changes (`skills/<name>/SKILL.md`)
 
-## Changelog Format
-
-Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add entries under `## [Unreleased]` — never edit a released version section.
-
-```markdown
-## [Unreleased]
-
-### Added
-
-- Short description of new feature
-
-### Changed
-
-- Short description of change to existing behaviour
-
-### Fixed
-
-- Short description of bug fix
-```
+- [ ] Skill authored in the canonical `skills/` directory — never in `.github/skills/` or `.agents/skills/`
+- [ ] `SKILL.md` has valid YAML frontmatter with `name` and `description` fields
+- [ ] Instructions are engine-agnostic — no engine-specific tool references unless wrapped in conditional language
+- [ ] Body is under 500 lines; longer content goes in a `references/` subdirectory
+- [ ] Ran `.\project.ps1 -DryRun` (or `bash project.sh --dry-run`) to verify projection
+- [ ] `CHANGELOG.md` updated under `[Unreleased] → Added / Changed / Fixed`
+- [ ] `README.md` updated if the change affects user-facing behaviour
 
 ---
 
-## Cutting a Release
+## Adding a Skill
 
-1. Ensure `CHANGELOG.md` `[Unreleased]` section is complete
-2. Rename `[Unreleased]` to `[vX.Y.Z] — YYYY-MM-DD`
-3. Add a new empty `[Unreleased]` section above it
-4. Update the diff link at the bottom of `CHANGELOG.md`
-5. Commit: `chore: prepare release vX.Y.Z`
-6. Tag: `git tag vX.Y.Z -m "<release notes>"` — the tag message becomes the GitHub release body
-7. Push: `git push && git push --tags`
-8. GitHub Actions builds the zip and creates the release automatically
-
----
-
-## Adding a Persona
-
-**Accessibility/Wellbeing Profile** (communication filter, no canonical source):
-
-1. Copy `.github/agents/personalities/profiles/_TEMPLATE.profile.md`
-2. Name it `<label>.profile.md` and fill in all fields
-3. Frame `accessibilityFocus` positively — who finds it useful, not what condition they have
-4. If it builds on a base profile, set `extends` and add the inheritance note to each section
-5. Add to the README profiles table
-
-**Archetype** (generalised, no canonical source):
-
-1. Copy `.github/agents/personalities/archetypes/_TEMPLATE.archetype.md`
-2. Name it `<label>.persona.md` and fill in all five dimensions
-3. Add to the README archetypes table
-
-**Special Guest** (specific fictional character):
-
-1. Copy `.github/agents/personalities/guests/_TEMPLATE.guest.md`
-2. Name it `<character-name>.guest.md` and fill in all fields including `franchise`, `canonicalSource`, and `contentNote`
-3. Add to the README special guests table
+1. Create a new directory: `skills/<skill-name>/`
+2. Create `SKILL.md` with YAML frontmatter:
+   ```yaml
+   ---
+   name: <skill-name>
+   description: >
+     Clear, concise description of the skill.
+   ---
+   ```
+3. Write engine-agnostic instructions in the markdown body
+4. Optional: add `scripts/`, `references/`, or `examples/` subdirectories
+5. Run `.\project.ps1` to project to both Copilot and Gemini
+6. Verify the skill appears in both `.github/skills/` and `.agents/skills/`
+7. Update `README.md` and `CHANGELOG.md`
 
 ---
 

@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### Multi-engine skill architecture
+
+- **`skills/`** — new canonical top-level directory for Symdicate-authored skills. Engine-neutral format; both Copilot and Gemini discover skills here via projection
+- **`project.ps1`** / **`project.sh`** — projection scripts that create engine-specific copies (or symlinks) from `skills/` into `.github/skills/` (Copilot) and `.agents/skills/` (Gemini)
+- **`-Engine` parameter** added to both installers (`install.ps1`, `install.sh`). Supports `copilot` (default), `gemini`, or `all`. Gemini skills are installed to `~/.gemini/config/skills/`
+- **`-IncludeSkills` / `--include-skills` parameter** added to both installers. Installs Symdicate-authored skills from the canonical `skills/` directory. Always enabled when `-Engine gemini`
+- Installers now include `Fetch.agent.md`, `Imprint.schema.json`, and `Imprint.example.json` in the default Copilot agent manifest
+
 ---
 
 ## [v1.1.0] — 2026-06-23

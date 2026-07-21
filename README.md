@@ -1,6 +1,6 @@
 # Symdicate
 
-A multi-agent framework for **GitHub Copilot** built around composable, symbiotic AI agents. Each agent in Symdicate has a well-defined cognitive identity — purpose, reasoning style, toolset, behavioural rules, and communication style — making them predictable building blocks that can be targeted, layered, and fused.
+A multi-agent framework for **GitHub Copilot** (with multi-engine skill support for **Google Gemini**) built around composable, symbiotic AI agents. Each agent in Symdicate has a well-defined cognitive identity — purpose, reasoning style, toolset, behavioural rules, and communication style — making them predictable building blocks that can be targeted, layered, and fused.
 
 | Agent                     | Role                                                                    |
 | ------------------------- | ----------------------------------------------------------------------- |
@@ -137,11 +137,13 @@ bash install.sh --include-personalities
 
 ### Other options
 
-| Option         | PowerShell    | Bash           | Description                                  |
-| -------------- | ------------- | -------------- | -------------------------------------------- |
-| Dry run        | `-DryRun`     | `--dry-run`    | Show what would change without writing files |
-| Uninstall      | `-Uninstall`  | `--uninstall`  | Remove installed Symdicate files             |
-| Pin to release | `-Ref v1.0.0` | `--ref v1.0.0` | Install a specific tagged version            |
+| Option             | PowerShell         | Bash                | Description                                  |
+| ------------------ | ------------------ | ------------------- | -------------------------------------------- |
+| Engine             | `-Engine gemini`   | `--engine gemini`   | Install to copilot, gemini, or all           |
+| Include skills     | `-IncludeSkills`   | `--include-skills`  | Also install Symdicate skills from skills/   |
+| Dry run            | `-DryRun`          | `--dry-run`         | Show what would change without writing files |
+| Uninstall          | `-Uninstall`       | `--uninstall`       | Remove installed Symdicate files             |
+| Pin to release     | `-Ref v1.0.0`      | `--ref v1.0.0`      | Install a specific tagged version            |
 
 ### Manual install
 
@@ -429,10 +431,72 @@ Profiles can be stacked with a persona: `Persona: pirate, Profile: direct` produ
 To add a new profile, copy [`.github/agents/personalities/profiles/_TEMPLATE.profile.md`](.github/agents/personalities/profiles/_TEMPLATE.profile.md).
 
 ---
+## Multi-Engine Support
+
+Symdicate skills work with both **GitHub Copilot** and **Google Gemini** (Antigravity) from a single source of truth — no skill duplication.
+
+### Architecture
+
+Both engines use the same file format for skills (`SKILL.md` with YAML frontmatter + markdown instructions). The only difference is where each engine looks for them:
+
+| Engine  | Expected location            | How Symdicate gets skills there |
+|---------|------------------------------|---------------------------------|
+| Copilot | `.github/skills/<name>/`     | Projection or installer         |
+| Gemini  | `.agents/skills/<name>/`     | Projection or installer         |
+
+All Symdicate-authored skills live in the canonical `skills/` directory at the repo root. Engine-specific directories are generated — never authored directly.
+
+> **Note:** Agent files (`.agent.md`) are Copilot-specific and have no Gemini equivalent. Skills are the cross-engine content type. External subscriptions installed by vscode-copilot-sync (`.github/instructions/`, `.github/skills/`) are not Symdicate content.
+
+### Local development — projection
+
+The projection script creates engine-specific copies (or symlinks) from the canonical `skills/` directory:
+
+```powershell
+# Project to both engines (copy mode)
+.\project.ps1
+
+# Project to Gemini only using symlinks
+.\project.ps1 -Engine gemini -Symlink
+
+# Remove all projections
+.\project.ps1 -Clean
+```
+
+```bash
+# Bash equivalent
+bash project.sh
+bash project.sh --engine gemini --symlink
+bash project.sh --clean
+```
+
+> **Symlinks on Windows:** Requires Developer Mode enabled or an elevated terminal. The script falls back to copying if symlinks fail.
+
+### Distribution — installer
+
+The installer supports a `-Engine` / `--engine` parameter:
+
+```powershell
+# Install skills to Gemini
+.\install.ps1 -Engine gemini
+
+# Install everything to both engines
+.\install.ps1 -Engine all -IncludeSkills
+```
+
+```bash
+# Bash
+bash install.sh --engine gemini
+bash install.sh --engine all --include-skills
+```
+
+---
 
 ## Repository Structure
 
 ```text
+skills/                     # Canonical source of truth for Symdicate skills
+  README.md                 # Authoring guide and format documentation
 .github/
   agents/
     personalities/
@@ -448,6 +512,8 @@ To add a new profile, copy [`.github/agents/personalities/profiles/_TEMPLATE.pro
     profile.example.json    # Reference example of a populated cache entry
   workflows/
     release.yml             # GitHub Actions — builds agent bundle zip on tag push
+project.ps1                 # Skill projection — PowerShell (Windows / macOS / Linux)
+project.sh                  # Skill projection — Bash (macOS / Linux)
 install.ps1                 # Installer — PowerShell (Windows / macOS / Linux)
 install.sh                  # Installer — Bash (macOS / Linux)
 CITATION.cff                # Citation metadata ("Cite this repository" button)
